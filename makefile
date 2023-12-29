@@ -4,6 +4,7 @@ miniproArgs = -p AT28C256 -w rom.bin
 
 all: rom.bin
 
+rom: rom.bin
 rom.bin:
 	python make_rom.py
 
@@ -16,3 +17,7 @@ write: rom.bin
 	else
 			minipro $(miniproArgs)
 	endif
+
+.PHONY: rom
+.PHONY: dump
+.PHONY: write
