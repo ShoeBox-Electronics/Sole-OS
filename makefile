@@ -1,5 +1,6 @@
-cygwinPath = /c/cygwin64
-miniproPath = ~/MiniproCC65
+cygwinPath = /c/cygwin64 # change me to the correct path (windows only)
+miniproPath = ~/MiniproCC65 # change me to the correct path (windows only)
+miniproArgs = -p AT28C256 -w rom.bin
 
 all: rom.bin
 
@@ -10,4 +11,8 @@ dump: rom.bin
 	hexdump rom.bin
 
 write: rom.bin
-	$(cygwinPath)/bin/bash.exe -l -c $(miniproPath)/minipro.exe
+	ifeq ($(OS),Windows_NT)
+		$(cygwinPath)/bin/bash.exe -l -c $(miniproPath)/minipro.exe $(miniproArgs)
+	else
+			minipro $(miniproArgs)
+	endif
