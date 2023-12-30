@@ -58,7 +58,7 @@ void loop()
 {
   digitalWrite(CLOCK_OUT, HIGH);  // turn the LED on (HIGH is the voltage level)
   displayBus();
-  delay(500);                      // wait for a second
+  delay(50);                      // wait for a second
   digitalWrite(CLOCK_OUT, LOW);   // turn the LED off by making the voltage LOW
-  delay(500);   
+  delay(50);   
 }
