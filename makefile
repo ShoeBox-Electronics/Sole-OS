@@ -1,23 +1,27 @@
-cygwinPath = /c/cygwin64 # change me to the correct path (windows only)
-miniproPath = ~/MiniproCC65 # change me to the correct path (windows only)
-miniproArgs = -p AT28C256 -w rom.bin
+# change below to the correct path (windows only)
+cygwinPath = /c/cygwin64
+# change below to the correct path (windows only)
+miniproPath = ~/MiniproCC65
+miniproArgs = -p AT28C256 -w sole.bin
+# change below to the correct path
+vasmPath = /c/Users/joeps/bin/vasm
 
-all: rom.bin
+all: sole
 
-rom: rom.bin
-rom.bin:
-	python make_rom.py
+sole: sole.bin
+sole.bin:
+	python make_sole.py
 
-dump: rom.bin
-	hexdump rom.bin
+dump: sole.bin
+	hexdump sole.bin
 
-write: rom.bin
-	ifeq ($(OS),Windows_NT)
-		$(cygwinPath)/bin/bash.exe -l -c $(miniproPath)/minipro.exe $(miniproArgs)
-	else
-			minipro $(miniproArgs)
-	endif
+write: sole.bin
+	$(cygwinPath)/bin/bash.exe -l -c "$(miniproPath)/minipro.exe $(miniproArgs)"
 
-.PHONY: rom
+assemble: sole.asm
+	$(vasmPath)/vasm6502_oldstyle -dotdir sole.asm -Fbin -o sole.bin 
+
+.PHONY: sole
 .PHONY: dump
 .PHONY: write
+.PHONY: assemble
