@@ -1,141 +1,53 @@
-PORTB = $6000
-PORTA = $6001
-DDRB = $6002
-DDRA = $6003
-
-E  = %10000000
-RW = %01000000
-RS = %00100000
+MESSAGE_PTR = $00		; a zeropage address pointer  
 
   .org $8000
 
 reset:
-  lda #%11111111 ; Set all pins on port B to output
-  sta DDRB
+  ; Init Stack
+  ldx #$ff
+  txs
+  ; Main
+  jsr lcd_init
 
-  lda #%11100000 ; Set top 3 pins on port A to output
-  sta DDRA
+  lda #<message_1         ; #< means low byte of the address of a label.  
+  sta MESSAGE_PTR         ; save to pointer  
+  lda #>message_1         ; #> means high byte of the address of a label.  
+  sta MESSAGE_PTR + 1     ; save to pointer + 1  
+  jsr print_message
 
-  lda #%00111000 ; Set 8-bit mode; 2-line display; 5x8 font
-  sta PORTB
-  lda #0         ; Clear RS/RW/E bits
-  sta PORTA
-  lda #E         ; Set E bit to send instruction
-  sta PORTA
-  lda #0         ; Clear RS/RW/E bits
-  sta PORTA
-
-  lda #%00001110 ; Display on; cursor on; blink off
-  sta PORTB
-  lda #0         ; Clear RS/RW/E bits
-  sta PORTA
-  lda #E         ; Set E bit to send instruction
-  sta PORTA
-  lda #0         ; Clear RS/RW/E bits
-  sta PORTA
-
-  lda #%00000110 ; Increment and shift cursor; don't shift display
-  sta PORTB
-  lda #0         ; Clear RS/RW/E bits
-  sta PORTA
-  lda #E         ; Set E bit to send instruction
-  sta PORTA
-  lda #0         ; Clear RS/RW/E bits
-  sta PORTA
-
-  lda #"F"
-  sta PORTB
-  lda #RS         ; Set RS; Clear RW/E bits
-  sta PORTA
-  lda #(RS | E)   ; Set E bit to send instruction
-  sta PORTA
-  lda #RS         ; Clear E bits
-  sta PORTA
-
-  lda #"i"
-  sta PORTB
-  lda #RS         ; Set RS; Clear RW/E bits
-  sta PORTA
-  lda #(RS | E)   ; Set E bit to send instruction
-  sta PORTA
-  lda #RS         ; Clear E bits
-  sta PORTA
-
-  lda #"b"
-  sta PORTB
-  lda #RS         ; Set RS; Clear RW/E bits
-  sta PORTA
-  lda #(RS | E)   ; Set E bit to send instruction
-  sta PORTA
-  lda #RS         ; Clear E bits
-  sta PORTA
-
-  lda #"o"
-  sta PORTB
-  lda #RS         ; Set RS; Clear RW/E bits
-  sta PORTA
-  lda #(RS | E)   ; Set E bit to send instruction
-  sta PORTA
-  lda #RS         ; Clear E bits
-  sta PORTA
-
-  lda #"n"
-  sta PORTB
-  lda #RS         ; Set RS; Clear RW/E bits
-  sta PORTA
-  lda #(RS | E)   ; Set E bit to send instruction
-  sta PORTA
-  lda #RS         ; Clear E bits
-  sta PORTA
-
-  lda #"a"
-  sta PORTB
-  lda #RS         ; Set RS; Clear RW/E bits
-  sta PORTA
-  lda #(RS | E)   ; Set E bit to send instruction
-  sta PORTA
-  lda #RS         ; Clear E bits
-  sta PORTA
-
-  lda #"c"
-  sta PORTB
-  lda #RS         ; Set RS; Clear RW/E bits
-  sta PORTA
-  lda #(RS | E)   ; Set E bit to send instruction
-  sta PORTA
-  lda #RS         ; Clear E bits
-  sta PORTA
-
-  lda #"c"
-  sta PORTB
-  lda #RS         ; Set RS; Clear RW/E bits
-  sta PORTA
-  lda #(RS | E)   ; Set E bit to send instruction
-  sta PORTA
-  lda #RS         ; Clear E bits
-  sta PORTA
-
-  lda #"i"
-  sta PORTB
-  lda #RS         ; Set RS; Clear RW/E bits
-  sta PORTA
-  lda #(RS | E)   ; Set E bit to send instruction
-  sta PORTA
-  lda #RS         ; Clear E bits
-  sta PORTA
-
-  lda #"!"
-  sta PORTB
-  lda #RS         ; Set RS; Clear RW/E bits
-  sta PORTA
-  lda #(RS | E)   ; Set E bit to send instruction
-  sta PORTA
-  lda #RS         ; Clear E bits
-  sta PORTA
+; load message_2 location to be printed  
+  lda #<message_2  
+  sta MESSAGE_PTR  
+  lda #>message_2  
+  sta MESSAGE_PTR + 1  
+  jsr print_message
 
 loop:
   jmp loop
 
-  .org $fffc
-  .word reset
-  .word $0000
+message_1:      .asciiz "This is ShoeBox                         "  
+message_2:      .asciiz "Running Sole OS"
+
+print_message:
+  ldy #0
+print_next_char:
+  lda (MESSAGE_PTR),y
+  beq end_print_message
+  jsr lcd_print_char
+  iny
+  jmp print_next_char
+end_print_message:
+  rts
+
+nmi:
+  rti
+  
+irq:
+  rti
+
+  .include "lcd.asm"
+
+  .org $fffa    ; Vector Sector
+  .word nmi     ; NMI Destination
+  .word reset   ; Reset Destination
+  .word irq     ; IRQ Destination
