@@ -36,7 +36,7 @@ ignore_result
   lda HEXDEC_MOD
   clc
   adc #"0"
-  jsr push_char
+  jsr MATH_append_output
   ; if value != 0, then continue dividing
   lda HEXDEC_VAL
   ora HEXDEC_VAL + 1
@@ -45,10 +45,10 @@ ignore_result
   rts
 
 ; Add the caracter in the A register to the beginning of the null-terminated string `message`
-push_char:
+MATH_append_output:
   pha ; Push first character onto the stack
   ldy #0
-char_loop:
+append_loop:
   lda HEXDEC_OUT,y ; Get char from the string and push it into x
   tax
   pla 
@@ -56,7 +56,7 @@ char_loop:
   iny
   txa
   pha           ; Push char from string onto stack
-  bne char_loop
+  bne append_loop
   pla
   sta HEXDEC_OUT,y ; Pull the null off the stack and add to the end of the string
   rts
