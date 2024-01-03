@@ -9,6 +9,9 @@ E  = %10000000  ; Enable pin bitcode
 RW = %01000000  ; Read/Write pin bitcode
 RS = %00100000  ; Register Select pin bitcode
 
+; MEMORY RESERVATIONS
+STRING_PTR = $00    ; 2-byte pointer for the location of our string to print
+
 lcd_init: 
   ; VIA init
   lda #%11111111    ; Set all pins on port B to output
@@ -69,3 +72,23 @@ lcd_print_char:
   sta PORTA
   rts
 
+lcd_print_string:
+  ldy #0
+print_next_char:
+  lda (STRING_PTR),y
+  beq end_print_string
+  jsr lcd_print_char
+  iny
+  jmp print_next_char
+end_print_string:
+  rts
+
+lcd_go_home: ; TODO: test
+  lda #%10000000
+  jsr lcd_send_instruction
+  rts
+
+lcd_go_home_second_row:
+  lda #(%10000000|$40)
+  jsr lcd_send_instruction
+  rts

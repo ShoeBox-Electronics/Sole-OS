@@ -18,7 +18,7 @@ reset:          ; Setup
   jsr lcd_init
   jsr example_soubroutine
 
-loop:           ; Main
+loop:
   jmp loop
 
 example_soubroutine:

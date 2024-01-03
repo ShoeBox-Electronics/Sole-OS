@@ -85,13 +85,13 @@ push_char:
   pha ; Push first character onto the stack
   ldy #0
 char_loop:
-  lda message,y ; get char from the string and push it into x
+  lda message,y ; Get char from the string and push it into x
   tax
   pla 
   sta message,y ; Pull char off stack and add it onto the string
   iny
   txa
-  pha           ; Pus char from string onto stack
+  pha           ; Push char from string onto stack
   bne char_loop
   
   pla
