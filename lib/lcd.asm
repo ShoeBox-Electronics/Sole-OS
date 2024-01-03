@@ -1,3 +1,6 @@
+; MEMORY RESERVATIONS
+STRING_PTR = $00    ; 2-byte pointer for the location of our string to print
+
 ; VIA Registers
 PORTB = $6000
 PORTA = $6001
@@ -8,9 +11,6 @@ DDRA = $6003
 E  = %10000000  ; Enable pin bitcode 
 RW = %01000000  ; Read/Write pin bitcode
 RS = %00100000  ; Register Select pin bitcode
-
-; MEMORY RESERVATIONS
-STRING_PTR = $00    ; 2-byte pointer for the location of our string to print
 
 LCD_init: 
   ; VIA init
@@ -82,12 +82,7 @@ print_next_char:
 end_print_string:
   rts
 
-LCD_go_home:
-  lda #%10000000
-  jsr LCD_send_instruction
-  rts
-
-LCD_go_home_second_row:
-  lda #(%10000000|$40)
+LCD_goto_address:
+  ora #%10000000
   jsr LCD_send_instruction
   rts

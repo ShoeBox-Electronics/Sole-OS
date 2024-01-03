@@ -22,8 +22,8 @@ display_splash_screen:
   sta STRING_PTR + 1    ; Save to pointer + 1  
   jsr LCD_print_string  ; Go print the string
 
-  lda #$40
-  jsr LCD_go_home_second_row
+  lda #$40              ; Second line of LCD display
+  jsr LCD_goto_address
 
   ; Load message_2 into the STRING_PTR
   lda #<message_2        ; #< Means low byte of the address of a label.  
