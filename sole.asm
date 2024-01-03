@@ -1,4 +1,4 @@
-MESSAGE_PTR = $00		; a zeropage address pointer  
+MESSAGE_PTR = $00	  ; a zeropage address pointer - 2 bytes
 
   .org $8000
 
@@ -9,23 +9,28 @@ reset:
   ; Main
   jsr lcd_init
 
+  ; Load message_1 into the MESSAGE_PTR
   lda #<message_1         ; #< means low byte of the address of a label.  
   sta MESSAGE_PTR         ; save to pointer  
   lda #>message_1         ; #> means high byte of the address of a label.  
   sta MESSAGE_PTR + 1     ; save to pointer + 1  
   jsr print_message
 
-; load message_2 location to be printed  
-  lda #<message_2  
-  sta MESSAGE_PTR  
-  lda #>message_2  
-  sta MESSAGE_PTR + 1  
+  ; Set cursor to the beginning of the second line
+  lda #(%10000000|$40)
+  jsr lcd_send_instruction
+
+  ; Load message_2 into the MESSAGE_PTR
+  lda #<message_2         ; #< means low byte of the address of a label.  
+  sta MESSAGE_PTR         ; save to pointer  
+  lda #>message_2         ; #> means high byte of the address of a label.  
+  sta MESSAGE_PTR + 1     ; save to pointer + 1  
   jsr print_message
 
 loop:
   jmp loop
 
-message_1:      .asciiz "This is ShoeBox                         "  
+message_1:      .asciiz "This is ShoeBox"  
 message_2:      .asciiz "Running Sole OS"
 
 print_message:

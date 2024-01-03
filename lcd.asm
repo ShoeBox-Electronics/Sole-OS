@@ -39,7 +39,7 @@ lcd_busy:
   lda PORTB
   and #%10000000
   bne lcd_busy
-  ; LCD Free
+lcd_free:
   lda #RW
   sta PORTA
   lda #%11111111    ; Port B is output
@@ -63,8 +63,9 @@ lcd_print_char:
   sta PORTB
   lda #RS           ; Set RS, Clear RW/E bits
   sta PORTA
-  lda #(RS | E)     ; Set E bit to send instruction
+  lda #(RS | E)     ; Set E bit with RS to send character
   sta PORTA
   lda #RS           ; Clear E bits
   sta PORTA
   rts
+
