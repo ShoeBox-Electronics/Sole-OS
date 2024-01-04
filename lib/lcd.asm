@@ -1,3 +1,5 @@
+; 16x2 LCD Display model: HD44780
+
 ; VIA/LCD bitcodes
 E  = %10000000  ; Enable pin 
 RW = %01000000  ; Read/Write pin
