@@ -4,7 +4,9 @@ Each page has 256 bytes of addresses available, so for tasks where we're really 
 
 All address spaces are in hex, and preceeded with a `$` to indicate they are hex. Block ranges are listed inline with the block comment, and also what's mainly using that block.
 
-When you define an address, you label the page above it as a comment (if it's not already listed). This helps us easily know what pages are even in use in the first place. Then you write a comment inline with the declaration saying what's using that address (usually a library or a chip), what it is, and how big it is (if it's a start pointer). I'm also forcing myself to put the name of the lib or chip using the address at the beginning of the address declaration, so it's doubly-clear what's using it. Maybe that's overkill. 
+All blocks are listed out below so we know what has been broadly allocated to what. Pages are defined only as their space is used, so it's incredibly clear what pages are in use or not, while also keeping the bloat down. 
+
+When you define an address you also write a comment inline with the declaration saying what's using that address (usually a library or a chip), what it is, and how big it is (if it's a start pointer). I'm also forcing myself to put the name of the lib or chip using the address at the beginning of the address declaration, so it's doubly-clear what's using it. Maybe that's overkill. 
 
 So an example declaration would be:  
 `LIB_USECASE = $XXXX          ; LIB  ; My use case for this thing ; Y bytes (if it's a start pointer)`  
