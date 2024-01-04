@@ -39,7 +39,7 @@ nmi:
   
 irq:
   rti
-
+  
   .include "lib/lcd.asm"
 
   .org $fffa    ; Vector Sector

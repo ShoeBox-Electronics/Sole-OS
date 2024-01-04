@@ -4,6 +4,7 @@ HEXDEC_MOD = $0202  ; 2 bytes
 HEXDEC_OUT = $0204  ; 6 bytes
 
 MATH_hexdec_convert:
+  ; Store input number in the HEXDEC_VAL address before running
   lda #0
   sta HEXDEC_OUT
 divide:
@@ -55,7 +56,7 @@ append_loop:
   sta HEXDEC_OUT,y ; Pull char off stack and add it onto the string
   iny
   txa
-  pha           ; Push char from string onto stack
+  pha              ; Push char from string onto stack
   bne append_loop
   pla
   sta HEXDEC_OUT,y ; Pull the null off the stack and add to the end of the string
