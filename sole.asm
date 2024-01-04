@@ -39,7 +39,8 @@ nmi:
   
 irq:
   rti
-  
+
+  .include "address_map.asm"
   .include "lib/lcd.asm"
 
   .org $fffa    ; Vector Sector

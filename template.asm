@@ -16,6 +16,7 @@ nmi:
 irq:
   rti
 
+  .include "address_map.asm"
   .include "lib/lcd.asm"
   .include "lib/math.asm"
 

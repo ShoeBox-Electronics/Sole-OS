@@ -1,8 +1,3 @@
-; MEMORY RESERVATIONS
-HEXDEC_VAL = $0200  ; 2 bytes
-HEXDEC_MOD = $0202  ; 2 bytes
-HEXDEC_OUT = $0204  ; 6 bytes
-
 MATH_hexdec_convert:
   ; Store input number in the HEXDEC_VAL address before running
   lda #0

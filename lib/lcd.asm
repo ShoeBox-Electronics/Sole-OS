@@ -1,23 +1,14 @@
-; MEMORY RESERVATIONS
-STRING_PTR = $00    ; 2-byte pointer for the location of our string to print
-
-; VIA Registers
-PORTB = $6000   ; Output Register B
-PORTA = $6001   ; Output Register A
-DDRB  = $6002   ; Data Direction Register for B
-DDRA  = $6003   ; Data Direction Register for A
-
-; VIA/LCD pins
-E  = %10000000  ; Enable pin bitcode 
-RW = %01000000  ; Read/Write pin bitcode
-RS = %00100000  ; Register Select pin bitcode
+; VIA/LCD bitcodes
+E  = %10000000  ; Enable pin 
+RW = %01000000  ; Read/Write pin
+RS = %00100000  ; Register Select pin
 
 LCD_init: 
   ; VIA init
   lda #%11111111    ; Set all pins on port B to output
-  sta DDRB
+  sta VIA_DDRB
   lda #%11100000    ; Set top 3 pins on port A to output
-  sta DDRA
+  sta VIA_DDRA
 
   ; LCD true init
   lda #%00111000    ; Set 8-bit mode, 2-line display, 5x8 font
@@ -32,44 +23,44 @@ LCD_init:
 LCD_wait_until_free: ; Make sure the LCD is ready to take a new command
   pha
   lda #%00000000    ; Port B is input
-  sta DDRB
+  sta VIA_DDRB
 LCD_busy:
   lda #RW
-  sta PORTA
+  sta VIA_PORTA
   lda #(RW | E)
-  sta PORTA
-  lda PORTB
+  sta VIA_PORTA
+  lda Registers
   and #%10000000
   bne LCD_busy      ; Checking the busy flag from the LCD
   lda #RW
-  sta PORTA
+  sta VIA_PORTA
   lda #%11111111    ; Port B is back to output
-  sta DDRB
+  sta VIA_DDRB
   pla
   rts
 
 LCD_send_instruction:
   ; Store instruction in the A register before running
   jsr LCD_wait_until_free
-  sta PORTB
+  sta Registers
   lda #0            ; Clear RS/RW/E bits
-  sta PORTA
+  sta VIA_PORTA
   lda #E            ; Set E bit to send instruction
-  sta PORTA
+  sta VIA_PORTA
   lda #0            ; Clear RS/RW/E bits
-  sta PORTA
+  sta VIA_PORTA
   rts
 
 LCD_print_char:
   ; Store character in the A register before running
   jsr LCD_wait_until_free
-  sta PORTB
+  sta Registers
   lda #RS           ; Set RS, Clear RW/E bits
-  sta PORTA
+  sta VIA_PORTA
   lda #(RS | E)     ; Set E bit with RS to send character
-  sta PORTA
+  sta VIA_PORTA
   lda #RS           ; Clear E bits
-  sta PORTA
+  sta VIA_PORTA
   rts
 
 LCD_print_string:         ; Print a null-terminated string from memory to the LCD
