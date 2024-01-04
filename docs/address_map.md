@@ -9,8 +9,8 @@ All blocks are listed out below so we know what has been broadly allocated to wh
 When you define an address you also write a comment inline with the declaration saying what's using that address (usually a library or a chip), what it is, and how big it is (if it's a start pointer). I'm also forcing myself to put the name of the lib or chip using the address at the beginning of the address declaration, so it's doubly-clear what's using it. Maybe that's overkill. 
 
 So an example declaration would be:  
-`LIBNAME_USECASE  = $XXXX         ; LIBNAME  ; My use case for this thing ; Y bytes (if it's a start pointer)`  
-`CHIPNAME_USECASE = $ZZZZ         ; CHIPNAME ; My use case for this thing`
+`LIBNAME_USECASE  = $XXXX ; LIBNAME  ; My use case for this address ; Y bytes (if it's a start pointer)`  
+`CHIPNAME_USECASE = $ZZZZ ; CHIPNAME ; My use case for this address`
 
 ```
 ; LCD: lib/lcd.asm
