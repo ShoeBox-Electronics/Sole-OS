@@ -11,7 +11,6 @@ LCD_init:
   sta VIA_DDRB
   lda #%11100000    ; Set top 3 pins on port A to output
   sta VIA_DDRA
-
   ; LCD true init
   lda #%00111000    ; Set 8-bit mode, 2-line display, 5x8 font
   jsr LCD_send_instruction

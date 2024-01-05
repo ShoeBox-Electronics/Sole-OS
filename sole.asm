@@ -42,6 +42,7 @@ irq:
 
   .include "address_map.asm"
   .include "lib/lcd.asm"
+  .include "lib/math.asm"
 
   .org $fffa    ; Vector Sector
   .word nmi     ; NMI Destination
