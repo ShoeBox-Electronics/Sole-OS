@@ -1,10 +1,10 @@
 Blocks are the first hex digit (16 of them)
 Pages are the first **two** hex digits (256 of them)  
-Each page has 256 bytes of addresses available, so for tasks where we're really cross-coding in the same block, we can divvy up pages to keep ourselves from overlapping. 
+Each page has 256 bytes of addresses available so for tasks where we're really cross-coding in the same block we can divvy up pages to keep ourselves from overlapping. 
 
-All address spaces are in hex, and preceeded with a `$` to indicate they are hex. Block ranges are listed inline with the block comment, and also what's mainly using that block.
+All address spaces are in hex and preceeded with a `$` to indicate they are hex. Block ranges are listed inline with the block comment and also what's mainly using that block.
 
-All blocks are listed out below so we know what has been broadly allocated to what. Pages are defined only as their space is used, so it's incredibly clear what pages are in use or not, while also keeping the bloat down. 
+All blocks are listed out below in comments so we know what has been broadly allocated to what. Pages are defined only when there's at least one decleration on the page so it's incredibly clear what pages are in use or not while also keeping the bloat down. 
 
 When you define an address you also write a comment inline with the declaration saying what's using that address (usually a library or a chip), what it is, and how big it is (if it's a start pointer). I'm also forcing myself to put the name of the lib or chip using the address at the beginning of the address declaration, so it's doubly-clear what's using it. Maybe that's overkill. 
 
