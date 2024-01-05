@@ -58,29 +58,6 @@ append_loop:
   rts
 
 MATH_fibonacci:
-  lda #0 
-  sta MATH_FIB_A
-  lda #1
-  sta MATH_FIB_B
-fib_loop:
-  lda MATH_FIB_B
-  sta MATH_HEXDEC_VAL
-  lda #0
-  sta MATH_HEXDEC_VAL + 1
-
-  jsr MATH_hexdec_convert
-
-  lda #<MATH_HEXDEC_OUT    ; #< Means low byte of the address of a label.  
-  sta LCD_STRING_PTR       ; Save to pointer  
-  lda #>MATH_HEXDEC_OUT    ; #> Means high byte of the address of a label.  
-  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
-
-  jsr LCD_print_string
-
-  dec MATH_FIB_LIMIT
-  lda MATH_FIB_LIMIT
-  beq fib_end
-
   lda MATH_FIB_B
   adc MATH_FIB_A
   sta MATH_FIB_SWAP
@@ -88,7 +65,4 @@ fib_loop:
   sta MATH_FIB_A
   lda MATH_FIB_SWAP
   sta MATH_FIB_B
-
-  jmp fib_loop
-fib_end:
   rts
