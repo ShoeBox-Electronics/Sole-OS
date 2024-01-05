@@ -1,6 +1,6 @@
 ; LCD: lib/lcd.asm
 ; MATH: lib/math.asm
-; VIA: W65C22 (chip)
+; VIA: W65C22 (chip) https://eater.net/datasheets/w65c22.pdf
 
 ; ADDRESS MAP
 
@@ -17,6 +17,9 @@ MATH_FIB_LIMIT = $0300                  ; MATH ; Fibonacci Counter Limit
 MATH_FIB_A     = $0301                  ; MATH ; Fibonacci Counter A value
 MATH_FIB_B     = $0302                  ; MATH ; Fibonacci Counter B value
 MATH_FIB_SWAP  = $0303                  ; MATH ; Fibonacci Counter Swap space
+  ; 04 Page
+TIME_MS_COUNT  = $0400                  ; TIME ; Delay in milliseconds (max 255)
+TIME_SEC_COUNT = $0401                  ; TIME ; Delay in seconds (max 255)
 
 ; 1 Block ($1000-$1fff) | RAM
 ; 2 Block ($2000-$2fff) | RAM
@@ -30,6 +33,10 @@ VIA_PORTB = $6000                       ; VIA  ; Output Register B
 VIA_PORTA = $6001                       ; VIA  ; Output Register A
 VIA_DDRB  = $6002                       ; VIA  ; Data Direction Register for B
 VIA_DDRA  = $6003                       ; VIA  ; Data Direction Register for A
+VIA_T1CL  = $6004                       ; VIA  ; Timer 1 High-Order Counter
+VIA_T1CH  = $6005                       ; VIA  ; Timer 1 Low-Order Counter
+VIA_ACR   = $600b                       ; VIA  ; Auxiliary Control Reigister
+VIA_IFR   = $600d                       ; VIA  ; Interrupt Flag Register
 
 ; 7 Block ($7000-$7fff) | Unallocated
 
