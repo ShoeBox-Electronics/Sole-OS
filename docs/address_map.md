@@ -12,6 +12,7 @@ So an example declaration would be:
 `LIBNAME_USECASE  = $XXXX ; LIBNAME  ; My use case for this address ; Y bytes (if it's a start pointer)`  
 `CHIPNAME_USECASE = $ZZZZ ; CHIPNAME ; My use case for this address`
 
+Below is an example address map, with the current one [here](https://github.com/ShoeBox-Electronics/Sole-OS/blob/main/address_map.asm): 
 ```
 ; LCD: lib/lcd.asm
 ; Math: lib/math.asm
