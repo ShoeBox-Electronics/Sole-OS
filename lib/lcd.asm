@@ -31,7 +31,7 @@ LCD_busy:
   sta VIA_PORTA
   lda #(RW | E)
   sta VIA_PORTA
-  lda Registers
+  lda VIA_PORTB
   and #%10000000
   bne LCD_busy      ; Checking the busy flag from the LCD
   lda #RW
@@ -44,7 +44,7 @@ LCD_busy:
 LCD_send_instruction:
   ; Store instruction in the A register before running
   jsr LCD_wait_until_free
-  sta Registers
+  sta VIA_PORTB
   lda #0            ; Clear RS/RW/E bits
   sta VIA_PORTA
   lda #E            ; Set E bit to send instruction
@@ -56,7 +56,7 @@ LCD_send_instruction:
 LCD_print_char:
   ; Store character in the A register before running
   jsr LCD_wait_until_free
-  sta Registers
+  sta VIA_PORTB
   lda #RS           ; Set RS, Clear RW/E bits
   sta VIA_PORTA
   lda #(RS | E)     ; Set E bit with RS to send character
@@ -66,10 +66,10 @@ LCD_print_char:
   rts
 
 LCD_print_string:         ; Print a null-terminated string from memory to the LCD
-  ; Store the string memory address in STRING_PTR before running
+  ; Store the string memory address in LCD_STRING_PTR before running
   ldy #0
 string_loop:
-  lda (STRING_PTR),y
+  lda (LCD_STRING_PTR),y
   beq end_print_string    ; If we find the null-terminator, exit
   jsr LCD_print_char
   iny

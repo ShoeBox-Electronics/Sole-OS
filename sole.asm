@@ -15,21 +15,21 @@ message_1:      .asciiz "This is ShoeBox"
 message_2:      .asciiz "Running Sole OS"
 
 display_splash_screen:
-  ; Load message_1 into the STRING_PTR
+  ; Load message_1 into the LCD_STRING_PTR
   lda #<message_1       ; #< Means low byte of the address of a label.  
-  sta STRING_PTR        ; Save to pointer  
+  sta LCD_STRING_PTR        ; Save to pointer  
   lda #>message_1       ; #> Means high byte of the address of a label.  
-  sta STRING_PTR + 1    ; Save to pointer + 1  
+  sta LCD_STRING_PTR + 1    ; Save to pointer + 1  
   jsr LCD_print_string  ; Go print the string
 
   lda #$40              ; Second line of LCD display
   jsr LCD_goto_address
 
-  ; Load message_2 into the STRING_PTR
+  ; Load message_2 into the LCD_STRING_PTR
   lda #<message_2        ; #< Means low byte of the address of a label.  
-  sta STRING_PTR         ; Save to pointer  
+  sta LCD_STRING_PTR         ; Save to pointer  
   lda #>message_2        ; #> Means high byte of the address of a label.  
-  sta STRING_PTR + 1     ; Save to pointer + 1  
+  sta LCD_STRING_PTR + 1     ; Save to pointer + 1  
   jsr LCD_print_string   ; Go print the string
 
   rts
@@ -47,3 +47,4 @@ irq:
   .word nmi     ; NMI Destination
   .word reset   ; Reset Destination
   .word irq     ; IRQ Destination
+  
