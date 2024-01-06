@@ -11,16 +11,17 @@ reset:
 loop:
   lda #0 
   sta MATH_FIB_A
+  sta MATH_FIB_A + 1
+  sta MATH_FIB_B + 1
   lda #1
   sta MATH_FIB_B
-  lda #12
+  lda #23
   sta MATH_FIB_LIMIT
 display_loop:
   jsr LCD_clear_display
-  ldx MATH_FIB_A
   jsr MATH_fibonacci
 
-  jsr display_current_nums
+  jsr convert_and_print_num
 
   lda #1
   jsr TIME_delay_s
@@ -29,26 +30,10 @@ display_loop:
   beq loop
   jmp display_loop
 
-display_current_nums:
-  txa
-  jsr convert_and_print_num
-  lda #"+"
-  jsr LCD_print_char
-  lda MATH_FIB_A
-  jsr convert_and_print_num
-  lda #"="
-  jsr LCD_print_char
-  
-  lda #$41
-  jsr LCD_goto_address
-  lda MATH_FIB_B
-  jsr convert_and_print_num
-
-  rts
-
 convert_and_print_num:
+  lda MATH_FIB_B
   sta MATH_HEXDEC_VAL
-  lda #0
+  lda MATH_FIB_B + 1
   sta MATH_HEXDEC_VAL + 1
 
   jsr MATH_hexdec_convert
