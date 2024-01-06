@@ -16,15 +16,16 @@ reset:
 loop:
   lda #0 
   sta MATH_FIB_A
+  sta MATH_FIB_A + 1
+  sta MATH_FIB_B + 1
   lda #1
   sta MATH_FIB_B
-  lda #12
+  lda #15
   sta MATH_FIB_LIMIT
 display_loop:
   jsr LCD_clear_display
   ldx MATH_FIB_A
   jsr MATH_fibonacci
-
   jsr display_current_nums
 
   lda #1
@@ -45,15 +46,15 @@ display_splash_screen:
   sta LCD_STRING_PTR + 1  ; Save to pointer + 1  
   jsr LCD_print_string    ; Go print the string
 
-  lda #$40              ; Second line of LCD display
+  lda #$40                ; Second line of LCD display
   jsr LCD_goto_address
 
   ; Load message_2 into the LCD_STRING_PTR
-  lda #<message_2        ; #< Means low byte of the address of a label.  
+  lda #<message_2            ; #< Means low byte of the address of a label.  
   sta LCD_STRING_PTR         ; Save to pointer  
-  lda #>message_2        ; #> Means high byte of the address of a label.  
+  lda #>message_2            ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1     ; Save to pointer + 1  
-  jsr LCD_print_string   ; Go print the string
+  jsr LCD_print_string       ; Go print the string
 
   rts
 
@@ -87,6 +88,7 @@ convert_and_print_num:
   sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
 
   jsr LCD_print_string
+
   rts
 
 nmi:

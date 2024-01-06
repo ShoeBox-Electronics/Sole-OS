@@ -1,6 +1,6 @@
-; LCD: lib/lcd.asm
+; LCD:  lib/lcd.asm
 ; MATH: lib/math.asm
-; VIA: W65C22 (chip) https://eater.net/datasheets/w65c22.pdf
+; VIA:  W65C22 (chip) https://eater.net/datasheets/w65c22.pdf
 
 ; ADDRESS MAP
 
@@ -14,9 +14,9 @@ MATH_HEXDEC_MOD = $0202                 ; MATH ; Hex-Dec conversion Modulus Poin
 MATH_HEXDEC_OUT = $0204                 ; MATH ; Hex-Dec conversion Output Pointer  ; 6 bytes
   ; 03 Page
 MATH_FIB_LIMIT = $0300                  ; MATH ; Fibonacci Counter Limit
-MATH_FIB_A     = $0301                  ; MATH ; Fibonacci Counter A value
-MATH_FIB_B     = $0302                  ; MATH ; Fibonacci Counter B value
-MATH_FIB_SWAP  = $0303                  ; MATH ; Fibonacci Counter Swap space
+MATH_FIB_A     = $0301                  ; MATH ; Fibonacci Counter A value    ; 2 bytes
+MATH_FIB_B     = $0303                  ; MATH ; Fibonacci Counter B value    ; 2 bytes
+MATH_FIB_SWAP  = $0305                  ; MATH ; Fibonacci Counter Swap space ; 2 bytes
   ; 04 Page
 TIME_MS_COUNT  = $0400                  ; TIME ; Delay in milliseconds (max 255)
 TIME_TS_COUNT  = $0401                  ; TIME ; Delay in tenths of seconds (max 255)

@@ -99,7 +99,7 @@ LCD_backspace:
   rts
 
 LCD_clear_display:
-  lda #$00000001    ; Clear display
+  lda #%00000001    ; Clear display
   jsr LCD_send_instruction
   lda #0
   jsr LCD_goto_address
