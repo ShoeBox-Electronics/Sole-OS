@@ -7,9 +7,9 @@ RS = %00100000  ; Register Select pin
 
 LCD_init: 
   ; VIA init
-  lda #%11111111    ; Set all pins on port B to output
+  lda #%11111111    ; Set all pins on port B to output (for LCD data)
   sta VIA_DDRB
-  lda #%11100000    ; Set top 3 pins on port A to output
+  lda #%11100000    ; Set top 3 pins on port A to output (for LCD signals)
   sta VIA_DDRA
   ; LCD true init
   lda #%00111000    ; Set 8-bit mode, 2-line display, 5x8 font

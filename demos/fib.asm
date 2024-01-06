@@ -8,18 +8,28 @@ reset:
   jsr LCD_init
   jsr TIME_init
 
-fibonacci:
+loop:
   lda #0 
   sta MATH_FIB_A
   lda #1
   sta MATH_FIB_B
-  lda #10
+  lda #12
   sta MATH_FIB_LIMIT
-fib_loop:
+display_loop:
   jsr LCD_clear_display
   ldx MATH_FIB_A
   jsr MATH_fibonacci
 
+  jsr display_current_nums
+
+  lda #10
+  jsr TIME_delay_ts
+  dec MATH_FIB_LIMIT
+  lda MATH_FIB_LIMIT
+  beq loop
+  jmp display_loop
+
+display_current_nums:
   txa
   jsr print_num
   lda #"+"
@@ -28,17 +38,13 @@ fib_loop:
   jsr print_num
   lda #"="
   jsr LCD_print_char
+  
   lda #$41
   jsr LCD_goto_address
   lda MATH_FIB_B
   jsr print_num
-
-  lda #1
-  jsr TIME_delay_s
-  dec MATH_FIB_LIMIT
-  lda MATH_FIB_LIMIT
-  beq fibonacci
-  jmp fib_loop
+  
+  rts
 
 print_num:
   sta MATH_HEXDEC_VAL

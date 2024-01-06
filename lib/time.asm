@@ -3,25 +3,19 @@ TIME_init:
   sta VIA_ACR
   rts
 
-TIME_delay_s:
-  sta TIME_SEC_COUNT
-delay_s_loop:
-  lda #250
+TIME_delay_ts:      ; Delay for 0.1s times the value in the A register (max 25.5s)
+  sta TIME_TS_COUNT
+delay_ts_loop:      ; Delay for 0.1s
+  lda #100
   jsr TIME_delay_ms
-  lda #250
-  jsr TIME_delay_ms
-  lda #250
-  jsr TIME_delay_ms
-  lda #250
-  jsr TIME_delay_ms
-  lda TIME_SEC_COUNT
-  beq delay_s_end
-  dec TIME_SEC_COUNT
-  jmp delay_s_loop
-delay_s_end:
+  lda TIME_TS_COUNT
+  beq delay_ts_end
+  dec TIME_TS_COUNT
+  jmp delay_ts_loop
+delay_ts_end:
   rts
 
-TIME_delay_ms:
+TIME_delay_ms:      ; Delay for 1ms times the value in the A register (max 255ms)
   sta TIME_MS_COUNT ; Load the ms to wait
 delay_ms_loop:      
   lda #$e8
