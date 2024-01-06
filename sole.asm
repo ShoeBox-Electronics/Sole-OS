@@ -17,16 +17,43 @@ loop:
   lda #0 
   sta MATH_FIB_A
   sta MATH_FIB_A + 1
+  sta MATH_FIB_OLD
+  sta MATH_FIB_OLD + 1
   sta MATH_FIB_B + 1
   lda #1
   sta MATH_FIB_B
-  lda #15
+  lda #23
   sta MATH_FIB_LIMIT
 display_loop:
   jsr LCD_clear_display
-  ldx MATH_FIB_A
   jsr MATH_fibonacci
-  jsr display_current_nums
+
+  lda MATH_FIB_OLD
+  sta MATH_HEXDEC_VAL
+  lda MATH_FIB_OLD + 1
+  sta MATH_HEXDEC_VAL + 1
+  jsr convert_and_print_num
+
+  lda #"+"
+  jsr LCD_print_char
+
+  lda MATH_FIB_A
+  sta MATH_HEXDEC_VAL
+  lda MATH_FIB_A + 1
+  sta MATH_HEXDEC_VAL + 1
+  jsr convert_and_print_num
+
+  lda #"="
+  jsr LCD_print_char
+
+  lda #$41
+  jsr LCD_goto_address
+
+  lda MATH_FIB_B
+  sta MATH_HEXDEC_VAL
+  lda MATH_FIB_B + 1
+  sta MATH_HEXDEC_VAL + 1
+  jsr convert_and_print_num
 
   lda #1
   jsr TIME_delay_s
@@ -37,6 +64,17 @@ display_loop:
 
 message_1:      .asciiz "This is ShoeBox"  
 message_2:      .asciiz "Running Sole OS"
+
+convert_and_print_num:
+  jsr MATH_hexdec_convert
+
+  lda #<MATH_HEXDEC_OUT    ; #< Means low byte of the address of a label.  
+  sta LCD_STRING_PTR       ; Save to pointer  
+  lda #>MATH_HEXDEC_OUT    ; #> Means high byte of the address of a label.  
+  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
+
+  jsr LCD_print_string
+  rts
 
 display_splash_screen:
   ; Load message_1 into the LCD_STRING_PTR
@@ -55,39 +93,6 @@ display_splash_screen:
   lda #>message_2            ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1     ; Save to pointer + 1  
   jsr LCD_print_string       ; Go print the string
-
-  rts
-
-display_current_nums:
-  txa
-  jsr convert_and_print_num
-  lda #"+"
-  jsr LCD_print_char
-  lda MATH_FIB_A
-  jsr convert_and_print_num
-  lda #"="
-  jsr LCD_print_char
-  
-  lda #$41
-  jsr LCD_goto_address
-  lda MATH_FIB_B
-  jsr convert_and_print_num
-
-  rts
-
-convert_and_print_num:
-  sta MATH_HEXDEC_VAL
-  lda #0
-  sta MATH_HEXDEC_VAL + 1
-
-  jsr MATH_hexdec_convert
-
-  lda #<MATH_HEXDEC_OUT    ; #< Means low byte of the address of a label.  
-  sta LCD_STRING_PTR       ; Save to pointer  
-  lda #>MATH_HEXDEC_OUT    ; #> Means high byte of the address of a label.  
-  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
-
-  jsr LCD_print_string
 
   rts
 

@@ -16,7 +16,7 @@ MATH_HEXDEC_OUT = $0204                 ; MATH ; Hex-Dec conversion Output Point
 MATH_FIB_LIMIT = $0300                  ; MATH ; Fibonacci Counter Limit
 MATH_FIB_A     = $0301                  ; MATH ; Fibonacci Counter A value    ; 2 bytes
 MATH_FIB_B     = $0303                  ; MATH ; Fibonacci Counter B value    ; 2 bytes
-MATH_FIB_SWAP  = $0305                  ; MATH ; Fibonacci Counter Swap space ; 2 bytes
+MATH_FIB_OLD  = $0305                  ; MATH ; Fibonacci Counter Swap space ; 2 bytes
   ; 04 Page
 TIME_MS_COUNT  = $0400                  ; TIME ; Delay in milliseconds (max 255)
 TIME_TS_COUNT  = $0401                  ; TIME ; Delay in tenths of seconds (max 255)

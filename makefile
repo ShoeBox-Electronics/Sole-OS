@@ -1,10 +1,12 @@
+FILE_PATH = ./sole
+
 .PHONY: build
 build:
 	docker build -t sole .
 
-.PHONY: write
-write: build ## runs inline command
-	docker run -v/c/Users/joeps sole /opt/minipro/minipro -p AT28C256 -w sole.bin
+# .PHONY: write
+# write: build ## runs inline command
+# 	docker run -v/c/Users/joeps sole /opt/minipro/minipro -p AT28C256 -w sole.bin
 
 .PHONY: sh ## opens a shell to the shoebox docker container
 sh: 
@@ -24,15 +26,16 @@ vasmPath = /c/Users/joeps/bin/vasm
 
 all: sole
 
+.PHONY: resole
 resole:
 	rm -f ./sole.bin
 	make sole
+
 sole: sole.bin
 sole.bin: sole.asm
-	$(vasmPath)/vasm6502_oldstyle -dotdir sole.asm -Fbin -o sole.bin 
+	/c/Users/joeps/bin/vasm/vasm6502_oldstyle -dotdir ${FILE_PATH}.asm -Fbin -o ${FILE_PATH}.bin
 
-dump: sole.bin
-	hexdump sole.bin
-
-.PHONY: sole
 .PHONY: dump
+dump: sole.bin
+	hexdump sole.bin 
+

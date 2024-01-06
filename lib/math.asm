@@ -58,23 +58,22 @@ append_loop:
   rts
 
 MATH_fibonacci:
-  clc
-  
   lda MATH_FIB_A
-  adc MATH_FIB_B
-  sta MATH_FIB_SWAP
+  sta MATH_FIB_OLD
   lda MATH_FIB_A + 1
-  adc MATH_FIB_B + 1
-  sta MATH_FIB_SWAP + 1
-
+  sta MATH_FIB_OLD + 1
+  
   lda MATH_FIB_B
   sta MATH_FIB_A
   lda MATH_FIB_B + 1
   sta MATH_FIB_A + 1
 
-  lda MATH_FIB_SWAP
+  clc
+  lda MATH_FIB_B
+  adc MATH_FIB_OLD
   sta MATH_FIB_B
-  lda MATH_FIB_SWAP + 1
+  lda MATH_FIB_B + 1
+  adc MATH_FIB_OLD + 1
   sta MATH_FIB_B + 1
 
   rts
