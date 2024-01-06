@@ -22,8 +22,8 @@ display_loop:
 
   jsr display_current_nums
 
-  lda #10
-  jsr TIME_delay_ts
+  lda #1
+  jsr TIME_delay_s
   dec MATH_FIB_LIMIT
   lda MATH_FIB_LIMIT
   beq loop
@@ -31,22 +31,22 @@ display_loop:
 
 display_current_nums:
   txa
-  jsr print_num
+  jsr convert_and_print_num
   lda #"+"
   jsr LCD_print_char
   lda MATH_FIB_A
-  jsr print_num
+  jsr convert_and_print_num
   lda #"="
   jsr LCD_print_char
   
   lda #$41
   jsr LCD_goto_address
   lda MATH_FIB_B
-  jsr print_num
-  
+  jsr convert_and_print_num
+
   rts
 
-print_num:
+convert_and_print_num:
   sta MATH_HEXDEC_VAL
   lda #0
   sta MATH_HEXDEC_VAL + 1

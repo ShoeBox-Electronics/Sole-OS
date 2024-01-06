@@ -3,6 +3,18 @@ TIME_init:
   sta VIA_ACR
   rts
 
+TIME_delay_s:       ; Delay for 1s times the value in the A register (max 25.5s)
+  sta TIME_S_COUNT
+delay_s_loop:       ; Delay for 1s
+  lda #10
+  jsr TIME_delay_ts
+  lda TIME_S_COUNT
+  beq delay_s_end
+  dec TIME_S_COUNT
+  jmp delay_s_loop
+delay_s_end:
+  rts
+
 TIME_delay_ts:      ; Delay for 0.1s times the value in the A register (max 25.5s)
   sta TIME_TS_COUNT
 delay_ts_loop:      ; Delay for 0.1s

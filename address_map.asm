@@ -19,7 +19,8 @@ MATH_FIB_B     = $0302                  ; MATH ; Fibonacci Counter B value
 MATH_FIB_SWAP  = $0303                  ; MATH ; Fibonacci Counter Swap space
   ; 04 Page
 TIME_MS_COUNT  = $0400                  ; TIME ; Delay in milliseconds (max 255)
-TIME_TS_COUNT  = $0401                  ; TIME ; Delay in seconds (max 255)
+TIME_TS_COUNT  = $0401                  ; TIME ; Delay in tenths of seconds (max 255)
+TIME_S_COUNT   = $0402                  ; TIME ; Delay in seconds (max 255)
 
 ; 1 Block ($1000-$1fff) | RAM
 ; 2 Block ($2000-$2fff) | RAM
