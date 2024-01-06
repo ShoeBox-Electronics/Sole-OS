@@ -3,7 +3,7 @@ TIME_init:
   sta VIA_ACR
   rts
 
-TIME_delay_s:       ; Delay for 1s times the value in the A register (max 25.5s)
+TIME_delay_s:       ; Delay for 1s times the value in the A register (max 255s, 4.25m)
   sta TIME_S_COUNT
 delay_s_loop:       ; Delay for 1s
   lda #10
