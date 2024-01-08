@@ -1,6 +1,7 @@
 TIME_init:
   lda #0
   sta VIA_ACR
+  ; return
   rts
 
 TIME_delay_s:       ; Delay for 1s times the value in the A register (max 255s, 4.25m)
