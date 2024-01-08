@@ -36,20 +36,20 @@ h: help
 
 .PHONY: install
 ifeq ($(OS),Linux)
-install: ## install all dependencies (only available on Linux)
+ifneq ($(wildcard /etc/debian_version),)
+install: ## install all dependencies (only available on Ubuntu)
 # Minipro
 	apt-get install build-essential pkg-config git libusb-1.0-0-dev
-	git clone https://gitlab.com/DavidGriffith/minipro.git
-	cd minipro
-	make
-	make install
-	cd ..
-	rm -rf minipro
+	git clone https://gitlab.com/DavidGriffith/minipro.git && cd minipro && make && make install && cd .. && rm -rf minipro
 # CC65
-  apt-get install cc65
+	apt-get install cc65
 else
 install:
-	@echo only available on Linux
+	@echo only available on Ubuntu
+endif
+else
+install:
+	@echo only available on Ubuntu
 endif
 
 .PHONY: assemble
