@@ -5,14 +5,13 @@ ifeq ($(OS),Windows_NT)
 	OS :=  Windows
 else
 	UNAME_S := $(shell uname -s)
-	ifeq ($(UNAME_S),Linux)
+	ifeq ($(UNAME_S),Darwin)
+		OS := MacOS
+	else ifeq ($(UNAME_S),Linux)
 		OS := Linux
 		ifneq ($(wildcard /etc/debian_version),)	
 		  OS := Debian_Based
 		endif
-	endif
-	ifeq ($(UNAME_S),Darwin)
-		OS := MacOS
 	endif
 endif
 
