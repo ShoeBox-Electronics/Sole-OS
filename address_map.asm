@@ -45,17 +45,4 @@ VIA_IFR   = $600d                       ; VIA  ; Interrupt Flag Register
 
 ; 7 Block ($7000-$7fff) | Unallocated
 
-; 8 Block ($8000-$8fff) | ROM
-  ; 80 Page
-    ; The reset vector points here, so our "OS" starts being written at $8000 and continues from here
-
-; 9 Block ($9000-$9fff) | ROM
-; A Block ($a000-$afff) | ROM
-; B Block ($b000-$bfff) | ROM
-; C Block ($c000-$cfff) | ROM
-; D Block ($d000-$dfff) | ROM
-; E Block ($e000-$efff) | ROM
-
-; F Block ($f000-$ffff) | ROM
-  ; FF Page
-    ; $fffa-$ffff is reserved for destination vectors nmi, reset, and irq respectively (2-bytes each)
+; 8-f Block ($8000-$8fff) | ROM (allocated by compiler and linker)
