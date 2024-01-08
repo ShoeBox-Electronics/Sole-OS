@@ -1,7 +1,11 @@
 FILEPATH = ./sole
 
 .PHONY: all
-all: assemble link dump write
+ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
+  all: assemble link dump
+else
+  all: assemble link dump write
+endif
 
 # Aliases
 .PHONY: a
@@ -25,7 +29,7 @@ link: ${FILEPATH}.cfg ${FILEPATH}.o
 
 .PHONY:  write
 write: ${FILEPATH}.bin ## write a binary to the EEPROM using FILEPATH=./path/to/file (sole by default)
-ifeq ($(shell uname),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
+ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
 	@echo Can\\'t write to an EEPROM from a CLI on a Windows machine
 	@echo \\(get in touch with me if you know how\\)
 else
