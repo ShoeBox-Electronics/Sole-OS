@@ -42,13 +42,13 @@ convert_and_print_num:
 
 init_fib:
   lda #0 
-  sta MATH_FIB_A
-  sta MATH_FIB_A + 1
-  sta MATH_FIB_OLD
-  sta MATH_FIB_OLD + 1
-  sta MATH_FIB_B + 1
+  sta MATH_INPUT_1
+  sta MATH_INPUT_1 + 1
+  sta MATH_INPUT_2
+  sta MATH_INPUT_2 + 1
+  sta MATH_OUTPUT + 1
   lda #1
-  sta MATH_FIB_B
+  sta MATH_OUTPUT
   lda #23
   sta MATH_FIB_LIMIT
 
@@ -56,18 +56,18 @@ init_fib:
 
 show_results:
   jsr LCD_clear_display
-  lda MATH_FIB_OLD
+  lda MATH_INPUT_1
   sta MATH_HEXDEC_VAL
-  lda MATH_FIB_OLD + 1
+  lda MATH_INPUT_1 + 1
   sta MATH_HEXDEC_VAL + 1
   jsr convert_and_print_num
 
   lda #'+'
   jsr LCD_print_char
 
-  lda MATH_FIB_A
+  lda MATH_INPUT_2
   sta MATH_HEXDEC_VAL
-  lda MATH_FIB_A + 1
+  lda MATH_INPUT_2 + 1
   sta MATH_HEXDEC_VAL + 1
   jsr convert_and_print_num
 
@@ -77,9 +77,9 @@ show_results:
   lda #$41 ; Second row, second column
   jsr LCD_goto_address
 
-  lda MATH_FIB_B
+  lda MATH_OUTPUT
   sta MATH_HEXDEC_VAL
-  lda MATH_FIB_B + 1
+  lda MATH_OUTPUT + 1
   sta MATH_HEXDEC_VAL + 1
   jsr convert_and_print_num
 

@@ -58,22 +58,48 @@ append_loop:
   rts
 
 MATH_fibonacci:
-  lda MATH_FIB_A
-  sta MATH_FIB_OLD
-  lda MATH_FIB_A + 1
-  sta MATH_FIB_OLD + 1
+  lda MATH_INPUT_2
+  sta MATH_INPUT_1
+  lda MATH_INPUT_2 + 1
+  sta MATH_INPUT_1 + 1
   
-  lda MATH_FIB_B
-  sta MATH_FIB_A
-  lda MATH_FIB_B + 1
-  sta MATH_FIB_A + 1
+  lda MATH_OUTPUT
+  sta MATH_INPUT_2
+  lda MATH_OUTPUT + 1
+  sta MATH_INPUT_2 + 1
 
-  clc
-  lda MATH_FIB_B
-  adc MATH_FIB_OLD
-  sta MATH_FIB_B
-  lda MATH_FIB_B + 1
-  adc MATH_FIB_OLD + 1
-  sta MATH_FIB_B + 1
+  jsr MATH_add
 
   rts
+
+MATH_add:
+  clc
+  
+  lda MATH_INPUT_1
+  adc MATH_INPUT_2
+  sta MATH_OUTPUT
+
+  lda MATH_INPUT_1 + 1
+  adc MATH_INPUT_2 + 1
+  sta MATH_OUTPUT + 1
+
+  lda #0
+  adc #0
+  sta MATH_OUTPUT + 2
+
+  rts
+MATH_sub:
+  sec
+  lda MATH_INPUT_1
+  sbc MATH_INPUT_2
+  sta MATH_OUTPUT
+
+  lda MATH_INPUT_1 + 1
+  sbc MATH_INPUT_2 + 1
+  sta MATH_OUTPUT + 1
+
+  lda #0
+  sbc #0
+  sta MATH_OUTPUT + 2
+  clc
+  rts 

@@ -12,6 +12,9 @@ LCD_STRING_PTR = $00                    ; LCD  ; 2 bytes (bust be zero-page)
 MATH_HEXDEC_VAL = $0200                 ; MATH ; Hex-Dec conversion Value Pointer   ; 2 bytes
 MATH_HEXDEC_MOD = $0202                 ; MATH ; Hex-Dec conversion Modulus Pointer ; 2 bytes
 MATH_HEXDEC_OUT = $0204                 ; MATH ; Hex-Dec conversion Output Pointer  ; 6 bytes
+MATH_INPUT_1    = $2010                 ; MATH ; General Math Input 1               ; 2 bytes
+MATH_INPUT_2    = $2012                 ; MATH ; General Math Input 2               ; 2 bytes
+MATH_OUTPUT     = $2014                 ; MATH ; General Math Output                ; 3 bytes
   ; 03 Page
 MATH_FIB_LIMIT = $0300                  ; MATH ; Fibonacci Counter Limit
 MATH_FIB_A     = $0301                  ; MATH ; Fibonacci Counter A value    ; 2 bytes
