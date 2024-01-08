@@ -13,6 +13,7 @@ delay_s_loop:       ; Delay for 1s
   dec TIME_S_COUNT
   jmp delay_s_loop
 delay_s_end:
+  ; return
   rts
 
 TIME_delay_ts:      ; Delay for 0.1s times the value in the A register (max 25.5s)
@@ -25,6 +26,7 @@ delay_ts_loop:      ; Delay for 0.1s
   dec TIME_TS_COUNT
   jmp delay_ts_loop
 delay_ts_end:
+  ; return
   rts
 
 TIME_delay_ms:      ; Delay for 1ms times the value in the A register (max 255ms)
@@ -43,4 +45,5 @@ wait_for_flag:      ; Wait until the VIA tells us we waited the right number of 
   lda VIA_T1CL
   jmp delay_ms_loop
 delay_ms_end:
+  ; return
   rts
