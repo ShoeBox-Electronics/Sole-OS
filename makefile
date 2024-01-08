@@ -27,7 +27,7 @@ ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
 	@echo Can\\'t write to an EEPROM from a CLI on a Windows machine
 	@echo \\(get in touch with me if you know how\\)
 else
-	minipro -p AT28C256 - sole.bin
+	minipro -p AT28C256 -w sole.bin
 endif
 
 # .PHONY: build
