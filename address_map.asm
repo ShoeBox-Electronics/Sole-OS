@@ -1,9 +1,9 @@
-; MATH: lib/math.asm
-; LCD:  lib/lcd.asm (HD44780)
-; VIA:  W65C22 (chip) https://eater.net/datasheets/w65c22.pdf
+; COMPONENTS AND LIBRARIES
+; MATH: General Mathematics
+; LCD:  LCD Screen: HD44780 (https://www.sparkfun.com/datasheets/LCD/HD44780.pdf)
+; VIA:  Versatile Interface Chip: W65C22 (https://eater.net/datasheets/w65c22.pdf)
 
 ; ADDRESS MAP
-
 ; 0 Block ($0000-$0fff) | RAM
   ; 00 Page (Special uses, use sparingly)
 LCD_STRING_PTR = $00                    ; LCD  ; 2 bytes (bust be zero-page)

@@ -1,4 +1,4 @@
-; 16x2 LCD Display model: HD44780
+; LCD:  LCD Screen: HD44780 (https://www.sparkfun.com/datasheets/LCD/HD44780.pdf)
 
 ; VIA/LCD bitcodes
 E  = %10000000  ; Enable pin 
