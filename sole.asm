@@ -1,4 +1,9 @@
-  .org $8000
+  .setcpu "65C02"
+  .segment "SOLE"
+  .include "address_map.asm"
+  .include "lib/lcd.asm"
+  .include "lib/math.asm"
+  .include "lib/time.asm"
 
 reset:
   ; Init Stack
@@ -34,7 +39,7 @@ display_loop:
   sta MATH_HEXDEC_VAL + 1
   jsr convert_and_print_num
 
-  lda #"+"
+  lda #$2b ; "+"
   jsr LCD_print_char
 
   lda MATH_FIB_A
@@ -43,7 +48,7 @@ display_loop:
   sta MATH_HEXDEC_VAL + 1
   jsr convert_and_print_num
 
-  lda #"="
+  lda #$3d ; "="
   jsr LCD_print_char
 
   lda #$41
@@ -102,12 +107,8 @@ nmi:
 irq:
   rti
 
-  .include "address_map.asm"
-  .include "lib/lcd.asm"
-  .include "lib/math.asm"
-  .include "lib/time.asm"
+  .segment "RESETVEC"
 
-  .org $fffa    ; Vector Sector
   .word nmi     ; NMI Destination
   .word reset   ; Reset Destination
   .word irq     ; IRQ Destination

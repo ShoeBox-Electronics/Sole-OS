@@ -94,7 +94,7 @@ LCD_cursor_right:
 
 LCD_backspace:
   jsr LCD_cursor_left
-  lda #" "
+  lda #$20 ; " "
   jsr LCD_print_char
   rts
 

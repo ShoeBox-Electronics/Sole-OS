@@ -1,29 +1,30 @@
 FILEPATH = ./sole
 
-.PHONY: sole
-sole: sole.bin ## assemble sole.bin
-sole.bin: sole.asm assemble
+.PHONY: all
+all: assemble link dump write
 
-.PHONY: resole
-resole: reassemble ## delete and reassemble sole.bin
-
-.PHONY: remove
-remove:
-	rm -f ${FILEPATH}.bin
+# Aliases
+.PHONY: a
+.PHONY: l
+.PHONY: w
+.PHONY: d
+.PHONY: h
+a: assemble
+l: link
+w: write
+d: dump
+h: help
 
 .PHONY: assemble
-assemble: ## assemble a specific file using FILEPATH=./path/to/file
-	vasm6502_oldstyle -dotdir ${FILEPATH}.asm -Fbin -o ${FILEPATH}.bin
+assemble: ${FILEPATH}.asm ## assemble a file using FILEPATH=./path/to/file (sole by default)
+	ca65 ${FILEPATH}.asm
 
-.PHONY: reassemble
-reassemble: remove assemble ## delete and reassemble a specific file using FILEPATH=./path/to/file
+.PHONY: link
+link: ${FILEPATH}.cfg ${FILEPATH}.o
+	ld65 -C ${FILEPATH}.cfg -o ${FILEPATH}.bin ${FILEPATH}.o
 
-.PHONY: dump
-dump: sole.bin ## print out a hexdump of sole.bin
-	hexdump sole.bin 
-
-.PHONY: write
-write: ## writes a specific binary to the EEPROM using FILEPATH=./path/to/file
+.PHONY:  write
+write: ${FILEPATH}.bin ## write a binary to the EEPROM using FILEPATH=./path/to/file (sole by default)
 ifeq ($(shell uname),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
 	@echo Can\\'t write to an EEPROM from a CLI on a Windows machine
 	@echo \\(get in touch with me if you know how\\)
@@ -31,8 +32,9 @@ else
 	minipro -p AT28C256 -w ${FILEPATH}.bin
 endif
 
-.PHONY: cobble
-cobble: write ## write sole.bin to the EEPROM
+.PHONY: dump
+dump: ${FILEPATH}.bin ## view a file's hex contents using FILEPATH=./path/to/file (sole by default)
+	hexdump -C ${FILEPATH}.bin
 
 .PHONY: help
 help: ## display this help screen

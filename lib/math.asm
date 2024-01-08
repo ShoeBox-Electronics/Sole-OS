@@ -24,14 +24,14 @@ div_loop:
   bcc ignore_result ; branching if dividend < divisor
   sty MATH_HEXDEC_MOD
   sta MATH_HEXDEC_MOD+1
-ignore_result
+ignore_result:
   dex 
   bne div_loop
   rol MATH_HEXDEC_VAL ; shift in the last bit of the quotient
   rol MATH_HEXDEC_VAL + 1
   lda MATH_HEXDEC_MOD
   clc
-  adc #"0"
+  adc #$30 ; "0"
   jsr MATH_append_output
   ; if value != 0, then continue dividing
   lda MATH_HEXDEC_VAL
