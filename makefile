@@ -37,17 +37,26 @@ d: dump
 w: write
 h: help
 
-.PHONY: install
 ifeq ($(OS),Debian_Based)
-install: ## install all dependencies (only available on Debian-based systems)
+.PHONY: install
+install: ## install all dependencies (Mac: assumes you have homebrew installed) (Windows: not availbable)
 # minipro
-	apt-get install build-essential pkg-config git libusb-1.0-0-dev
+	apt-get install build-essential pkg-config libusb-1.0-0-dev
 	git clone https://gitlab.com/DavidGriffith/minipro.git && cd minipro && make && make install && cd .. && rm -rf minipro
 # CC65
 	apt-get install cc65
+endif
+
+ifeq ($(OS),MacOS)
+install:
+	brew install pkg-config	
+	brew install minipro
+	brew install cc65
+	brew install libusb
+
 else
 install:
-	@echo only available on Debian-based systems
+	@echo only available on Mac and Debian-based systems
 endif
 
 .PHONY: assemble
