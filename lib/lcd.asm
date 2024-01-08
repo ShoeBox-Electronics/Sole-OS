@@ -22,13 +22,14 @@ LCD_init:
   lda #%00000110    ; Increment and shift cursor, don't shift display
   jsr LCD_send_instruction
   jsr LCD_clear_display
+  ; return
   rts
 
 LCD_wait_until_free: ; Make sure the LCD is ready to take a new command
   pha
   lda #%00000000    ; Port B is input
   sta VIA_DDRB
-LCD_busy:
+LCD_busy: ; wait until the LCD can take another command
   lda #RW
   sta VIA_PORTA
   lda #(RW | E)
@@ -41,6 +42,7 @@ LCD_busy:
   lda #%11111111    ; Port B is back to output
   sta VIA_DDRB
   pla
+  ; return
   rts
 
 LCD_send_instruction:
@@ -53,6 +55,7 @@ LCD_send_instruction:
   sta VIA_PORTA
   lda #0            ; Clear RS/RW/E bits
   sta VIA_PORTA
+  ; return
   rts
 
 LCD_print_char:
@@ -65,6 +68,7 @@ LCD_print_char:
   sta VIA_PORTA
   lda #RS           ; Clear E bits
   sta VIA_PORTA
+  ; return
   rts
 
 LCD_print_string:         ; Print a null-terminated string from memory to the LCD
@@ -77,28 +81,33 @@ string_loop:
   iny
   jmp string_loop
 end_print_string:
+  ; return
   rts
 
 LCD_goto_address:
   ; Store destination address in the A register before running
   ora #%10000000    ; OR the "goto address" command with the address we want to go to
   jsr LCD_send_instruction
+  ; return
   rts
 
 LCD_cursor_left:
   lda #%00010000
   jsr LCD_send_instruction
+  ; return
   rts
 
 LCD_cursor_right:
   lda #%00010100
   jsr LCD_send_instruction
+  ; return
   rts
 
 LCD_backspace:
   jsr LCD_cursor_left
   lda #' '
   jsr LCD_print_char
+  ; return
   rts
 
 LCD_clear_display:
@@ -106,6 +115,7 @@ LCD_clear_display:
   jsr LCD_send_instruction
   lda #0
   jsr LCD_goto_address
+  ; return
   rts
 
 LCD_display_splash_screen:
@@ -115,15 +125,14 @@ LCD_display_splash_screen:
   lda #>SPLASH_1          ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1  ; Save to pointer + 1  
   jsr LCD_print_string    ; Go print the string
-
-  lda #$40                ; Second line of LCD display
+  ; Go to second line of LCD display
+  lda #$40                
   jsr LCD_goto_address
-
   ; Load message_2 into the LCD_STRING_PTR
   lda #<SPLASH_2             ; #< Means low byte of the address of a label.  
   sta LCD_STRING_PTR         ; Save to pointer  
   lda #>SPLASH_2             ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1     ; Save to pointer + 1  
   jsr LCD_print_string       ; Go print the string
-
+  ; return
   rts
