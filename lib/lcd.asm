@@ -5,6 +5,9 @@ E  = %10000000  ; Enable pin
 RW = %01000000  ; Read/Write pin
 RS = %00100000  ; Register Select pin
 
+SPLASH_1:       .asciiz "This is ShoeBox"  
+SPLASH_2:       .asciiz "Running Sole OS"
+
 LCD_init: 
   ; VIA init
   lda #%11111111    ; Set all pins on port B to output (for LCD data)
@@ -94,7 +97,7 @@ LCD_cursor_right:
 
 LCD_backspace:
   jsr LCD_cursor_left
-  lda #$20 ; " "
+  lda #' '
   jsr LCD_print_char
   rts
 
@@ -103,4 +106,24 @@ LCD_clear_display:
   jsr LCD_send_instruction
   lda #0
   jsr LCD_goto_address
+  rts
+
+LCD_display_splash_screen:
+  ; Load message_1 into the LCD_STRING_PTR
+  lda #<SPLASH_1          ; #< Means low byte of the address of a label.  
+  sta LCD_STRING_PTR      ; Save to pointer  
+  lda #>SPLASH_1          ; #> Means high byte of the address of a label.  
+  sta LCD_STRING_PTR + 1  ; Save to pointer + 1  
+  jsr LCD_print_string    ; Go print the string
+
+  lda #$40                ; Second line of LCD display
+  jsr LCD_goto_address
+
+  ; Load message_2 into the LCD_STRING_PTR
+  lda #<SPLASH_2             ; #< Means low byte of the address of a label.  
+  sta LCD_STRING_PTR         ; Save to pointer  
+  lda #>SPLASH_2             ; #> Means high byte of the address of a label.  
+  sta LCD_STRING_PTR + 1     ; Save to pointer + 1  
+  jsr LCD_print_string       ; Go print the string
+
   rts

@@ -31,7 +31,7 @@ ignore_result:
   rol MATH_HEXDEC_VAL + 1
   lda MATH_HEXDEC_MOD
   clc
-  adc #$30 ; "0"
+  adc #'0'
   jsr MATH_append_output
   ; if value != 0, then continue dividing
   lda MATH_HEXDEC_VAL
