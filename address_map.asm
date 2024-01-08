@@ -1,5 +1,5 @@
-; LCD:  lib/lcd.asm
 ; MATH: lib/math.asm
+; LCD:  lib/lcd.asm (HD44780)
 ; VIA:  W65C22 (chip) https://eater.net/datasheets/w65c22.pdf
 
 ; ADDRESS MAP
@@ -14,16 +14,17 @@ MATH_HEXDEC_MOD = $0202                 ; MATH ; Hex-Dec conversion Modulus Poin
 MATH_HEXDEC_OUT = $0204                 ; MATH ; Hex-Dec conversion Output Pointer  ; 6 bytes
 MATH_INPUT_1    = $2010                 ; MATH ; General Math Input 1               ; 2 bytes
 MATH_INPUT_2    = $2012                 ; MATH ; General Math Input 2               ; 2 bytes
-MATH_OUTPUT     = $2014                 ; MATH ; General Math Output                ; 3 bytes
+MATH_MISC       = $2014                 ; MATH ; General Math Swap                  ; 2 bytes
+MATH_OUTPUT     = $2016                 ; MATH ; General Math Output                ; 3 bytes
   ; 03 Page
-MATH_FIB_LIMIT = $0300                  ; MATH ; Fibonacci Counter Limit
-MATH_FIB_A     = $0301                  ; MATH ; Fibonacci Counter A value    ; 2 bytes
-MATH_FIB_B     = $0303                  ; MATH ; Fibonacci Counter B value    ; 2 bytes
-MATH_FIB_OLD   = $0305                  ; MATH ; Fibonacci Counter Swap space ; 2 bytes
+MATH_FIB_LIMIT = $0300                  ; MATH ; Fibonacci Counter Limit            ; 1 byte
+MATH_FIB_A     = $0301                  ; MATH ; Fibonacci Counter A value          ; 2 bytes
+MATH_FIB_B     = $0303                  ; MATH ; Fibonacci Counter B value          ; 2 bytes
+MATH_FIB_OLD   = $0305                  ; MATH ; Fibonacci Counter Swap space       ; 2 bytes
   ; 04 Page
-TIME_MS_COUNT  = $0400                  ; TIME ; Delay in milliseconds (max 255)
-TIME_TS_COUNT  = $0401                  ; TIME ; Delay in tenths of seconds (max 255)
-TIME_S_COUNT   = $0402                  ; TIME ; Delay in seconds (max 255)
+TIME_MS_COUNT  = $0400                  ; TIME ; Delay in milliseconds              ; 1 byte
+TIME_TS_COUNT  = $0401                  ; TIME ; Delay in tenths of seconds         ; 1 byte
+TIME_S_COUNT   = $0402                  ; TIME ; Delay in seconds                   ; 1 byte
 
 ; 1 Block ($1000-$1fff) | RAM
 ; 2 Block ($2000-$2fff) | RAM
