@@ -40,6 +40,7 @@ ignore_result:
   ora MATH_HEXDEC_VAL + 1
   bne divide ; branch if value not zero
   ldx #0
+  ; return
   rts
 
 ; Add the caracter in the A register to the beginning of the null-terminated string `message`
@@ -57,6 +58,7 @@ append_loop:
   bne append_loop
   pla
   sta MATH_HEXDEC_OUT,y ; Pull the null off the stack and add to the end of the string
+  ; return
   rts
 
 MATH_fibonacci:
