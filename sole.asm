@@ -38,6 +38,7 @@ convert_and_print_num:
   sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
 
   jsr LCD_print_string
+  ; return
   rts
 
 init_fib:
@@ -51,29 +52,30 @@ init_fib:
   sta MATH_OUTPUT
   lda #23
   sta MATH_FIB_LIMIT
-
+  ; return
   rts
 
 show_results:
   jsr LCD_clear_display
+  ; print a
   lda MATH_INPUT_1
   sta MATH_HEXDEC_VAL
   lda MATH_INPUT_1 + 1
   sta MATH_HEXDEC_VAL + 1
   jsr convert_and_print_num
-
+  ; print '+'
   lda #'+'
   jsr LCD_print_char
-
+  ; print b
   lda MATH_INPUT_2
   sta MATH_HEXDEC_VAL
   lda MATH_INPUT_2 + 1
   sta MATH_HEXDEC_VAL + 1
   jsr convert_and_print_num
-
+  ; print '='
   lda #'='
   jsr LCD_print_char
-
+  ; 
   lda #$41 ; Second row, second column
   jsr LCD_goto_address
 
