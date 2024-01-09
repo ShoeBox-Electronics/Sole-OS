@@ -43,9 +43,10 @@ else
 	@echo only available on Mac and Debian-based systems
 endif
 
-link: $(FILEPATH).bin
+link: $(FILEPATH).bin #Create sole.bin
+assemble: $(FILEPATH).o #Create sole.o
 
-%.o: %.asm ##F assemble a file
+%.o: %.asm #Generate a respective *.o file from any *.asm
 	ca65 $^
 
 %.bin: %.cfg %.o #Generate a respective *.bin file from any *.cfg and *.o
