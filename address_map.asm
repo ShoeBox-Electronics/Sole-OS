@@ -6,7 +6,7 @@
 ; ADDRESS MAP
 ; 0 Block ($0000-$0fff) | RAM
   ; 00 Page (Special uses, use sparingly)
-LCD_STRING_PTR = $00                    ; LCD  ; 2 bytes (bust be zero-page)
+LCD_STRING_PTR = $00                    ; LCD  ; Location of a string to print  ; 2 bytes
   ; 01 Page (Reserved by CPU Stack)
   ; 02 Page
     ; HEXDEC

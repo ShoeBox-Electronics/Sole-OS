@@ -11,6 +11,7 @@ else
 		OS := Linux
 		ifneq ($(wildcard /etc/debian_version),)	
 		  OS := Debian_Based
+      # So we assume it has apt-get
 		endif
 	endif
 endif
