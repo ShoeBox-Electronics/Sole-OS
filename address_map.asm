@@ -22,10 +22,7 @@ MATH_BITMASK    = $2019                 ; MATH ; General Bitmask                
                                             ; 00000001 - negative hexdec convert
   ; 03 Page
     ; Fib
-MATH_FIB_LIMIT = $0300                  ; MATH ; Fibonacci Counter Limit        ; 1 byte
-MATH_FIB_A     = $0301                  ; MATH ; Fibonacci Counter A value      ; 2 bytes
-MATH_FIB_B     = $0303                  ; MATH ; Fibonacci Counter B value      ; 2 bytes
-MATH_FIB_OLD   = $0305                  ; MATH ; Fibonacci Counter Swap space   ; 2 bytes
+FIB_LIMIT = $0300                  ; MATH ; Fibonacci Counter Limit        ; 1 byte
   ; 04 Page
     ; Time delays
 TIME_MS_COUNT  = $0400                  ; TIME ; Milliseconds                   ; 1 byte

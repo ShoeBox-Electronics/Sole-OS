@@ -86,22 +86,6 @@ append_loop:
   ; return
   rts
 
-MATH_fibonacci:
-  ; shift b to a
-  lda MATH_INPUT_2
-  sta MATH_INPUT_1
-  lda MATH_INPUT_2 + 1
-  sta MATH_INPUT_1 + 1
-  ; shift output to b
-  lda MATH_OUTPUT
-  sta MATH_INPUT_2
-  lda MATH_OUTPUT + 1
-  sta MATH_INPUT_2 + 1
-  ; do a+b and store it in output
-  jsr MATH_add
-  ; return
-  rts
-
 MATH_add:
   ; clear carry flag for addition
   clc

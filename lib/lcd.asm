@@ -84,6 +84,17 @@ end_print_string:
   ; return
   rts
 
+LCD_display_hexdec_out:
+  ; store output location into string pointer
+  lda #<MATH_HEXDEC_OUT    ; #< Means low byte of the address of a label.  
+  sta LCD_STRING_PTR       ; Save to pointer  
+  lda #>MATH_HEXDEC_OUT    ; #> Means high byte of the address of a label.  
+  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
+  ; print the string at the string pointer
+  jsr LCD_print_string
+  ; return
+  rts
+
 LCD_print_hexdec_output:
   ; store output location into string pointer
   lda #<MATH_HEXDEC_OUT    ; #< Means low byte of the address of a label.  
@@ -145,5 +156,9 @@ LCD_display_splash_screen:
   lda #>SPLASH_2             ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1     ; Save to pointer + 1  
   jsr LCD_print_string       ; Go print the string
+  ; Pause for 3s and clear display
+  lda #3
+  jsr TIME_delay_s
+  jsr LCD_clear_display
   ; return
   rts
