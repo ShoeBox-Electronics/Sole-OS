@@ -77,3 +77,13 @@ FIB_progress:
   dec FIB_LIMIT
   ; return
   rts
+
+; USE
+; loop:
+;   jsr FIB_init
+; display_loop:
+;   ; calculate next fibs
+;   jsr FIB_progress
+;   lda FIB_LIMIT
+;   beq loop
+;   jmp display_loop
