@@ -45,19 +45,19 @@ ignore_result:
 
 ; Add the caracter in the A register to the beginning of the null-terminated string `message`
 MATH_append_output:
-  pha ; Push first character onto the stack
+  pha                                   ; Push first character onto the stack
   ldy #0
 append_loop:
-  lda MATH_HEXDEC_OUT,y ; Get char from the string and push it into x
+  lda MATH_HEXDEC_OUT,y                 ; Get char from the string and push it into x
   tax
   pla 
-  sta MATH_HEXDEC_OUT,y ; Pull char off stack and add it onto the string
+  sta MATH_HEXDEC_OUT,y                 ; Pull char off stack and add it onto the string
   iny
   txa
-  pha              ; Push char from string onto stack
+  pha                                   ; Push char from string onto stack
   bne append_loop
   pla
-  sta MATH_HEXDEC_OUT,y ; Pull the null off the stack and add to the end of the string
+  sta MATH_HEXDEC_OUT,y                 ; Pull the null off the stack and add to the end of the string
   ; return
   rts
 
