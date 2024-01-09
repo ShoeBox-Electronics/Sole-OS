@@ -17,7 +17,7 @@ else
 endif
 
 # aliases
-.PHONY: all install assemble link dump write help
+.PHONY: all install assemble link dump write clean help
 
 ifeq ($(OS),Windows)
 all: assemble link ##F assemble, link, and write file to the EEPROM (if possible)
@@ -25,24 +25,21 @@ else
 all: assemble link write
 endif
 
-ifeq ($(OS),Debian_Based)
 install: ## install all dependencies (Mac: assumes you have homebrew installed) (Windows: not availbable)
+ifeq ($(OS),Debian_Based)
 # minipro
 	apt-get install build-essential pkg-config libusb-1.0-0-dev
 	git clone https://gitlab.com/DavidGriffith/minipro.git && cd minipro && make && make install && cd .. && rm -rf minipro
 # CC65
 	apt-get install cc65
 endif
-
 ifeq ($(OS),MacOS)
-install:
 	brew install pkg-config
 	brew install minipro
 	brew install cc65
 	brew install libusb
 
 else
-install:
 	@echo only available on Mac and Debian-based systems
 endif
 
@@ -71,6 +68,12 @@ help: ## display this help screen
 	@printf "\n\033[36m%-30s\033[0m %s\n" "Note:" "* Commands can be pointed towards a specific file by using the FILEPATH variable."
 	@printf "\033[36m%-30s\033[0m %s\n"   ""      "When using this variable, do not give the file's extension."
 
+clean: #Delete all binaries
+ifeq ($(OS),Windows)
+	del $(FILEPATH).bin $(FILEPATH).o
+else
+	rm -f *.bin *.o
+endif
 ## Docker targets
 
 # .PHONY: build
