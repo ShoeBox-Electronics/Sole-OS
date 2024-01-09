@@ -9,22 +9,26 @@
 LCD_STRING_PTR = $00                    ; LCD  ; 2 bytes (bust be zero-page)
   ; 01 Page (Reserved by CPU Stack)
   ; 02 Page
-MATH_HEXDEC_VAL = $0200                 ; MATH ; Hex-Dec conversion Value Pointer   ; 2 bytes
-MATH_HEXDEC_MOD = $0202                 ; MATH ; Hex-Dec conversion Modulus Pointer ; 2 bytes
-MATH_HEXDEC_OUT = $0204                 ; MATH ; Hex-Dec conversion Output Pointer  ; 6 bytes
-MATH_INPUT_1    = $2010                 ; MATH ; General Math Input 1               ; 2 bytes
-MATH_INPUT_2    = $2012                 ; MATH ; General Math Input 2               ; 2 bytes
-MATH_MISC       = $2014                 ; MATH ; General Math Swap                  ; 2 bytes
-MATH_OUTPUT     = $2016                 ; MATH ; General Math Output                ; 3 bytes
+    ; HEXDEC
+MATH_HEXDEC_VAL = $0200                 ; MATH ; Conversion Value Pointer       ; 2 bytes
+MATH_HEXDEC_MOD = $0202                 ; MATH ; Conversion Modulus Pointer     ; 2 bytes
+MATH_HEXDEC_OUT = $0204                 ; MATH ; Conversion Output Pointer      ; 6 bytes
+    ; General
+MATH_INPUT_1    = $2010                 ; MATH ; Math Input 1                   ; 2 bytes
+MATH_INPUT_2    = $2012                 ; MATH ; Math Input 2                   ; 2 bytes
+MATH_MISC       = $2014                 ; MATH ; Math Swap                      ; 2 bytes
+MATH_OUTPUT     = $2016                 ; MATH ; Math Output                    ; 3 bytes
   ; 03 Page
-MATH_FIB_LIMIT = $0300                  ; MATH ; Fibonacci Counter Limit            ; 1 byte
-MATH_FIB_A     = $0301                  ; MATH ; Fibonacci Counter A value          ; 2 bytes
-MATH_FIB_B     = $0303                  ; MATH ; Fibonacci Counter B value          ; 2 bytes
-MATH_FIB_OLD   = $0305                  ; MATH ; Fibonacci Counter Swap space       ; 2 bytes
+    ; Fib
+MATH_FIB_LIMIT = $0300                  ; MATH ; Fibonacci Counter Limit        ; 1 byte
+MATH_FIB_A     = $0301                  ; MATH ; Fibonacci Counter A value      ; 2 bytes
+MATH_FIB_B     = $0303                  ; MATH ; Fibonacci Counter B value      ; 2 bytes
+MATH_FIB_OLD   = $0305                  ; MATH ; Fibonacci Counter Swap space   ; 2 bytes
   ; 04 Page
-TIME_MS_COUNT  = $0400                  ; TIME ; Delay in milliseconds              ; 1 byte
-TIME_TS_COUNT  = $0401                  ; TIME ; Delay in tenths of seconds         ; 1 byte
-TIME_S_COUNT   = $0402                  ; TIME ; Delay in seconds                   ; 1 byte
+    ; Time delays
+TIME_MS_COUNT  = $0400                  ; TIME ; Milliseconds                   ; 1 byte
+TIME_TS_COUNT  = $0401                  ; TIME ; Tenths of seconds              ; 1 byte
+TIME_S_COUNT   = $0402                  ; TIME ; Seconds                        ; 1 byte
 
 ; 1 Block ($1000-$1fff) | RAM
 ; 2 Block ($2000-$2fff) | RAM
