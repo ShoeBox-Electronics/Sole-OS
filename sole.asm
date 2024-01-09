@@ -51,7 +51,7 @@ init_fib:
   sta MATH_OUTPUT + 1
   lda #1
   sta MATH_OUTPUT
-  lda #23
+  lda #22
   sta MATH_FIB_LIMIT
   ; return
   rts

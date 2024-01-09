@@ -84,6 +84,17 @@ end_print_string:
   ; return
   rts
 
+LCD_print_hexdec_output:
+  ; store output location into string pointer
+  lda #<MATH_HEXDEC_OUT    ; #< Means low byte of the address of a label.  
+  sta LCD_STRING_PTR       ; Save to pointer  
+  lda #>MATH_HEXDEC_OUT    ; #> Means high byte of the address of a label.  
+  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
+  ; print the string at the string pointer
+  jsr LCD_print_string
+  ; return
+  rts
+
 LCD_goto_address:
   ; Store destination address in the A register before running
   ora #%10000000    ; OR the "goto address" command with the address we want to go to

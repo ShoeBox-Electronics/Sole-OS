@@ -1,9 +1,29 @@
 ; MATH: General Mathematics
 
+MATH_twos_complement:
+  clc
+  lda MATH_HEXDEC_VAL
+  eor #$ff
+  adc #1
+  sta MATH_HEXDEC_VAL
+  lda MATH_HEXDEC_VAL + 1
+  eor #$ff
+  adc #0
+  sta MATH_HEXDEC_VAL + 1
+  rts
+
 MATH_hexdec_convert:
   ; Store input number in the MATH_HEXDEC_VAL address before running
   lda #0
+  sta MATH_BITMASK
   sta MATH_HEXDEC_OUT
+  lda MATH_HEXDEC_VAL + 1
+  and #%10000000
+  beq divide
+negative:
+  lda #%00000001
+  sta MATH_BITMASK
+  jsr MATH_twos_complement
 divide:
   ; Initialize the remainder to be zero
   lda #0
@@ -23,10 +43,10 @@ div_loop:
   sbc #10
   tay ; save low byte in y
   lda MATH_HEXDEC_MOD+1
-  bcc ignore_result ; branching if dividend < divisor
+  bcc continue_loop ; branching if dividend < divisor
   sty MATH_HEXDEC_MOD
   sta MATH_HEXDEC_MOD+1
-ignore_result:
+continue_loop:
   dex 
   bne div_loop
   rol MATH_HEXDEC_VAL ; shift in the last bit of the quotient
@@ -40,6 +60,11 @@ ignore_result:
   ora MATH_HEXDEC_VAL + 1
   bne divide ; branch if value not zero
   ldx #0
+  lda MATH_BITMASK
+  beq positive
+  lda #'-'
+  jsr MATH_append_output
+positive:
   ; return
   rts
 
