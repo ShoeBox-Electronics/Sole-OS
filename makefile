@@ -9,37 +9,23 @@ else
 		OS := MacOS
 	else ifeq ($(UNAME_S),Linux)
 		OS := Linux
-		ifneq ($(wildcard /etc/debian_version),)	
+		ifneq ($(wildcard /etc/debian_version),)
 		  OS := Debian_Based
       # So we assume it has apt-get
 		endif
 	endif
 endif
 
-# default target
-.PHONY: all
+# aliases
+.PHONY: all install assemble link dump write help
+
 ifeq ($(OS),Windows)
 all: assemble link ##F assemble, link, and write file to the EEPROM (if possible)
 else
 all: assemble link write
 endif
 
-# aliases
-.PHONY: i
-.PHONY: a
-.PHONY: l
-.PHONY: d
-.PHONY: w
-.PHONY: h
-i: install
-a: assemble
-l: link
-d: dump
-w: write
-h: help
-
 ifeq ($(OS),Debian_Based)
-.PHONY: install
 install: ## install all dependencies (Mac: assumes you have homebrew installed) (Windows: not availbable)
 # minipro
 	apt-get install build-essential pkg-config libusb-1.0-0-dev
@@ -50,7 +36,7 @@ endif
 
 ifeq ($(OS),MacOS)
 install:
-	brew install pkg-config	
+	brew install pkg-config
 	brew install minipro
 	brew install cc65
 	brew install libusb
@@ -60,19 +46,17 @@ install:
 	@echo only available on Mac and Debian-based systems
 endif
 
-.PHONY: assemble
-assemble: ${FILEPATH}.asm ##F assemble a file
-	ca65 ${FILEPATH}.asm
+link: $(FILEPATH).bin
 
-.PHONY: link 
-link: ${FILEPATH}.cfg ${FILEPATH}.o ##F link a config and assembled file to create a binary
-	ld65 -C ${FILEPATH}.cfg -o ${FILEPATH}.bin ${FILEPATH}.o
+%.o: %.asm ##F assemble a file
+	ca65 $^
 
-.PHONY: dump
-dump: ${FILEPATH}.bin ##F view a file's hex contents
-	hexdump -C ${FILEPATH}.bin
+%.bin: %.cfg %.o #Generate a respective *.bin file from any *.cfg and *.o
+	ld65 -C $^ -o $@
 
-.PHONY:  write
+dump: $(FILEPATH).bin ##F view a file's hex contents
+	hexdump -C $^
+
 write: ${FILEPATH}.bin ##F write a binary to the EEPROM (requires Linux/Unix)
 ifeq ($(OS),Windows)
 	@echo "Can't write to an EEPROM from a CLI on a Windows machine"
@@ -81,7 +65,6 @@ else
 	minipro -p AT28C256 -w ${FILEPATH}.bin
 endif
 
-.PHONY: help
 help: ## display this help screen
 	@grep -E '^[a-zA-Z_-]+:.*?##F .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?##F "}; {printf "\033[36m*%-29s\033[0m %s\n", $$1, $$2}'
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -96,7 +79,7 @@ help: ## display this help screen
 
 # .PHONY: sh
 # sh: ## opens a shell to the shoebox docker container
-# 	docker-compose run -it sole 
+# 	docker-compose run -it sole
 
 # .PHONY: down
 # down: ## kills the shoebox docker container
