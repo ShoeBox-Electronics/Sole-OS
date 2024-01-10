@@ -8,23 +8,37 @@ RS = %00100000  ; Register Select pin
 SPLASH_1:       .asciiz "This is ShoeBox"  
 SPLASH_2:       .asciiz "Running Sole OS"
 
-LCD_init: 
+LCD_init:
   ; VIA init
-  lda #%11111111    ; Set all pins on port B to output (for LCD data)
+  lda #%11111111 ; Set all pins on port B to output (for LCD data)
   sta VIA_DDRB
-  lda #%11100000    ; Set top 3 pins on port A to output (for LCD signals)
+  lda #%11100000 ; Set top 3 pins on port A to output (for LCD signals)
   sta VIA_DDRA
+
   ; LCD true init
-  lda #%00111000    ; Set 8-bit mode, 2-line display, 5x8 font
+  lda #%00111000 ; Set 8-bit mode, 2-line display, 5x8 font
   jsr LCD_send_instruction
-  lda #%00001110    ; Display on, cursor on, blink off
+  ; LCD true init
+  lda #%00111000 ; Set 8-bit mode, 2-line display, 5x8 font
   jsr LCD_send_instruction
-  lda #%00000110    ; Increment and shift cursor, don't shift display
+  ; LCD true init
+  lda #%00111000 ; Set 8-bit mode, 2-line display, 5x8 font
+  jsr LCD_send_instruction
+  ; LCD true init
+  lda #%00111000 ; Set 8-bit mode, 2-line display, 5x8 font
+  jsr LCD_send_instruction
+  ; LCD true init
+  lda #%00111000 ; Set 8-bit mode, 2-line display, 5x8 font
+  jsr LCD_send_instruction
+
+  lda #%00001110 ; Display on, cursor on, blink off
+  jsr LCD_send_instruction
+  lda #%00000110 ; Increment and shift cursor, don't shift display
   jsr LCD_send_instruction
   jsr LCD_clear_display
   ; return
   rts
-
+  
 LCD_wait_until_free: ; Make sure the LCD is ready to take a new command
   pha
   lda #%00000000    ; Port B is input
