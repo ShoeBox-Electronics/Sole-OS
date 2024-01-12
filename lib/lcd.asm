@@ -38,7 +38,7 @@ LCD_init:
   jsr LCD_clear_display
   ; return
   rts
-  
+
 LCD_wait_until_free: ; Make sure the LCD is ready to take a new command
   pha
   lda #%00000000    ; Port B is input
@@ -174,5 +174,7 @@ LCD_display_splash_screen:
   lda #3
   jsr TIME_delay_s
   jsr LCD_clear_display
+  lda #5 
+  jsr TIME_delay_ts ; pause for half a second 
   ; return
   rts

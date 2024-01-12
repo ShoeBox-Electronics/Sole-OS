@@ -13,8 +13,6 @@ reset:
   ; Main
   jsr LCD_init
   jsr LCD_display_splash_screen
-  lda #5 
-  jsr TIME_delay_ts ; pause for half a second 
 
 loop:
   jsr FIB_init
