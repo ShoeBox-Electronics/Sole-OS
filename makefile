@@ -1,6 +1,11 @@
 FILEPATH = ./sole
 HELPF = \033[36m%-30s\033[0m %s\n
 
+LFLAGS =
+ifeq ($(SIM),TRUE)
+  LFLAGS = --target=sim65c02 -Ln $(FILEPATH).sym
+endif
+
 # determine OS
 ifeq ($(OS),Windows_NT)
 	OS :=  Windows
@@ -18,7 +23,7 @@ else
 endif
 
 # aliases
-.PHONY: all install assemble link dump write clean help
+.PHONY: all install assemble link dump write clean help debug simulate
 
 ifeq ($(OS),Windows)
 all: assemble link # assemble, link, and write file to the EEPROM (if possible)
@@ -51,7 +56,7 @@ assemble: $(FILEPATH).o # Create sole.o
 	ca65 $^
 
 %.bin: %.cfg %.o #Generate a respective *.bin file from any *.cfg and *.o
-	ld65 -C $^ -o $@
+	ld65 $(LFLAGS) -C $^ -o $@
 
 dump: $(FILEPATH).bin # view a file's hex contents
 	hexdump -C $^
@@ -64,6 +69,13 @@ else
 	minipro -p AT28C256 -w ${FILEPATH}.bin
 endif
 
+simulate: $(FILEPATH).bin
+ifeq ($(SIM),TRUE)
+	@echo "ERROR: NO COMMAND TO SIMULATE!"
+else
+	@echo "ERROR: Simulate flag not set. Add SIM=TRUE to your make command to enable 6502 simulation."
+endif
+
 help: # display this help screen
 	@printf "$(HELPF)" "all (default)" "Assemble, link, and write file to the EEPROM (if possible)."
 	@printf "$(HELPF)" "assemble"      "Compile the assembly source."
@@ -72,6 +84,7 @@ help: # display this help screen
 	@printf "$(HELPF)" "dump"       	 "View a hexdump of the binary file's contents."
 	@printf "$(HELPF)" "clean"       	 "Delete all binary and object files."
 	@printf "$(HELPF)" "install"       "Install dependencies (see "Requirements" section)."
+	@printf "$(HELPF)" "simulate"      "Simulate 6502 runtime."
 
 clean: #Delete all binaries
 	rm -f *.bin *.o
