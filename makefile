@@ -23,7 +23,7 @@ else
 endif
 
 # aliases
-.PHONY: all install assemble link dump write clean help debug simulate
+.PHONY: all install assemble link dump write clean help simulate
 
 ifeq ($(OS),Windows)
 all: assemble link # assemble, link, and write file to the EEPROM (if possible)
