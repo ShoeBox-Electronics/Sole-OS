@@ -13,17 +13,15 @@ reset:
   ; Main
   jsr LCD_init
   jsr LCD_display_splash_screen
+mult_test:
+  jsr MATH_clear_inputs
+  jsr MATH_clear_output
 
   lda #3
   sta MATH_INPUT_1
   lda #5
   sta MATH_INPUT_2
-  lda #0
-  sta MATH_INPUT_1 + 1
-  sta MATH_INPUT_2 + 1
-  sta MATH_OUTPUT
-  sta MATH_OUTPUT + 1
-
+  
   jsr MATH_mlt
 
   lda MATH_OUTPUT
@@ -31,8 +29,8 @@ reset:
   lda MATH_OUTPUT + 1
   sta MATH_HEXDEC_VAL + 1
 
-  jsr MATH_hexdec_convert
-  jsr LCD_display_hexdec_out
+  jsr MATH_hex_to_decstring
+  jsr LCD_display_decstring
 loop:
   jmp loop
 ;   jsr FIB_init

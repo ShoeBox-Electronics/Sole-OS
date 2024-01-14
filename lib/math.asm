@@ -1,4 +1,21 @@
 ; MATH: General Mathematics
+MATH_clear_inputs:
+  lda #0
+  sta MATH_INPUT_1
+  sta MATH_INPUT_1 + 1
+  sta MATH_INPUT_2
+  sta MATH_INPUT_2 + 1
+  ; return
+  rts
+
+MATH_clear_output:
+  lda #0
+  sta MATH_OUTPUT
+  sta MATH_OUTPUT + 1
+  sta MATH_OUTPUT + 2
+  sta MATH_OUTPUT + 3
+  ; return
+  rts
 
 MATH_twos_complement:
   clc
@@ -12,7 +29,7 @@ MATH_twos_complement:
   sta MATH_HEXDEC_VAL + 1
   rts
 
-MATH_hexdec_convert:
+MATH_hex_to_decstring:
   ; Store input number in the MATH_HEXDEC_VAL address before running
   lda #0
   sta MATH_BITMASK

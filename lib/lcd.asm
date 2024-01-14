@@ -98,7 +98,7 @@ end_print_string:
   ; return
   rts
 
-LCD_display_hexdec_out:
+LCD_display_decstring:
   ; store output location into string pointer
   lda #<MATH_HEXDEC_OUT    ; #< Means low byte of the address of a label.  
   sta LCD_STRING_PTR       ; Save to pointer  

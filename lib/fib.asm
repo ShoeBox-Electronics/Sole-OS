@@ -3,12 +3,8 @@
   ; But I would like to keep it as a personal thing
 
 FIB_init:
-  lda #0 
-  sta MATH_INPUT_1
-  sta MATH_INPUT_1 + 1
-  sta MATH_INPUT_2
-  sta MATH_INPUT_2 + 1
-  sta MATH_OUTPUT + 1
+  jsr MATH_clear_inputs
+  jsr MATH_clear_output
   lda #1
   sta MATH_OUTPUT
   lda #22
@@ -23,8 +19,8 @@ FIB_display:
   sta MATH_HEXDEC_VAL
   lda MATH_INPUT_1 + 1
   sta MATH_HEXDEC_VAL + 1
-  jsr MATH_hexdec_convert
-  jsr LCD_display_hexdec_out
+  jsr MATH_hex_to_decstring
+  jsr LCD_display_decstring
   ; print '+'
   lda #'+'
   jsr LCD_print_char
@@ -33,8 +29,8 @@ FIB_display:
   sta MATH_HEXDEC_VAL
   lda MATH_INPUT_2 + 1
   sta MATH_HEXDEC_VAL + 1
-  jsr MATH_hexdec_convert
-  jsr LCD_display_hexdec_out
+  jsr MATH_hex_to_decstring
+  jsr LCD_display_decstring
   ; print '='
   lda #'='
   jsr LCD_print_char
@@ -46,8 +42,8 @@ FIB_display:
   sta MATH_HEXDEC_VAL
   lda MATH_OUTPUT + 1
   sta MATH_HEXDEC_VAL + 1
-  jsr MATH_hexdec_convert
-  jsr LCD_display_hexdec_out
+  jsr MATH_hex_to_decstring
+  jsr LCD_display_decstring
   ; wait one second
   lda #1
   jsr TIME_delay_s
