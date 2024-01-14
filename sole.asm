@@ -23,16 +23,27 @@ reset:
   sta MATH_INPUT_2 + 1
   sta MATH_OUTPUT
   sta MATH_OUTPUT + 1
-  jsr MATH_mlt
 
+  ldx #4
+m_loop:
+  lsr MATH_INPUT_2
+  bcc iterate
+  clc
+  lda MATH_INPUT_1
+  adc MATH_OUTPUT
+  sta MATH_OUTPUT
+iterate:
+  asl MATH_INPUT_1
+  dex
+  bne m_loop
+print:
   lda MATH_OUTPUT
   sta MATH_HEXDEC_VAL
   lda MATH_OUTPUT + 1
   sta MATH_HEXDEC_VAL + 1
+
   jsr MATH_hexdec_convert
-
   jsr LCD_display_hexdec_out
-
 loop:
   jmp loop
 ;   jsr FIB_init
