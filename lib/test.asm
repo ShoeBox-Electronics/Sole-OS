@@ -26,6 +26,11 @@ TEST_suite:
   jsr TIME_delay_s
   jsr LCD_clear_display
 
+  jsr TEST_div
+  lda #2
+  jsr TIME_delay_s
+  jsr LCD_clear_display
+
   jsr TEST_hexstring
   lda #2
   jsr TIME_delay_s
@@ -156,6 +161,36 @@ TEST_mult:
   ; return
   rts
 
+div_message: .asciiz "170/13=13r1"
+TEST_div: 
+  lda #<div_message    ; #< Means low byte of the address of a label.  
+  sta LCD_STRING_PTR       ; Save to pointer  
+  lda #>div_message    ; #> Means high byte of the address of a label.  
+  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
+  jsr LCD_print_string
+
+  lda #$40
+  jsr LCD_goto_address
+
+  jsr MATH_clear_inputs
+  jsr MATH_clear_output
+
+  lda #170
+  sta MATH_INPUT_1
+  lda #13
+  sta MATH_INPUT_2
+
+  jsr MATH_div
+  jsr TEST_print_math_output
+  
+  lda #'r'
+  jsr LCD_print_char
+
+  jsr MATH_swap_output
+  jsr TEST_print_math_output
+  ; return
+  rts
+
 hexstring_message: .asciiz "= $FAF0"
 TEST_hexstring:
   lda #<hexstring_message    ; #< Means low byte of the address of a label.  
@@ -187,4 +222,3 @@ TEST_print_math_output:
   jsr LCD_display_math_convert_out
   ; return
   rts
-

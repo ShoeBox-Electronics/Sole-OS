@@ -74,12 +74,10 @@ FIB_progress:
   ; return
   rts
 
-; USE
-; loop:
-;   jsr FIB_init
-; display_loop:
-;   ; calculate next fibs
-;   jsr FIB_progress
-;   lda FIB_LIMIT
-;   beq loop
-;   jmp display_loop
+FIB_demo:
+  jsr FIB_init
+demo_loop:
+  jsr FIB_progress
+  lda FIB_LIMIT
+  beq FIB_demo
+  jmp demo_loop

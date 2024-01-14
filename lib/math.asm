@@ -232,3 +232,49 @@ rotate_r:
 
   ; return
   rts
+
+MATH_div:
+	lda #0	        ;preset remainder to 0
+	sta MATH_OUTPUT + 2
+	sta MATH_OUTPUT + 3
+	ldx #16	        ;repeat for each bit: ...
+divloop:
+	asl MATH_INPUT_1	;dividend lb & hb*2, msb -> Carry
+	rol MATH_INPUT_1 + 1	
+	rol MATH_OUTPUT + 2	 ;remainder lb & hb * 2 + msb from carry
+	rol MATH_OUTPUT + 3
+	lda MATH_OUTPUT + 2
+	sec
+	sbc MATH_INPUT_2	;substract divisor to see if it fits in
+	tay	        ;lb result -> Y, for we may need it later
+	lda MATH_OUTPUT + 3
+	sbc MATH_INPUT_2 + 1
+	bcc skip	;if carry=0 then divisor didn't fit in yet
+
+	sta MATH_OUTPUT + 3	;else save substraction result as new remainder,
+	sty MATH_OUTPUT + 2	
+	inc MATH_INPUT_1	;and INCrement result cause divisor fit in 1 times
+skip:
+	dex
+	bne divloop	
+
+  lda MATH_INPUT_1
+  sta MATH_OUTPUT
+  lda MATH_INPUT_1 + 1
+  sta MATH_OUTPUT + 1
+  ; return
+	rts
+
+MATH_swap_output: ; Swaps the output low 2 bytes with the output 2 bytes
+  ldx MATH_OUTPUT
+  ldy MATH_OUTPUT + 1
+
+  lda MATH_OUTPUT + 2
+  sta MATH_OUTPUT 
+  lda MATH_OUTPUT + 3
+  sta MATH_OUTPUT + 1
+
+  stx MATH_OUTPUT + 2
+  sty MATH_OUTPUT + 3
+  ; return
+  rts

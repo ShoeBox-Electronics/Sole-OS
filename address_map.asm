@@ -17,7 +17,7 @@ MATH_CONVERT_OUT = $0204                 ; MATH ; Conversion Output    ; 7 bytes
 MATH_INPUT_1    = $0210                 ; MATH ; Math Input 1                   ; 2 bytes
 MATH_INPUT_2    = $0212                 ; MATH ; Math Input 2                   ; 2 bytes
 MATH_OUTPUT     = $0214                 ; MATH ; Math Output                    ; 4 bytes
-MATH_MISC       = $0218                 ; MATH ; Math Misc/Flag                 ; 1 byte
+MATH_MISC       = $0218                 ; MATH ; Math Misc/Flag                 ; 2 bytes
   ; 03 Page
     ; Fib
 FIB_LIMIT = $0300                       ; MATH ; Fibonacci Counter Limit        ; 1 byte
