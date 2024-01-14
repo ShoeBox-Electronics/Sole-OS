@@ -24,19 +24,8 @@ reset:
   sta MATH_OUTPUT
   sta MATH_OUTPUT + 1
 
-  ldx #4
-m_loop:
-  lsr MATH_INPUT_2
-  bcc iterate
-  clc
-  lda MATH_INPUT_1
-  adc MATH_OUTPUT
-  sta MATH_OUTPUT
-iterate:
-  asl MATH_INPUT_1
-  dex
-  bne m_loop
-print:
+  jsr MATH_mlt
+
   lda MATH_OUTPUT
   sta MATH_HEXDEC_VAL
   lda MATH_OUTPUT + 1

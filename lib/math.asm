@@ -124,37 +124,17 @@ MATH_sub:
   rts 
 
 MATH_mlt:
-  ; Store one of the factors in the MISC var
-  lda MATH_INPUT_2
-  sta MATH_MISC
-  dec MATH_MISC
-  lda MATH_INPUT_2 + 1
-  sta MATH_MISC + 1
-  ; Set Input 2 to the same as Input 1 for repeated addition
+  ldx #4
+mlt_loop:
+  lsr MATH_INPUT_2
+  bcc iterate
+  clc
   lda MATH_INPUT_1
-  sta MATH_INPUT_2
-  lda MATH_INPUT_1 + 1
-  sta MATH_INPUT_2 + 1
-mult_loop: ; here's where the repeated addition happens
-  ; perform addition
-  jsr MATH_add
-  ; DEC MATH_MISC and check if zero
-  dec MATH_MISC
-  lda MATH_MISC
-  bne no_adl_dec
-  ; if zero, check if we're completely done
-  lda MATH_MISC + 1
-  beq mult_done
-  ; borrow from the next byte if needed
-  lda #$ff
-  sta MATH_MISC
-  dec MATH_MISC + 1
-no_adl_dec: ; if we don't need to DEC MATH_MISC + 1, we jump here
-  ; store our output back into MATH_INPUT_1 to keep performing the addition
-  lda MATH_OUTPUT
-  sta MATH_INPUT_1
-  lda MATH_OUTPUT + 1
-  sta MATH_INPUT_1 + 1
-  jmp mult_loop
-mult_done: ; jump here when we're done repeating our addition
+  adc MATH_OUTPUT
+  sta MATH_OUTPUT
+iterate:
+  asl MATH_INPUT_1
+  dex
+  bne mlt_loop
+  ; return
   rts
