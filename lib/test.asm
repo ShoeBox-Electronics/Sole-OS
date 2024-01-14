@@ -1,6 +1,6 @@
 ; Tests of libraries to make sure they stay functional as modifications are made
 
-TEST_add:
+TEST_add_pos: ; 50 + 50 => 100
   jsr MATH_clear_inputs
   jsr MATH_clear_output
   
@@ -9,11 +9,11 @@ TEST_add:
   sta MATH_INPUT_2
 
   jsr MATH_add
-  jsr TEST_print ; 50 + 50 = 100
+  jsr TEST_print
   ; return
   rts
 
-TEST_add_2:
+TEST_add_neg: ; -30584 + 30484 => -100
   jsr MATH_clear_inputs
   jsr MATH_clear_output
   
@@ -26,11 +26,11 @@ TEST_add_2:
   sta MATH_INPUT_2 + 1
 
   jsr MATH_add
-  jsr TEST_print ; -30584 + 30484 = -100
+  jsr TEST_print
   ; return
   rts
 
-TEST_mult:
+TEST_mult: ; 5 x -10 => -50
   jsr MATH_clear_inputs
   jsr MATH_clear_output
 
@@ -42,7 +42,18 @@ TEST_mult:
   sta MATH_INPUT_2 + 1
   
   jsr MATH_mlt
-  jsr TEST_print ; 5 x -10 = -50
+  jsr TEST_print
+  ; return
+  rts
+
+TEST_hexstring: ; => $fafo
+  lda #$f0
+  sta MATH_CONVERT_VAL
+  lda #$fa
+  sta MATH_CONVERT_VAL + 1
+  jsr MATH_hex_to_hexstring
+
+  jsr LCD_display_math_convert_out
   ; return
   rts
 
@@ -56,3 +67,4 @@ TEST_print:
   jsr LCD_display_math_convert_out
   ; return
   rts
+

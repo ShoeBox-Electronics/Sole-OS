@@ -1,7 +1,7 @@
 ; MATH: General Mathematics
 
 ;;; Hex to Hexstring Conversion ;;; 
-MATH_hex_to_hexstring:
+MATH_hex_to_hexstring: ; converts 2 bytes into a hex/ASCII string stored at MATH_CONVERT_OUT 
   ldx #1
   lda #'$' ; preface with a $
   sta MATH_CONVERT_OUT
@@ -49,9 +49,7 @@ ascii_done:
 ;;; Hex To Decstring Conversion ;;;
 
 ; https://www.youtube.com/watch?v=v3-a-zqKfgA&list=PLowKtXNTBypFbtuVMUVXNR0z1mu7dp7eH&index=10
-MATH_hex_to_decstring: ; converts the hex value stored at MATH_CONVERT_VAL(2) and places the 
-                       ;   ASCII string at MATH_CONVERT_OUT. Also uses MATH_CONVERT_MOD, and MATH_MISC,
-                       ;   and the X and Y registers
+MATH_hex_to_decstring: ; converts 2 bytes into a dec/ASCII string stored at MATH_CONVERT_OUT
   lda #0
   sta MATH_MISC
   sta MATH_CONVERT_OUT
