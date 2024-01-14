@@ -39,7 +39,6 @@ ifeq ($(OS),MacOS)
 	brew install minipro
 	brew install cc65
 	brew install libusb
-
 else
 	@echo only available on Mac and Debian-based systems
 endif

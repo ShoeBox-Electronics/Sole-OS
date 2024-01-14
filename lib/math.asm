@@ -17,7 +17,7 @@ MATH_clear_output:
   ; return
   rts
 
-MATH_twos_complement:
+MATH_twos_complement_plus_one:
   clc
   lda MATH_HEXDEC_VAL
   eor #$ff
@@ -29,6 +29,7 @@ MATH_twos_complement:
   sta MATH_HEXDEC_VAL + 1
   rts
 
+; https://www.youtube.com/watch?v=v3-a-zqKfgA&list=PLowKtXNTBypFbtuVMUVXNR0z1mu7dp7eH&index=10
 MATH_hex_to_decstring:
   ; Store input number in the MATH_HEXDEC_VAL address before running
   lda #0
@@ -40,7 +41,7 @@ MATH_hex_to_decstring:
 negative:
   lda #%00000001
   sta MATH_BITMASK
-  jsr MATH_twos_complement
+  jsr MATH_twos_complement_plus_one
 divide:
   ; Initialize the remainder to be zero
   lda #0
@@ -71,7 +72,7 @@ continue_loop:
   lda MATH_HEXDEC_MOD
   clc
   adc #'0'
-  jsr MATH_append_output
+  jsr MATH_append_decstring
   ; if value != 0, then continue dividing
   lda MATH_HEXDEC_VAL
   ora MATH_HEXDEC_VAL + 1
@@ -80,13 +81,13 @@ continue_loop:
   lda MATH_BITMASK
   beq positive
   lda #'-'
-  jsr MATH_append_output
+  jsr MATH_append_decstring
 positive:
   ; return
   rts
 
 ; Add the caracter in the A register to the beginning of the null-terminated string `message`
-MATH_append_output:
+MATH_append_decstring:
   pha                                   ; Push first character onto the stack
   ldy #0
 append_loop:
@@ -118,7 +119,6 @@ MATH_add:
   lda #0
   adc #0
   sta MATH_OUTPUT + 2
-  lda #0
   ; return
   rts
 
@@ -140,18 +140,29 @@ MATH_sub:
   ; return
   rts 
 
+; https://codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product
 MATH_mlt:
-  ldx #4
-mlt_loop:
-  lsr MATH_INPUT_2
-  bcc iterate
+  lda	#0
+  sta	MATH_OUTPUT + 2	; clear upper bits of product
+  sta	MATH_OUTPUT + 3 
+  ldx	#$10		; set binary count to 16 
+shift_r:
+  lsr	MATH_INPUT_1 + 1	; divide MATH_INPUT_1 by 2 
+  ror	MATH_INPUT_1
+  bcc	rotate_r 
+  lda	MATH_OUTPUT + 2	; get upper half of product and add multiplicand
   clc
-  lda MATH_INPUT_1
-  adc MATH_OUTPUT
-  sta MATH_OUTPUT
-iterate:
-  asl MATH_INPUT_1
+  adc	MATH_INPUT_2
+  sta	MATH_OUTPUT + 2
+  lda	MATH_OUTPUT + 3 
+	adc	MATH_INPUT_2 + 1
+rotate_r:
+  ror			; rotate partial product 
+  sta	MATH_OUTPUT + 3 
+  ror	MATH_OUTPUT + 2
+  ror	MATH_OUTPUT + 1 
+  ror	MATH_OUTPUT 
   dex
-  bne mlt_loop
+  bne	shift_r 
   ; return
   rts
