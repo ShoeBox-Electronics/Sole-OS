@@ -18,7 +18,7 @@ else
 endif
 
 # aliases
-.PHONY: all install assemble link dump write clean help
+.PHONY: all install assemble link dump write clean help loc
 
 ifeq ($(OS),Windows)
 all: assemble link # assemble, link, and write file to the EEPROM (if possible)
@@ -71,9 +71,14 @@ help: # display this help screen
 	@printf "$(HELPF)" "dump"       	 "View a hexdump of the binary file's contents."
 	@printf "$(HELPF)" "clean"       	 "Delete all binary and object files."
 	@printf "$(HELPF)" "install"       "Install dependencies (see "Requirements" section)."
+	@printf "$(HELPF)" "loc"           "Show the lines of code of all *.asm files."
+	@printf "$(HELPF)" "help"          "Shows this message."
 
 clean: #Delete all binaries
 	rm -f *.bin *.o
+
+loc: # Show the lines of code of all *.asm files 
+	@find . -name "*.asm" | xargs wc -l
 
 ## Docker targets
 

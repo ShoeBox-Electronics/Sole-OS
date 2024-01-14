@@ -2,39 +2,25 @@
 
 TEST_suite:
   jsr TEST_add_pos
-  lda #2
-  jsr TIME_delay_s
-  jsr LCD_clear_display
+  jsr TEST_clear
 
   jsr TEST_add_neg
-  lda #2
-  jsr TIME_delay_s
-  jsr LCD_clear_display
+  jsr TEST_clear
 
   jsr TEST_sub_pos
-  lda #2
-  jsr TIME_delay_s
-  jsr LCD_clear_display
+  jsr TEST_clear
 
   jsr TEST_sub_neg
-  lda #2
-  jsr TIME_delay_s
-  jsr LCD_clear_display
+  jsr TEST_clear
 
   jsr TEST_mult
-  lda #2
-  jsr TIME_delay_s
-  jsr LCD_clear_display
+  jsr TEST_clear
 
   jsr TEST_div
-  lda #2
-  jsr TIME_delay_s
-  jsr LCD_clear_display
+  jsr TEST_clear
 
   jsr TEST_hexstring
-  lda #2
-  jsr TIME_delay_s
-  jsr LCD_clear_display
+  jsr TEST_clear
 
   jmp TEST_suite
 
@@ -44,19 +30,15 @@ TEST_add_pos:
   sta LCD_STRING_PTR       ; Save to pointer  
   lda #>add_pos_message    ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
-  jsr LCD_print_string
+  jsr LCD_print_string                  
 
-  lda #$40
-  jsr LCD_goto_address
-
-  jsr MATH_clear_inputs
-  jsr MATH_clear_output
+  jsr TEST_prep
   
   lda #50
   sta MATH_INPUT_1
   sta MATH_INPUT_2
-
   jsr MATH_add
+
   jsr TEST_print_math_output
   ; return
   rts
@@ -67,13 +49,9 @@ TEST_add_neg:
   sta LCD_STRING_PTR       ; Save to pointer  
   lda #>add_neg_message    ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
-  jsr LCD_print_string
+  jsr LCD_print_string                  
 
-  lda #$40
-  jsr LCD_goto_address
-
-  jsr MATH_clear_inputs
-  jsr MATH_clear_output
+  jsr TEST_prep
   
   lda #$ce
   sta MATH_INPUT_1
@@ -81,8 +59,8 @@ TEST_add_neg:
   lda #$ff
   sta MATH_INPUT_1 + 1
   sta MATH_INPUT_2 + 1
-
   jsr MATH_add
+
   jsr TEST_print_math_output
   ; return
   rts
@@ -93,20 +71,16 @@ TEST_sub_pos:
   sta LCD_STRING_PTR       ; Save to pointer  
   lda #>sub_pos_message    ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
-  jsr LCD_print_string
+  jsr LCD_print_string                  
 
-  lda #$40
-  jsr LCD_goto_address
-
-  jsr MATH_clear_inputs
-  jsr MATH_clear_output
+  jsr TEST_prep
 
   lda #100
   sta MATH_INPUT_1
   lda #50
   sta MATH_INPUT_2
-
   jsr MATH_sub
+
   jsr TEST_print_math_output
   ; return
   rts
@@ -117,20 +91,16 @@ TEST_sub_neg:
   sta LCD_STRING_PTR       ; Save to pointer  
   lda #>sub_neg_message    ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
-  jsr LCD_print_string
+  jsr LCD_print_string                  
 
-  lda #$40
-  jsr LCD_goto_address
-
-  jsr MATH_clear_inputs
-  jsr MATH_clear_output
+  jsr TEST_prep
 
   lda #50
   sta MATH_INPUT_1
   lda #100
   sta MATH_INPUT_2
-
   jsr MATH_sub
+
   jsr TEST_print_math_output
   ; return
   rts
@@ -141,13 +111,9 @@ TEST_mult:
   sta LCD_STRING_PTR       ; Save to pointer  
   lda #>mlt_message    ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
-  jsr LCD_print_string
+  jsr LCD_print_string                  
 
-  lda #$40
-  jsr LCD_goto_address
-
-  jsr MATH_clear_inputs
-  jsr MATH_clear_output
+  jsr TEST_prep
 
   lda #5
   sta MATH_INPUT_1
@@ -155,8 +121,8 @@ TEST_mult:
   sta MATH_INPUT_2
   lda #$ff
   sta MATH_INPUT_2 + 1
-  
   jsr MATH_mlt
+  
   jsr TEST_print_math_output
   ; return
   rts
@@ -167,22 +133,18 @@ TEST_div:
   sta LCD_STRING_PTR       ; Save to pointer  
   lda #>div_message    ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
-  jsr LCD_print_string
+  jsr LCD_print_string                  
 
-  lda #$40
-  jsr LCD_goto_address
-
-  jsr MATH_clear_inputs
-  jsr MATH_clear_output
+  jsr TEST_prep
 
   lda #170
   sta MATH_INPUT_1
   lda #13
   sta MATH_INPUT_2
-
   jsr MATH_div
+
   jsr TEST_print_math_output
-  
+
   lda #'r'
   jsr LCD_print_char
 
@@ -198,9 +160,8 @@ TEST_hexstring:
   lda #>hexstring_message    ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
   jsr LCD_print_string
-
-  lda #$40
-  jsr LCD_goto_address
+  
+  jsr TEST_prep
 
   lda #$f0
   sta MATH_CONVERT_VAL
@@ -220,5 +181,20 @@ TEST_print_math_output:
 
   jsr MATH_hex_to_decstring
   jsr LCD_display_math_convert_out
+  ; return
+  rts
+
+TEST_prep:
+  jsr MATH_clear_inputs
+  jsr MATH_clear_output
+  lda #$40
+  jsr LCD_goto_address
+  ; return
+  rts
+
+TEST_clear:
+  lda #2
+  jsr TIME_delay_s
+  jsr LCD_clear_display
   ; return
   rts
