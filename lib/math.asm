@@ -1,4 +1,5 @@
 ; MATH: General Mathematics
+
 MATH_clear_inputs:
   lda #0
   sta MATH_INPUT_1
@@ -33,16 +34,18 @@ MATH_twos_complement_plus_one:
 MATH_hex_to_decstring:
   ; Store input number in the MATH_HEXDEC_VAL address before running
   lda #0
-  sta MATH_BITMASK
+  sta MATH_MISC
   sta MATH_HEXDEC_OUT
+  ; check if negative
   lda MATH_HEXDEC_VAL + 1
   and #%10000000
-  beq divide
+  beq div_begin
 negative:
-  lda #%00000001
-  sta MATH_BITMASK
+  ; flag that it was negative
+  lda #1
+  sta MATH_MISC
   jsr MATH_twos_complement_plus_one
-divide:
+div_begin:
   ; Initialize the remainder to be zero
   lda #0
   sta MATH_HEXDEC_MOD
@@ -72,22 +75,23 @@ continue_loop:
   lda MATH_HEXDEC_MOD
   clc
   adc #'0'
-  jsr MATH_append_decstring
+  jsr MATH_prepend_decstring
   ; if value != 0, then continue dividing
   lda MATH_HEXDEC_VAL
   ora MATH_HEXDEC_VAL + 1
-  bne divide ; branch if value not zero
+  bne div_begin ; branch if value not zero
   ldx #0
-  lda MATH_BITMASK
-  beq positive
+  lda MATH_MISC
+  beq div_done
+  ; if it was negative, we need this negative sign too
   lda #'-'
-  jsr MATH_append_decstring
-positive:
+  jsr MATH_prepend_decstring
+div_done:
   ; return
   rts
 
 ; Add the caracter in the A register to the beginning of the null-terminated string `message`
-MATH_append_decstring:
+MATH_prepend_decstring:
   pha                                   ; Push first character onto the stack
   ldy #0
 append_loop:

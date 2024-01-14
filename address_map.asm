@@ -14,15 +14,13 @@ MATH_HEXDEC_VAL = $0200                 ; MATH ; Conversion Value Pointer       
 MATH_HEXDEC_MOD = $0202                 ; MATH ; Conversion Modulus Pointer     ; 2 bytes
 MATH_HEXDEC_OUT = $0204                 ; MATH ; Conversion Output Pointer      ; 7 bytes
     ; General
-MATH_INPUT_1    = $2010                 ; MATH ; Math Input 1                   ; 2 bytes
-MATH_INPUT_2    = $2012                 ; MATH ; Math Input 2                   ; 2 bytes
-MATH_MISC       = $2014                 ; MATH ; Math Swap                      ; 2 bytes
-MATH_OUTPUT     = $2016                 ; MATH ; Math Output                    ; 3 bytes
-MATH_BITMASK    = $2019                 ; MATH ; General Bitmask                ; 1 byte
-                                            ; 00000001 - negative hexdec convert
+MATH_INPUT_1    = $0210                 ; MATH ; Math Input 1                   ; 2 bytes
+MATH_INPUT_2    = $0212                 ; MATH ; Math Input 2                   ; 2 bytes
+MATH_OUTPUT     = $0214                 ; MATH ; Math Output                    ; 4 bytes
+MATH_MISC       = $0218                 ; MATH ; Math Misc                      ; 1 byte
   ; 03 Page
     ; Fib
-FIB_LIMIT = $0300                  ; MATH ; Fibonacci Counter Limit        ; 1 byte
+FIB_LIMIT = $0300                       ; MATH ; Fibonacci Counter Limit        ; 1 byte
   ; 04 Page
     ; Time delays
 TIME_MS_COUNT  = $0400                  ; TIME ; Milliseconds                   ; 1 byte
