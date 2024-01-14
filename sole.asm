@@ -15,6 +15,8 @@ reset:
   jsr LCD_init
   jsr LCD_display_splash_screen
 
+  ; jsr TEST_suite
+
 loop:
   jsr FIB_init
 display_loop:
