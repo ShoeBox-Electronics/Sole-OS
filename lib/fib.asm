@@ -16,21 +16,21 @@ FIB_display:
   jsr LCD_clear_display
   ; print INPUT_1
   lda MATH_INPUT_1
-  sta MATH_HEXDEC_VAL
+  sta MATH_CONVERT_VAL
   lda MATH_INPUT_1 + 1
-  sta MATH_HEXDEC_VAL + 1
+  sta MATH_CONVERT_VAL + 1
   jsr MATH_hex_to_decstring
-  jsr LCD_display_decstring
+  jsr LCD_display_math_convert_out
   ; print '+'
   lda #'+'
   jsr LCD_print_char
   ; print INPUT_2
   lda MATH_INPUT_2
-  sta MATH_HEXDEC_VAL
+  sta MATH_CONVERT_VAL
   lda MATH_INPUT_2 + 1
-  sta MATH_HEXDEC_VAL + 1
+  sta MATH_CONVERT_VAL + 1
   jsr MATH_hex_to_decstring
-  jsr LCD_display_decstring
+  jsr LCD_display_math_convert_out
   ; print '='
   lda #'='
   jsr LCD_print_char
@@ -39,11 +39,11 @@ FIB_display:
   jsr LCD_goto_address
   ; print OUTPUT
   lda MATH_OUTPUT
-  sta MATH_HEXDEC_VAL
+  sta MATH_CONVERT_VAL
   lda MATH_OUTPUT + 1
-  sta MATH_HEXDEC_VAL + 1
+  sta MATH_CONVERT_VAL + 1
   jsr MATH_hex_to_decstring
-  jsr LCD_display_decstring
+  jsr LCD_display_math_convert_out
   ; wait one second
   lda #1
   jsr TIME_delay_s

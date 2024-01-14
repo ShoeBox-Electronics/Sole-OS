@@ -9,15 +9,15 @@
 LCD_STRING_PTR = $00                    ; LCD  ; Location of a string to print  ; 2 bytes
   ; 01 Page (Reserved by CPU Stack)
   ; 02 Page
-    ; HEXDEC
-MATH_HEXDEC_VAL = $0200                 ; MATH ; Conversion Value Pointer       ; 2 bytes
-MATH_HEXDEC_MOD = $0202                 ; MATH ; Conversion Modulus Pointer     ; 2 bytes
-MATH_HEXDEC_OUT = $0204                 ; MATH ; Conversion Output Pointer      ; 7 bytes
+    ; Convert
+MATH_CONVERT_VAL = $0200                 ; MATH ; Conversion Value     ; 2 bytes
+MATH_CONVERT_MOD = $0202                 ; MATH ; Conversion Modulus   ; 2 bytes
+MATH_CONVERT_OUT = $0204                 ; MATH ; Conversion Output    ; 7 bytes (6 for hex)
     ; General
 MATH_INPUT_1    = $0210                 ; MATH ; Math Input 1                   ; 2 bytes
 MATH_INPUT_2    = $0212                 ; MATH ; Math Input 2                   ; 2 bytes
 MATH_OUTPUT     = $0214                 ; MATH ; Math Output                    ; 4 bytes
-MATH_MISC       = $0218                 ; MATH ; Math Misc                      ; 1 byte
+MATH_MISC       = $0218                 ; MATH ; Math Misc/Flag                 ; 1 byte
   ; 03 Page
     ; Fib
 FIB_LIMIT = $0300                       ; MATH ; Fibonacci Counter Limit        ; 1 byte

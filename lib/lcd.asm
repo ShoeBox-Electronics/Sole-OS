@@ -18,18 +18,6 @@ LCD_init:
   ; LCD true init
   lda #%00111000 ; Set 8-bit mode, 2-line display, 5x8 font
   jsr LCD_send_instruction
-  ; LCD true init
-  lda #%00111000 ; Set 8-bit mode, 2-line display, 5x8 font
-  jsr LCD_send_instruction
-  ; LCD true init
-  lda #%00111000 ; Set 8-bit mode, 2-line display, 5x8 font
-  jsr LCD_send_instruction
-  ; LCD true init
-  lda #%00111000 ; Set 8-bit mode, 2-line display, 5x8 font
-  jsr LCD_send_instruction
-  ; LCD true init
-  lda #%00111000 ; Set 8-bit mode, 2-line display, 5x8 font
-  jsr LCD_send_instruction
 
   lda #%00001110 ; Display on, cursor on, blink off
   jsr LCD_send_instruction
@@ -98,11 +86,11 @@ end_print_string:
   ; return
   rts
 
-LCD_display_decstring:
+LCD_display_math_convert_out:
   ; store output location into string pointer
-  lda #<MATH_HEXDEC_OUT    ; #< Means low byte of the address of a label.  
+  lda #<MATH_CONVERT_OUT    ; #< Means low byte of the address of a label.  
   sta LCD_STRING_PTR       ; Save to pointer  
-  lda #>MATH_HEXDEC_OUT    ; #> Means high byte of the address of a label.  
+  lda #>MATH_CONVERT_OUT    ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
   ; print the string at the string pointer
   jsr LCD_print_string

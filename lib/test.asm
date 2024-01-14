@@ -48,11 +48,11 @@ TEST_mult:
 
 TEST_print:
   lda MATH_OUTPUT
-  sta MATH_HEXDEC_VAL
+  sta MATH_CONVERT_VAL
   lda MATH_OUTPUT + 1
-  sta MATH_HEXDEC_VAL + 1
+  sta MATH_CONVERT_VAL + 1
 
   jsr MATH_hex_to_decstring
-  jsr LCD_display_decstring
+  jsr LCD_display_math_convert_out
   ; return
   rts

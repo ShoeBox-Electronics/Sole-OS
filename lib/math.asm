@@ -1,5 +1,157 @@
 ; MATH: General Mathematics
 
+;;; Hex to Hexstring Conversion ;;; 
+MATH_hex_to_hexstring:
+  ldx #1
+  lda #'$' ; preface with a $
+  sta MATH_CONVERT_OUT
+  ldy #1
+convert_byte: ; convert a byte into ASCII
+  lda MATH_CONVERT_VAL,x
+  ; shift the upper nibble down
+  lsr 
+  lsr
+  lsr
+  lsr
+  and #%00001111 ; mask the nibble
+  jsr hex_to_ascii  
+  sta MATH_CONVERT_OUT,y  
+  iny
+
+  lda MATH_CONVERT_VAL,x  
+  and #$0f ; mask the nibble
+  jsr hex_to_ascii 
+  sta MATH_CONVERT_OUT,y 
+  iny
+  txa
+  beq hex_convert_done
+
+  dex
+  jmp convert_byte
+
+hex_convert_done:
+  lda #0
+  sta MATH_CONVERT_OUT,y ; null terminator for string
+  ; return
+  rts
+
+hex_to_ascii: ; converts whatever's in the A register from hex to ASCII
+  cmp #10
+  bcc digit
+  adc #'A' - 11
+  jmp ascii_done
+digit:
+  adc #'0'
+ascii_done:
+  ; return
+  rts
+
+;;; Hex To Decstring Conversion ;;;
+
+; https://www.youtube.com/watch?v=v3-a-zqKfgA&list=PLowKtXNTBypFbtuVMUVXNR0z1mu7dp7eH&index=10
+MATH_hex_to_decstring: ; converts the hex value stored at MATH_CONVERT_VAL(2) and places the 
+                       ;   ASCII string at MATH_CONVERT_OUT. Also uses MATH_CONVERT_MOD, and MATH_MISC,
+                       ;   and the X and Y registers
+  lda #0
+  sta MATH_MISC
+  sta MATH_CONVERT_OUT
+  ; check if negative
+  lda MATH_CONVERT_VAL + 1
+  and #%10000000
+  beq convert_next
+
+  ; flag that it was negative
+  lda #1
+  sta MATH_MISC ; negative status
+  lda MATH_CONVERT_VAL
+  jsr MATH_twos_complement_plus_one
+convert_next:
+  jsr MATH_hexdec
+  adc #'0'
+  jsr MATH_prepend_decstring
+  ; if value != 0, then continue dividing
+  lda MATH_CONVERT_VAL
+  ora MATH_CONVERT_VAL + 1
+  bne convert_next  ; branch if value not zero
+  
+  lda MATH_MISC ; negative status
+  beq convert_done
+
+  ; if it was negative, we need this negative sign too
+  lda #'-'
+  jsr MATH_prepend_decstring
+convert_done:
+  ; return
+  rts
+
+MATH_twos_complement_plus_one:
+  clc
+  lda MATH_CONVERT_VAL
+  eor #$ff
+  adc #1
+  sta MATH_CONVERT_VAL
+  lda MATH_CONVERT_VAL + 1
+  eor #$ff
+  adc #0
+  sta MATH_CONVERT_VAL + 1
+  ; return 
+  rts
+
+MATH_hexdec:
+  ; Initialize the remainder to be zero
+  lda #0
+  sta MATH_CONVERT_MOD
+  sta MATH_CONVERT_MOD + 1
+  ldx #16
+  clc
+div_loop:
+  ; Rotate quotient and remainder
+  rol MATH_CONVERT_VAL
+  rol MATH_CONVERT_VAL + 1
+  rol MATH_CONVERT_MOD
+  rol MATH_CONVERT_MOD + 1
+  ; a,y = dividend - divisor
+  sec
+  lda MATH_CONVERT_MOD
+  sbc #10
+  tay ; save low byte in y
+  lda MATH_CONVERT_MOD+1
+  bcc continue_loop ; branching if dividend < divisor
+
+  sty MATH_CONVERT_MOD
+  sta MATH_CONVERT_MOD+1
+continue_loop:
+  dex 
+  bne div_loop
+
+  rol MATH_CONVERT_VAL ; shift in the last bit of the quotient
+  rol MATH_CONVERT_VAL + 1
+  lda MATH_CONVERT_MOD
+  clc
+  ; return
+  rts
+
+; Add the caracter in the A register to the beginning of the null-terminated string `message`
+MATH_prepend_decstring:
+  pha                                   ; Push first character onto the stack
+  ldy #0
+prepend_loop:
+  lda MATH_CONVERT_OUT,y                 ; Get char from the string and push it into x
+  tax
+  pla 
+  sta MATH_CONVERT_OUT,y                 ; Pull char off stack and add it onto the string
+  iny
+  txa
+  pha                                   ; Push char from string onto stack
+  bne prepend_loop
+
+  pla
+  sta MATH_CONVERT_OUT,y                 ; Pull the null off the stack and add to the end of the string
+  ; return
+  rts
+
+;;; General Section ;;; 
+
 MATH_clear_inputs:
   lda #0
   sta MATH_INPUT_1
@@ -18,97 +170,7 @@ MATH_clear_output:
   ; return
   rts
 
-MATH_twos_complement_plus_one:
-  clc
-  lda MATH_HEXDEC_VAL
-  eor #$ff
-  adc #1
-  sta MATH_HEXDEC_VAL
-  lda MATH_HEXDEC_VAL + 1
-  eor #$ff
-  adc #0
-  sta MATH_HEXDEC_VAL + 1
-  rts
-
-; https://www.youtube.com/watch?v=v3-a-zqKfgA&list=PLowKtXNTBypFbtuVMUVXNR0z1mu7dp7eH&index=10
-MATH_hex_to_decstring:
-  ; Store input number in the MATH_HEXDEC_VAL address before running
-  lda #0
-  sta MATH_MISC
-  sta MATH_HEXDEC_OUT
-  ; check if negative
-  lda MATH_HEXDEC_VAL + 1
-  and #%10000000
-  beq div_begin
-negative:
-  ; flag that it was negative
-  lda #1
-  sta MATH_MISC
-  jsr MATH_twos_complement_plus_one
-div_begin:
-  ; Initialize the remainder to be zero
-  lda #0
-  sta MATH_HEXDEC_MOD
-  sta MATH_HEXDEC_MOD + 1
-  ldx #16
-  clc
-div_loop:
-  ; Rotate quotient and remainder
-  rol MATH_HEXDEC_VAL
-  rol MATH_HEXDEC_VAL + 1
-  rol MATH_HEXDEC_MOD
-  rol MATH_HEXDEC_MOD + 1
-  ; a,y = dividend - divisor
-  sec
-  lda MATH_HEXDEC_MOD
-  sbc #10
-  tay ; save low byte in y
-  lda MATH_HEXDEC_MOD+1
-  bcc continue_loop ; branching if dividend < divisor
-  sty MATH_HEXDEC_MOD
-  sta MATH_HEXDEC_MOD+1
-continue_loop:
-  dex 
-  bne div_loop
-  rol MATH_HEXDEC_VAL ; shift in the last bit of the quotient
-  rol MATH_HEXDEC_VAL + 1
-  lda MATH_HEXDEC_MOD
-  clc
-  adc #'0'
-  jsr MATH_prepend_decstring
-  ; if value != 0, then continue dividing
-  lda MATH_HEXDEC_VAL
-  ora MATH_HEXDEC_VAL + 1
-  bne div_begin ; branch if value not zero
-  ldx #0
-  lda MATH_MISC
-  beq div_done
-  ; if it was negative, we need this negative sign too
-  lda #'-'
-  jsr MATH_prepend_decstring
-div_done:
-  ; return
-  rts
-
-; Add the caracter in the A register to the beginning of the null-terminated string `message`
-MATH_prepend_decstring:
-  pha                                   ; Push first character onto the stack
-  ldy #0
-append_loop:
-  lda MATH_HEXDEC_OUT,y                 ; Get char from the string and push it into x
-  tax
-  pla 
-  sta MATH_HEXDEC_OUT,y                 ; Pull char off stack and add it onto the string
-  iny
-  txa
-  pha                                   ; Push char from string onto stack
-  bne append_loop
-  pla
-  sta MATH_HEXDEC_OUT,y                 ; Pull the null off the stack and add to the end of the string
-  ; return
-  rts
-
-MATH_add:
+MATH_add: ; Input1 + Input2 = Output
   ; clear carry flag for addition
   clc
   ; add first byte
@@ -126,7 +188,7 @@ MATH_add:
   ; return
   rts
 
-MATH_sub:
+MATH_sub: ; Input1 - Input2 = Output
   ; clear carry flag for subtraction
   sec
   ; subtract first byte
@@ -145,15 +207,16 @@ MATH_sub:
   rts 
 
 ; https://codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product
-MATH_mlt:
+MATH_mlt: ; Input1 x Input2 = Output, uses X register
   lda	#0
   sta	MATH_OUTPUT + 2	; clear upper bits of product
   sta	MATH_OUTPUT + 3 
-  ldx	#$10		; set binary count to 16 
+  ldx	#16		; set binary count to 16 
 shift_r:
   lsr	MATH_INPUT_1 + 1	; divide MATH_INPUT_1 by 2 
   ror	MATH_INPUT_1
   bcc	rotate_r 
+
   lda	MATH_OUTPUT + 2	; get upper half of product and add multiplicand
   clc
   adc	MATH_INPUT_2
@@ -168,5 +231,6 @@ rotate_r:
   ror	MATH_OUTPUT 
   dex
   bne	shift_r 
+
   ; return
   rts

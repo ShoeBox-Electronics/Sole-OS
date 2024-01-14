@@ -13,17 +13,24 @@ reset:
   txs
   ; Main
   jsr LCD_init
-  jsr LCD_display_splash_screen
+  ; jsr LCD_display_splash_screen
 
-  jsr mult_test
+  lda #$f0
+  sta MATH_CONVERT_VAL
+  lda #$fa
+  sta MATH_CONVERT_VAL + 1
+  jsr MATH_hex_to_hexstring
+
+  jsr LCD_display_math_convert_out
+
 loop:
-  jsr FIB_init
-display_loop:
-  ; calculate next fibs
-  jsr FIB_progress
-  lda FIB_LIMIT
-  beq loop
-  jmp display_loop
+  jmp loop
+;   jsr FIB_init
+; display_loop:
+;   jsr FIB_progress
+;   lda FIB_LIMIT
+;   beq loop
+;   jmp display_loop
 
 nmi:
   ; return
