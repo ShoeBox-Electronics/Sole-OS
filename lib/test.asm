@@ -2,34 +2,34 @@
 
 TEST_suite:
   jsr TEST_add_pos
-  jsr TEST_clear
+  jsr TEST_wait_and_clear
 
   jsr TEST_add_neg
-  jsr TEST_clear
+  jsr TEST_wait_and_clear
 
   jsr TEST_sub_pos
-  jsr TEST_clear
+  jsr TEST_wait_and_clear
 
   jsr TEST_sub_neg
-  jsr TEST_clear
+  jsr TEST_wait_and_clear
 
   jsr TEST_mult
-  jsr TEST_clear
+  jsr TEST_wait_and_clear
 
   jsr TEST_div
-  jsr TEST_clear
+  jsr TEST_wait_and_clear
 
   jsr TEST_hexstring
-  jsr TEST_clear
+  jsr TEST_wait_and_clear
 
   jmp TEST_suite
 
 add_pos_message: .asciiz "50+50=100"
 TEST_add_pos:
-  lda #<add_pos_message    ; #< Means low byte of the address of a label.  
-  sta LCD_STRING_PTR       ; Save to pointer  
-  lda #>add_pos_message    ; #> Means high byte of the address of a label.  
-  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
+  lda #<add_pos_message
+  sta LCD_STRING_PTR
+  lda #>add_pos_message
+  sta LCD_STRING_PTR + 1
   jsr LCD_print_string                  
 
   jsr TEST_prep
@@ -45,10 +45,10 @@ TEST_add_pos:
 
 add_neg_message: .asciiz "-50+-50=-100"
 TEST_add_neg:
-  lda #<add_neg_message    ; #< Means low byte of the address of a label.  
-  sta LCD_STRING_PTR       ; Save to pointer  
-  lda #>add_neg_message    ; #> Means high byte of the address of a label.  
-  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
+  lda #<add_neg_message
+  sta LCD_STRING_PTR
+  lda #>add_neg_message
+  sta LCD_STRING_PTR + 1
   jsr LCD_print_string                  
 
   jsr TEST_prep
@@ -67,10 +67,10 @@ TEST_add_neg:
 
 sub_pos_message: .asciiz "100-50=50"
 TEST_sub_pos:
-  lda #<sub_pos_message    ; #< Means low byte of the address of a label.  
-  sta LCD_STRING_PTR       ; Save to pointer  
-  lda #>sub_pos_message    ; #> Means high byte of the address of a label.  
-  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
+  lda #<sub_pos_message
+  sta LCD_STRING_PTR
+  lda #>sub_pos_message
+  sta LCD_STRING_PTR + 1
   jsr LCD_print_string                  
 
   jsr TEST_prep
@@ -87,10 +87,10 @@ TEST_sub_pos:
 
 sub_neg_message: .asciiz "50-100=-50"
 TEST_sub_neg:
-  lda #<sub_neg_message    ; #< Means low byte of the address of a label.  
-  sta LCD_STRING_PTR       ; Save to pointer  
-  lda #>sub_neg_message    ; #> Means high byte of the address of a label.  
-  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
+  lda #<sub_neg_message
+  sta LCD_STRING_PTR
+  lda #>sub_neg_message
+  sta LCD_STRING_PTR + 1
   jsr LCD_print_string                  
 
   jsr TEST_prep
@@ -107,11 +107,11 @@ TEST_sub_neg:
 
 mlt_message: .asciiz "5x-10=-50"
 TEST_mult: 
-  lda #<mlt_message    ; #< Means low byte of the address of a label.  
-  sta LCD_STRING_PTR       ; Save to pointer  
-  lda #>mlt_message    ; #> Means high byte of the address of a label.  
-  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
-  jsr LCD_print_string                  
+  lda #<mlt_message
+  sta LCD_STRING_PTR
+  lda #>mlt_message
+  sta LCD_STRING_PTR + 1
+  jsr LCD_print_string                
 
   jsr TEST_prep
 
@@ -129,11 +129,11 @@ TEST_mult:
 
 div_message: .asciiz "170/13=13r1"
 TEST_div: 
-  lda #<div_message    ; #< Means low byte of the address of a label.  
-  sta LCD_STRING_PTR       ; Save to pointer  
-  lda #>div_message    ; #> Means high byte of the address of a label.  
-  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
-  jsr LCD_print_string                  
+  lda #<div_message
+  sta LCD_STRING_PTR
+  lda #>div_message
+  sta LCD_STRING_PTR + 1
+  jsr LCD_print_string               
 
   jsr TEST_prep
 
@@ -155,13 +155,11 @@ TEST_div:
 
 hexstring_message: .asciiz "= $FAF0"
 TEST_hexstring:
-  lda #<hexstring_message    ; #< Means low byte of the address of a label.  
-  sta LCD_STRING_PTR       ; Save to pointer  
-  lda #>hexstring_message    ; #> Means high byte of the address of a label.  
-  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
-  jsr LCD_print_string
-  
-  jsr TEST_prep
+  lda #<hexstring_message
+  sta LCD_STRING_PTR
+  lda #>hexstring_message
+  sta LCD_STRING_PTR + 1
+  jsr LCD_print_string   
 
   lda #$f0
   sta MATH_CONVERT_VAL
@@ -178,8 +176,8 @@ TEST_print_math_output:
   sta MATH_CONVERT_VAL
   lda MATH_OUTPUT + 1
   sta MATH_CONVERT_VAL + 1
-
   jsr MATH_hex_to_decstring
+
   jsr LCD_display_math_convert_out
   ; return
   rts
@@ -192,7 +190,7 @@ TEST_prep:
   ; return
   rts
 
-TEST_clear:
+TEST_wait_and_clear:
   lda #2
   jsr TIME_delay_s
   jsr LCD_clear_display
