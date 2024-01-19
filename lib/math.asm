@@ -265,17 +265,3 @@ skip:
   sta MATH_OUTPUT + 1
   ; return
 	rts
-
-MATH_swap_output: ; Swaps the output low 2 bytes with the output 2 bytes
-  ldx MATH_OUTPUT
-  ldy MATH_OUTPUT + 1
-
-  lda MATH_OUTPUT + 2
-  sta MATH_OUTPUT 
-  lda MATH_OUTPUT + 3
-  sta MATH_OUTPUT + 1
-
-  stx MATH_OUTPUT + 2
-  sty MATH_OUTPUT + 3
-  ; return
-  rts

@@ -148,8 +148,13 @@ TEST_div:
   lda #'r'
   jsr LCD_print_char
 
-  jsr MATH_swap_output
-  jsr TEST_print_math_output
+  lda MATH_OUTPUT + 2
+  sta MATH_CONVERT_VAL
+  lda MATH_OUTPUT + 3
+  sta MATH_CONVERT_VAL + 1
+  jsr MATH_hex_to_decstring
+
+  jsr LCD_display_math_convert_out
   ; return
   rts
 
