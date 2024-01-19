@@ -73,6 +73,14 @@ LCD_print_char:
   ; return
   rts
 
+.macro print addr
+  lda #<addr
+  sta LCD_STRING_PTR
+  lda #>addr
+  sta LCD_STRING_PTR + 1
+  jsr LCD_print_string   
+.endmacro
+
 LCD_print_string:         ; Print a null-terminated string from memory to the LCD
   ; Store the string memory address in LCD_STRING_PTR before running
   ldy #0

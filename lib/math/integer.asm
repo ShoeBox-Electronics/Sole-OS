@@ -131,9 +131,12 @@ MATH_eq_int: ; a == b
   rts
 
 MATH_lt_int: ; a < b
+  jsr MATH_clear_int_output
   ldx #1
-  stx MATH_INT_OUTPUT + 1
-
+  ; Check if the signs are different
+  lda MATH_INT_INPUT_1 + 1
+  eor MATH_INT_INPUT_2 + 1
+  bmi @different_signs
   lda MATH_INT_INPUT_1 + 1
   cmp MATH_INT_INPUT_2 + 1
   bcc @done
@@ -141,27 +144,11 @@ MATH_lt_int: ; a < b
   cmp MATH_INT_INPUT_2
   bcc @done
   ldx #0
-@done:
-  stx MATH_INT_OUTPUT
-  ; return
-  rts
-
-MATH_gt_int: ; a > b
-  ldx #0
-  stx MATH_INT_OUTPUT + 1
-
-  lda MATH_INT_INPUT_1 + 1
-  cmp MATH_INT_INPUT_2 + 1
-  bcc @done
-  beq @next
-  ldx #1
   jmp @done
-@next:
-  lda MATH_INT_INPUT_1
-  cmp MATH_INT_INPUT_2
-  bcc @done
-  beq @done
-  ldx #1
+@different_signs: ; If the signs are different, the negative one is smaller
+  lda MATH_INT_INPUT_1 + 1
+  bmi @done ; If we're the negative one, we're the smaller one
+  ldx #0 ; otherwise, flip it
 @done:
   stx MATH_INT_OUTPUT
   ; return
@@ -169,18 +156,6 @@ MATH_gt_int: ; a > b
 
 MATH_neq_int: ; a != b
   jsr MATH_eq_int
-  jsr MATH_invert_comparison
-  ; return
-  rts
-
-MATH_lte_int: ; a <= b
-  jsr MATH_gt_int
-  jsr MATH_invert_comparison
-  ; return
-  rts
-
-MATH_gte_int: ; a >= b
-  jsr MATH_lt_int
   jsr MATH_invert_comparison
   ; return
   rts
