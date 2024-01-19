@@ -1,4 +1,4 @@
-; MATH: Integers
+; MATH: Integers (2 byte signed)
 
 ;;; Helpers ;;;
 MATH_clear_int_inputs:
@@ -85,23 +85,23 @@ rotate_r:
 MATH_div_int:
   jsr MATH_clear_int_output 
   jsr MATH_clear_int_misc 
-	ldx #16	        ;repeat for each bit: ...
+	ldx #16	                               ; repeat for each bit: ...
 @loop:
-	asl MATH_INT_INPUT_1	;dividend lb & hb*2, msb -> Carry
+	asl MATH_INT_INPUT_1                   ; dividend lb & hb*2, msb -> Carry
 	rol MATH_INT_INPUT_1 + 1	
-	rol MATH_INT_MISC	 ;remainder lb & hb * 2 + msb from carry
+	rol MATH_INT_MISC	                     ; remainder lb & hb * 2 + msb from carry
 	rol MATH_INT_MISC + 1
 	lda MATH_INT_MISC
 	sec
-	sbc MATH_INT_INPUT_2	;substract divisor to see if it fits in
-	tay	        ;lb result -> Y, for we may need it later
+	sbc MATH_INT_INPUT_2	                  ; substract divisor to see if it fits in
+	tay	                                    ; lb result -> Y, for we may need it later
 	lda MATH_INT_MISC + 1
 	sbc MATH_INT_INPUT_2 + 1
-	bcc @continue	;if carry=0 then divisor didn't fit in yet
+	bcc @continue	                          ; if carry=0 then divisor didn't fit in yet
 
-	sta MATH_INT_MISC + 1	;else save substraction result as new remainder,
+	sta MATH_INT_MISC + 1	                  ; else save substraction result as new remainder,
 	sty MATH_INT_MISC	
-	inc MATH_INT_INPUT_1	;and INCrement result cause divisor fit in 1 times
+	inc MATH_INT_INPUT_1	                  ; and INCrement result cause divisor fit in 1 times
 @continue:
 	dex
 	bne @loop	
@@ -113,7 +113,7 @@ MATH_div_int:
   ; return
 	rts
 
-;;; Comparisons ;;;
+;;; Comparisons ;;; (VERY ROUGH AND UNTESTED)
 MATH_eq_int: ; a == b
   ldx #0
   stx MATH_INT_OUTPUT + 1
