@@ -76,8 +76,8 @@ FIB_progress:
 
 FIB_demo:
   jsr FIB_init
-demo_loop:
+@loop:
   jsr FIB_progress
   lda FIB_LIMIT
   beq FIB_demo
-  jmp demo_loop
+  jmp @loop

@@ -76,13 +76,13 @@ LCD_print_char:
 LCD_print_string:         ; Print a null-terminated string from memory to the LCD
   ; Store the string memory address in LCD_STRING_PTR before running
   ldy #0
-string_loop:
+@loop:
   lda (LCD_STRING_PTR),y
-  beq end_print_string    ; If we find the null-terminator, exit
+  beq @done               ; If we find the null-terminator, exit
   jsr LCD_print_char
   iny
-  jmp string_loop
-end_print_string:
+  jmp @loop
+@done:
   ; return
   rts
 
