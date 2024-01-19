@@ -114,9 +114,10 @@ MATH_div_int:
 	rts
 
 ;;; Comparisons ;;;
-MATH_eq_int:
+MATH_eq_int: ; a == b
   ldx #0
   stx MATH_INT_OUTPUT + 1
+
   lda MATH_INT_INPUT_1
   cmp MATH_INT_INPUT_2
   bne @done
@@ -129,7 +130,23 @@ MATH_eq_int:
   ; return
   rts
 
-MATH_gt_int:
+MATH_lt_int: ; a < b
+  ldx #1
+  stx MATH_INT_OUTPUT + 1
+
+  lda MATH_INT_INPUT_1 + 1
+  cmp MATH_INT_INPUT_2 + 1
+  bcc @done
+  lda MATH_INT_INPUT_1
+  cmp MATH_INT_INPUT_2
+  bcc @done
+  ldx #0
+@done:
+  stx MATH_INT_OUTPUT
+  ; return
+  rts
+
+MATH_gt_int: ; a > b
   ldx #0
   stx MATH_INT_OUTPUT + 1
 
@@ -150,8 +167,20 @@ MATH_gt_int:
   ; return
   rts
 
-MATH_neq_int:
+MATH_neq_int: ; a != b
   jsr MATH_eq_int
+  jsr MATH_invert_comparison
+  ; return
+  rts
+
+MATH_lte_int: ; a <= b
+  jsr MATH_gt_int
+  jsr MATH_invert_comparison
+  ; return
+  rts
+
+MATH_gte_int: ; a >= b
+  jsr MATH_lt_int
   jsr MATH_invert_comparison
   ; return
   rts
