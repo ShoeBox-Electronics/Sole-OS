@@ -13,7 +13,7 @@ convert_byte: ; convert a byte into ASCII
   lsr
   lsr
   lsr
-  and #%00001111 ; mask the nibble
+  and #$0f ; mask the nibble
   jsr hex_to_ascii  
   sta MATH_CONVERT_OUT,y  
   iny
