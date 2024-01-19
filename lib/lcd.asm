@@ -138,20 +138,24 @@ LCD_display_splash_screen:
   lda #>SPLASH_1          ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1  ; Save to pointer + 1  
   jsr LCD_print_string    ; Go print the string
+
   ; Go to second line of LCD display
   lda #$40                
   jsr LCD_goto_address
+
   ; Load message_2 into the LCD_STRING_PTR
   lda #<SPLASH_2             ; #< Means low byte of the address of a label.  
   sta LCD_STRING_PTR         ; Save to pointer  
   lda #>SPLASH_2             ; #> Means high byte of the address of a label.  
   sta LCD_STRING_PTR + 1     ; Save to pointer + 1  
   jsr LCD_print_string       ; Go print the string
-  ; Pause for 3s and clear display
+
+  ; Pause for 3s, clear display, and wait half a second
   lda #3
   jsr TIME_delay_s
   jsr LCD_clear_display
   lda #5 
-  jsr TIME_delay_ts ; pause for half a second 
+  jsr TIME_delay_ts
+
   ; return
   rts
