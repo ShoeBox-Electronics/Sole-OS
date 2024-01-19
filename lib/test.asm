@@ -171,6 +171,8 @@ TEST_hexstring:
   lda #$fa
   sta MATH_CONVERT_VAL + 1
   jsr MATH_hex_to_hexstring
+  
+  jsr TEST_prep
 
   jsr LCD_display_math_convert_out
   ; return
