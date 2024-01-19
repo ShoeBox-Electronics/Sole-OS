@@ -6,7 +6,7 @@ FIB_init:
   jsr MATH_clear_inputs
   jsr MATH_clear_output
   lda #1
-  sta MATH_OUTPUT
+  sta MATH_INT_OUTPUT
   lda #22
   sta FIB_LIMIT
   ; return
@@ -15,9 +15,9 @@ FIB_init:
 FIB_display:
   jsr LCD_clear_display
   ; print INPUT_1
-  lda MATH_INPUT_1
+  lda MATH_INT_INPUT_1
   sta MATH_CONVERT_VAL
-  lda MATH_INPUT_1 + 1
+  lda MATH_INT_INPUT_1 + 1
   sta MATH_CONVERT_VAL + 1
   jsr MATH_hex_to_decstring
   jsr LCD_display_math_convert_out
@@ -25,9 +25,9 @@ FIB_display:
   lda #'+'
   jsr LCD_print_char
   ; print INPUT_2
-  lda MATH_INPUT_2
+  lda MATH_INT_INPUT_2
   sta MATH_CONVERT_VAL
-  lda MATH_INPUT_2 + 1
+  lda MATH_INT_INPUT_2 + 1
   sta MATH_CONVERT_VAL + 1
   jsr MATH_hex_to_decstring
   jsr LCD_display_math_convert_out
@@ -38,9 +38,9 @@ FIB_display:
   lda #$41
   jsr LCD_goto_address
   ; print OUTPUT
-  lda MATH_OUTPUT
+  lda MATH_INT_OUTPUT
   sta MATH_CONVERT_VAL
-  lda MATH_OUTPUT + 1
+  lda MATH_INT_OUTPUT + 1
   sta MATH_CONVERT_VAL + 1
   jsr MATH_hex_to_decstring
   jsr LCD_display_math_convert_out
@@ -52,17 +52,17 @@ FIB_display:
 
 FIB_shift_and_add:
   ; shift b to a
-  lda MATH_INPUT_2
-  sta MATH_INPUT_1
-  lda MATH_INPUT_2 + 1
-  sta MATH_INPUT_1 + 1
+  lda MATH_INT_INPUT_2
+  sta MATH_INT_INPUT_1
+  lda MATH_INT_INPUT_2 + 1
+  sta MATH_INT_INPUT_1 + 1
   ; shift output to b
-  lda MATH_OUTPUT
-  sta MATH_INPUT_2
-  lda MATH_OUTPUT + 1
-  sta MATH_INPUT_2 + 1
+  lda MATH_INT_OUTPUT
+  sta MATH_INT_INPUT_2
+  lda MATH_INT_OUTPUT + 1
+  sta MATH_INT_INPUT_2 + 1
   ; do a+b and store it in output
-  jsr MATH_add
+  jsr MATH_add_int
   ; return
   rts
 

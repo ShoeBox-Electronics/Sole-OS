@@ -35,11 +35,11 @@ TEST_add_pos:
   jsr TEST_prep
   
   lda #50
-  sta MATH_INPUT_1
-  sta MATH_INPUT_2
-  jsr MATH_add
+  sta MATH_INT_INPUT_1
+  sta MATH_INT_INPUT_2
+  jsr MATH_add_int
 
-  jsr TEST_print_math_output
+  jsr TEST_print_MATH_INT_OUTPUT
   ; return
   rts
 
@@ -54,14 +54,14 @@ TEST_add_neg:
   jsr TEST_prep
   
   lda #$ce
-  sta MATH_INPUT_1
-  sta MATH_INPUT_2
+  sta MATH_INT_INPUT_1
+  sta MATH_INT_INPUT_2
   lda #$ff
-  sta MATH_INPUT_1 + 1
-  sta MATH_INPUT_2 + 1
-  jsr MATH_add
+  sta MATH_INT_INPUT_1 + 1
+  sta MATH_INT_INPUT_2 + 1
+  jsr MATH_add_int
 
-  jsr TEST_print_math_output
+  jsr TEST_print_MATH_INT_OUTPUT
   ; return
   rts
 
@@ -76,12 +76,12 @@ TEST_sub_pos:
   jsr TEST_prep
 
   lda #100
-  sta MATH_INPUT_1
+  sta MATH_INT_INPUT_1
   lda #50
-  sta MATH_INPUT_2
-  jsr MATH_sub
+  sta MATH_INT_INPUT_2
+  jsr MATH_sub_int
 
-  jsr TEST_print_math_output
+  jsr TEST_print_MATH_INT_OUTPUT
   ; return
   rts
 
@@ -96,12 +96,12 @@ TEST_sub_neg:
   jsr TEST_prep
 
   lda #50
-  sta MATH_INPUT_1
+  sta MATH_INT_INPUT_1
   lda #100
-  sta MATH_INPUT_2
-  jsr MATH_sub
+  sta MATH_INT_INPUT_2
+  jsr MATH_sub_int
 
-  jsr TEST_print_math_output
+  jsr TEST_print_MATH_INT_OUTPUT
   ; return
   rts
 
@@ -116,14 +116,14 @@ TEST_mult:
   jsr TEST_prep
 
   lda #5
-  sta MATH_INPUT_1
+  sta MATH_INT_INPUT_1
   lda #$f6
-  sta MATH_INPUT_2
+  sta MATH_INT_INPUT_2
   lda #$ff
-  sta MATH_INPUT_2 + 1
-  jsr MATH_mlt
+  sta MATH_INT_INPUT_2 + 1
+  jsr MATH_mlt_int
   
-  jsr TEST_print_math_output
+  jsr TEST_print_MATH_INT_OUTPUT
   ; return
   rts
 
@@ -138,19 +138,19 @@ TEST_div:
   jsr TEST_prep
 
   lda #170
-  sta MATH_INPUT_1
+  sta MATH_INT_INPUT_1
   lda #13
-  sta MATH_INPUT_2
-  jsr MATH_div
+  sta MATH_INT_INPUT_2
+  jsr MATH_div_int
 
-  jsr TEST_print_math_output
+  jsr TEST_print_MATH_INT_OUTPUT
 
   lda #'r'
   jsr LCD_print_char
 
-  lda MATH_MISC
+  lda MATH_INT_MISC
   sta MATH_CONVERT_VAL
-  lda MATH_MISC + 1
+  lda MATH_INT_MISC + 1
   sta MATH_CONVERT_VAL + 1
   jsr MATH_hex_to_decstring
 
@@ -178,10 +178,10 @@ TEST_hexstring:
   ; return
   rts
 
-TEST_print_math_output:
-  lda MATH_OUTPUT
+TEST_print_MATH_INT_OUTPUT:
+  lda MATH_INT_OUTPUT
   sta MATH_CONVERT_VAL
-  lda MATH_OUTPUT + 1
+  lda MATH_INT_OUTPUT + 1
   sta MATH_CONVERT_VAL + 1
   jsr MATH_hex_to_decstring
 

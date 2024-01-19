@@ -152,78 +152,78 @@ MATH_prepend_decstring:
 
 MATH_clear_inputs:
   lda #0
-  sta MATH_INPUT_1
-  sta MATH_INPUT_1 + 1
-  sta MATH_INPUT_2
-  sta MATH_INPUT_2 + 1
+  sta MATH_INT_INPUT_1
+  sta MATH_INT_INPUT_1 + 1
+  sta MATH_INT_INPUT_2
+  sta MATH_INT_INPUT_2 + 1
   ; return
   rts
 
 MATH_clear_output:
   lda #0
-  sta MATH_OUTPUT
-  sta MATH_OUTPUT + 1
+  sta MATH_INT_OUTPUT
+  sta MATH_INT_OUTPUT + 1
   ; return
   rts
 
 
 MATH_clear_misc:
   lda #0
-  sta MATH_MISC
-  sta MATH_MISC + 1
+  sta MATH_INT_MISC
+  sta MATH_INT_MISC + 1
   ; return
   rts
 
-MATH_add: ; Input1 + Input2 = Output
+MATH_add_int: ; Input1 + Input2 = Output
   ; clear carry flag for addition
   clc
   ; add first byte
-  lda MATH_INPUT_1
-  adc MATH_INPUT_2
-  sta MATH_OUTPUT
+  lda MATH_INT_INPUT_1
+  adc MATH_INT_INPUT_2
+  sta MATH_INT_OUTPUT
   ; add second byte
-  lda MATH_INPUT_1 + 1
-  adc MATH_INPUT_2 + 1
-  sta MATH_OUTPUT + 1
+  lda MATH_INT_INPUT_1 + 1
+  adc MATH_INT_INPUT_2 + 1
+  sta MATH_INT_OUTPUT + 1
   ; return
   rts
 
-MATH_sub: ; Input1 - Input2 = Output
+MATH_sub_int: ; Input1 - Input2 = Output
   ; clear carry flag for subtraction
   sec
   ; subtract first byte
-  lda MATH_INPUT_1
-  sbc MATH_INPUT_2
-  sta MATH_OUTPUT
+  lda MATH_INT_INPUT_1
+  sbc MATH_INT_INPUT_2
+  sta MATH_INT_OUTPUT
   ; subtract second byte
-  lda MATH_INPUT_1 + 1
-  sbc MATH_INPUT_2 + 1
-  sta MATH_OUTPUT + 1
+  lda MATH_INT_INPUT_1 + 1
+  sbc MATH_INT_INPUT_2 + 1
+  sta MATH_INT_OUTPUT + 1
   ; return
   rts 
 
 ; https://codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product
-MATH_mlt: ; Input1 x Input2 = Output, uses X register
+MATH_mlt_int: ; Input1 x Input2 = Output, uses X register
   jsr MATH_clear_output 
   jsr MATH_clear_misc 
   ldx	#16		; set binary count to 16 
 shift_r:
-  lsr	MATH_INPUT_1 + 1	; divide MATH_INPUT_1 by 2 
-  ror	MATH_INPUT_1
+  lsr	MATH_INT_INPUT_1 + 1	; divide MATH_INT_INPUT_1 by 2 
+  ror	MATH_INT_INPUT_1
   bcc	rotate_r 
 
-  lda	MATH_MISC	; get upper half of product and add multiplicand
+  lda	MATH_INT_MISC	; get upper half of product and add multiplicand
   clc
-  adc	MATH_INPUT_2
-  sta	MATH_MISC
-  lda	MATH_MISC + 1 
-	adc	MATH_INPUT_2 + 1
+  adc	MATH_INT_INPUT_2
+  sta	MATH_INT_MISC
+  lda	MATH_INT_MISC + 1 
+	adc	MATH_INT_INPUT_2 + 1
 rotate_r:
   ror			; rotate partial product 
-  sta	MATH_MISC + 1 
-  ror	MATH_MISC
-  ror	MATH_OUTPUT + 1 
-  ror	MATH_OUTPUT 
+  sta	MATH_INT_MISC + 1 
+  ror	MATH_INT_MISC
+  ror	MATH_INT_OUTPUT + 1 
+  ror	MATH_INT_OUTPUT 
   dex
   bne	shift_r 
 
@@ -231,33 +231,33 @@ rotate_r:
   rts
 
 ; https://codebase64.org/doku.php?id=base:16bit_division_16-bit_result
-MATH_div:
+MATH_div_int:
   jsr MATH_clear_output 
   jsr MATH_clear_misc 
 	ldx #16	        ;repeat for each bit: ...
 @loop:
-	asl MATH_INPUT_1	;dividend lb & hb*2, msb -> Carry
-	rol MATH_INPUT_1 + 1	
-	rol MATH_MISC	 ;remainder lb & hb * 2 + msb from carry
-	rol MATH_MISC + 1
-	lda MATH_MISC
+	asl MATH_INT_INPUT_1	;dividend lb & hb*2, msb -> Carry
+	rol MATH_INT_INPUT_1 + 1	
+	rol MATH_INT_MISC	 ;remainder lb & hb * 2 + msb from carry
+	rol MATH_INT_MISC + 1
+	lda MATH_INT_MISC
 	sec
-	sbc MATH_INPUT_2	;substract divisor to see if it fits in
+	sbc MATH_INT_INPUT_2	;substract divisor to see if it fits in
 	tay	        ;lb result -> Y, for we may need it later
-	lda MATH_MISC + 1
-	sbc MATH_INPUT_2 + 1
+	lda MATH_INT_MISC + 1
+	sbc MATH_INT_INPUT_2 + 1
 	bcc @continue	;if carry=0 then divisor didn't fit in yet
 
-	sta MATH_MISC + 1	;else save substraction result as new remainder,
-	sty MATH_MISC	
-	inc MATH_INPUT_1	;and INCrement result cause divisor fit in 1 times
+	sta MATH_INT_MISC + 1	;else save substraction result as new remainder,
+	sty MATH_INT_MISC	
+	inc MATH_INT_INPUT_1	;and INCrement result cause divisor fit in 1 times
 @continue:
 	dex
 	bne @loop	
 
-  lda MATH_INPUT_1
-  sta MATH_OUTPUT
-  lda MATH_INPUT_1 + 1
-  sta MATH_OUTPUT + 1
+  lda MATH_INT_INPUT_1
+  sta MATH_INT_OUTPUT
+  lda MATH_INT_INPUT_1 + 1
+  sta MATH_INT_OUTPUT + 1
   ; return
 	rts
