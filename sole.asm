@@ -1,11 +1,12 @@
   .setcpu "65C02"
   .segment "SOLE"
+  
   .include "address_map.asm"            ; Addresses for devices and memory variables
   .include "lib/lcd.asm"                ; Lib for working with the HD44780 LCD
   .include "lib/math/index.asm"         ; Lib for math
   .include "lib/time.asm"               ; Lib for time delays
   .include "lib/fib.asm"                ; Lib for Fibonacci numbers
-  .include "lib/test.asm"               ; Lib for testing other functions
+  .include "lib/tests/test.asm"         ; Lib for testing other functions
 
 reset:
   jsr LCD_init
