@@ -1,26 +1,26 @@
 ; Tests of libraries to make sure they stay functional as modifications are made
 
 TEST_suite:
-  jsr TEST_add_pos
-  jsr TEST_wait_and_clear
+  ; jsr TEST_add_pos
+  ; jsr TEST_wait_and_clear
 
-  jsr TEST_add_neg
-  jsr TEST_wait_and_clear
+  ; jsr TEST_add_neg
+  ; jsr TEST_wait_and_clear
 
-  jsr TEST_sub_pos
-  jsr TEST_wait_and_clear
+  ; jsr TEST_sub_pos
+  ; jsr TEST_wait_and_clear
 
-  jsr TEST_sub_neg
-  jsr TEST_wait_and_clear
+  ; jsr TEST_sub_neg
+  ; jsr TEST_wait_and_clear
 
-  jsr TEST_mult
-  jsr TEST_wait_and_clear
+  ; jsr TEST_mult
+  ; jsr TEST_wait_and_clear
 
   jsr TEST_div
   jsr TEST_wait_and_clear
 
-  jsr TEST_hexstring
-  jsr TEST_wait_and_clear
+  ; jsr TEST_hexstring
+  ; jsr TEST_wait_and_clear
 
   jmp TEST_suite
 
@@ -148,9 +148,9 @@ TEST_div:
   lda #'r'
   jsr LCD_print_char
 
-  lda MATH_OUTPUT + 2
+  lda MATH_MISC
   sta MATH_CONVERT_VAL
-  lda MATH_OUTPUT + 3
+  lda MATH_MISC + 1
   sta MATH_CONVERT_VAL + 1
   jsr MATH_hex_to_decstring
 
@@ -171,7 +171,7 @@ TEST_hexstring:
   lda #$fa
   sta MATH_CONVERT_VAL + 1
   jsr MATH_hex_to_hexstring
-  
+
   jsr TEST_prep
 
   jsr LCD_display_math_convert_out

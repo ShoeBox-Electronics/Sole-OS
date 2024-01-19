@@ -51,7 +51,7 @@ ascii_done:
 ; https://www.youtube.com/watch?v=v3-a-zqKfgA&list=PLowKtXNTBypFbtuVMUVXNR0z1mu7dp7eH&index=10
 MATH_hex_to_decstring: ; converts 2 bytes into a dec/ASCII string stored at MATH_CONVERT_OUT
   lda #0
-  sta MATH_MISC
+  sta MATH_FLAG
   sta MATH_CONVERT_OUT
   ; check if negative
   lda MATH_CONVERT_VAL + 1
@@ -60,7 +60,7 @@ MATH_hex_to_decstring: ; converts 2 bytes into a dec/ASCII string stored at MATH
 
   ; flag that it was negative
   lda #1
-  sta MATH_MISC ; negative status
+  sta MATH_FLAG ; negative status
   lda MATH_CONVERT_VAL
   jsr MATH_twos_complement_plus_one
 convert_next:
@@ -72,7 +72,7 @@ convert_next:
   ora MATH_CONVERT_VAL + 1
   bne convert_next  ; branch if value not zero
   
-  lda MATH_MISC ; negative status
+  lda MATH_FLAG ; negative status
   beq convert_done
 
   ; if it was negative, we need this negative sign too
@@ -163,8 +163,8 @@ MATH_clear_output:
   lda #0
   sta MATH_OUTPUT
   sta MATH_OUTPUT + 1
-  sta MATH_OUTPUT + 2
-  sta MATH_OUTPUT + 3
+  sta MATH_MISC
+  sta MATH_MISC + 1
   ; return
   rts
 
@@ -182,7 +182,7 @@ MATH_add: ; Input1 + Input2 = Output
   ; store carry into third byte
   lda #0
   adc #0
-  sta MATH_OUTPUT + 2
+  sta MATH_MISC
   ; return
   rts
 
@@ -200,31 +200,31 @@ MATH_sub: ; Input1 - Input2 = Output
   ; store carry in third byte
   lda #0
   sbc #0
-  sta MATH_OUTPUT + 2
+  sta MATH_MISC
   ; return
   rts 
 
 ; https://codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product
 MATH_mlt: ; Input1 x Input2 = Output, uses X register
   lda	#0
-  sta	MATH_OUTPUT + 2	; clear upper bits of product
-  sta	MATH_OUTPUT + 3 
+  sta	MATH_MISC	; clear upper bits of product
+  sta	MATH_MISC + 1 
   ldx	#16		; set binary count to 16 
 shift_r:
   lsr	MATH_INPUT_1 + 1	; divide MATH_INPUT_1 by 2 
   ror	MATH_INPUT_1
   bcc	rotate_r 
 
-  lda	MATH_OUTPUT + 2	; get upper half of product and add multiplicand
+  lda	MATH_MISC	; get upper half of product and add multiplicand
   clc
   adc	MATH_INPUT_2
-  sta	MATH_OUTPUT + 2
-  lda	MATH_OUTPUT + 3 
+  sta	MATH_MISC
+  lda	MATH_MISC + 1 
 	adc	MATH_INPUT_2 + 1
 rotate_r:
   ror			; rotate partial product 
-  sta	MATH_OUTPUT + 3 
-  ror	MATH_OUTPUT + 2
+  sta	MATH_MISC + 1 
+  ror	MATH_MISC
   ror	MATH_OUTPUT + 1 
   ror	MATH_OUTPUT 
   dex
@@ -236,24 +236,24 @@ rotate_r:
 ; https://codebase64.org/doku.php?id=base:16bit_division_16-bit_result
 MATH_div:
 	lda #0	        ;preset remainder to 0
-	sta MATH_OUTPUT + 2
-	sta MATH_OUTPUT + 3
+	sta MATH_MISC
+	sta MATH_MISC + 1
 	ldx #16	        ;repeat for each bit: ...
 divloop:
 	asl MATH_INPUT_1	;dividend lb & hb*2, msb -> Carry
 	rol MATH_INPUT_1 + 1	
-	rol MATH_OUTPUT + 2	 ;remainder lb & hb * 2 + msb from carry
-	rol MATH_OUTPUT + 3
-	lda MATH_OUTPUT + 2
+	rol MATH_MISC	 ;remainder lb & hb * 2 + msb from carry
+	rol MATH_MISC + 1
+	lda MATH_MISC
 	sec
 	sbc MATH_INPUT_2	;substract divisor to see if it fits in
 	tay	        ;lb result -> Y, for we may need it later
-	lda MATH_OUTPUT + 3
+	lda MATH_MISC + 1
 	sbc MATH_INPUT_2 + 1
 	bcc skip	;if carry=0 then divisor didn't fit in yet
 
-	sta MATH_OUTPUT + 3	;else save substraction result as new remainder,
-	sty MATH_OUTPUT + 2	
+	sta MATH_MISC + 1	;else save substraction result as new remainder,
+	sty MATH_MISC	
 	inc MATH_INPUT_1	;and INCrement result cause divisor fit in 1 times
 skip:
 	dex
