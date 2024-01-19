@@ -1,5 +1,45 @@
 ; TEST - MATH - Integer
 
+;;; Test Suites ;;;
+TEST_suite_math_int:
+  jsr TEST_suite_math_int_comparisons
+  jsr TEST_suite_math_int_basic
+  ; return
+  rts
+  
+TEST_suite_math_int_basic:
+  jsr TEST_add_int_pos
+  jsr TEST_wait_and_clear
+
+  jsr TEST_add_int_neg
+  jsr TEST_wait_and_clear
+
+  jsr TEST_sub_int_pos
+  jsr TEST_wait_and_clear
+
+  jsr TEST_sub_int_neg
+  jsr TEST_wait_and_clear
+
+  jsr TEST_mult_int
+  jsr TEST_wait_and_clear
+
+  jsr TEST_div_int
+  jsr TEST_wait_and_clear
+  ; return
+  rts
+
+TEST_suite_math_int_comparisons:
+  jsr TEST_eq_int
+  jsr TEST_wait_and_clear
+
+  jsr TEST_neq_int
+  jsr TEST_wait_and_clear
+
+  jsr TEST_gt_int
+  jsr TEST_wait_and_clear
+  ; return
+  rts
+
 ;;; Basic Math ;;;
 add_int_pos_message: .asciiz "50+50=100"
 TEST_add_int_pos:

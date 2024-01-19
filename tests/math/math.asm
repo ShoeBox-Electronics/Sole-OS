@@ -4,35 +4,8 @@
   .include "tests/math/convert.asm"
 
 TEST_suite_math:
-  jsr TEST_eq_int
-  jsr TEST_wait_and_clear
-
-  jsr TEST_neq_int
-  jsr TEST_wait_and_clear
-
-  jsr TEST_gt_int
-  jsr TEST_wait_and_clear
-
-  jsr TEST_add_int_pos
-  jsr TEST_wait_and_clear
-
-  jsr TEST_add_int_neg
-  jsr TEST_wait_and_clear
-
-  jsr TEST_sub_int_pos
-  jsr TEST_wait_and_clear
-
-  jsr TEST_sub_int_neg
-  jsr TEST_wait_and_clear
-
-  jsr TEST_mult_int
-  jsr TEST_wait_and_clear
-
-  jsr TEST_div_int
-  jsr TEST_wait_and_clear
-
-  jsr TEST_hex_to_string
-  jsr TEST_wait_and_clear
+  jsr TEST_suite_math_int
+  jsr TEST_suite_math_convert
   ; return
   rts
 

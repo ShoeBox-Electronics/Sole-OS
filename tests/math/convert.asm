@@ -1,5 +1,13 @@
 ; TEST - MATH - Convert
 
+;;; Test Suites ;;;
+TEST_suite_math_convert:
+  jsr TEST_hex_to_string
+  jsr TEST_wait_and_clear
+  ; return
+  rts
+
+;;; Convert ;;;
 hex_to_string_message: .asciiz "= $FAF0"
 TEST_hex_to_string:
   lda #<hex_to_string_message
