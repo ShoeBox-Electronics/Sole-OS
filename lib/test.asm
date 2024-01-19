@@ -1,26 +1,26 @@
 ; Tests of libraries to make sure they stay functional as modifications are made
 
 TEST_suite:
-  ; jsr TEST_add_pos
-  ; jsr TEST_wait_and_clear
+  jsr TEST_add_pos
+  jsr TEST_wait_and_clear
 
-  ; jsr TEST_add_neg
-  ; jsr TEST_wait_and_clear
+  jsr TEST_add_neg
+  jsr TEST_wait_and_clear
 
-  ; jsr TEST_sub_pos
-  ; jsr TEST_wait_and_clear
+  jsr TEST_sub_pos
+  jsr TEST_wait_and_clear
 
-  ; jsr TEST_sub_neg
-  ; jsr TEST_wait_and_clear
+  jsr TEST_sub_neg
+  jsr TEST_wait_and_clear
 
-  ; jsr TEST_mult
-  ; jsr TEST_wait_and_clear
+  jsr TEST_mult
+  jsr TEST_wait_and_clear
 
   jsr TEST_div
   jsr TEST_wait_and_clear
 
-  ; jsr TEST_hexstring
-  ; jsr TEST_wait_and_clear
+  jsr TEST_hexstring
+  jsr TEST_wait_and_clear
 
   jmp TEST_suite
 
@@ -191,7 +191,6 @@ TEST_print_math_output:
 
 TEST_prep:
   jsr MATH_clear_inputs
-  jsr MATH_clear_output
   lda #$40
   jsr LCD_goto_address
   ; return

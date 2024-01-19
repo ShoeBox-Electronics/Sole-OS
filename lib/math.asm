@@ -163,6 +163,12 @@ MATH_clear_output:
   lda #0
   sta MATH_OUTPUT
   sta MATH_OUTPUT + 1
+  ; return
+  rts
+
+
+MATH_clear_misc:
+  lda #0
   sta MATH_MISC
   sta MATH_MISC + 1
   ; return
@@ -179,10 +185,6 @@ MATH_add: ; Input1 + Input2 = Output
   lda MATH_INPUT_1 + 1
   adc MATH_INPUT_2 + 1
   sta MATH_OUTPUT + 1
-  ; store carry into third byte
-  lda #0
-  adc #0
-  sta MATH_MISC
   ; return
   rts
 
@@ -197,18 +199,13 @@ MATH_sub: ; Input1 - Input2 = Output
   lda MATH_INPUT_1 + 1
   sbc MATH_INPUT_2 + 1
   sta MATH_OUTPUT + 1
-  ; store carry in third byte
-  lda #0
-  sbc #0
-  sta MATH_MISC
   ; return
   rts 
 
 ; https://codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product
 MATH_mlt: ; Input1 x Input2 = Output, uses X register
-  lda	#0
-  sta	MATH_MISC	; clear upper bits of product
-  sta	MATH_MISC + 1 
+  jsr MATH_clear_output 
+  jsr MATH_clear_misc 
   ldx	#16		; set binary count to 16 
 shift_r:
   lsr	MATH_INPUT_1 + 1	; divide MATH_INPUT_1 by 2 
@@ -235,9 +232,8 @@ rotate_r:
 
 ; https://codebase64.org/doku.php?id=base:16bit_division_16-bit_result
 MATH_div:
-	lda #0	        ;preset remainder to 0
-	sta MATH_MISC
-	sta MATH_MISC + 1
+  jsr MATH_clear_output 
+  jsr MATH_clear_misc 
 	ldx #16	        ;repeat for each bit: ...
 divloop:
 	asl MATH_INPUT_1	;dividend lb & hb*2, msb -> Carry
