@@ -6,7 +6,8 @@
   .include "lib/math/math.asm"          ; Lib for math
   .include "lib/time.asm"               ; Lib for time delays
   .include "lib/fib.asm"                ; Lib for Fibonacci numbers
-  .include "lib/tests/test.asm"         ; Lib for testing other functions
+
+  .include "tests/test.asm"             ; Lib for testing other functions
 
 reset:
   jsr LCD_init
