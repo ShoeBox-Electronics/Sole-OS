@@ -8,17 +8,18 @@
   ; 00 Page (Special uses, use sparingly)
 LCD_STRING_PTR      = $00               ; LCD  ; Location of a string to print  ; 2 bytes
   ; 01 Page (Reserved by CPU Stack)
-  ; 02 Page
+  ; 02 Page (Math section)
+    ; Misc
+MATH_FLAG           = $0200             ; MATH ; Flag                           ; 2 bytes
     ; Convert
-MATH_CONVERT_VAL    = $0200             ; MATH ; Conversion Value     ; 2 bytes
-MATH_CONVERT_MOD    = $0202             ; MATH ; Conversion Modulus   ; 2 bytes
-MATH_CONVERT_OUT    = $0204             ; MATH ; Conversion Output    ; 7 bytes (6 for hex)
-    ; General
+MATH_CONVERT_VAL    = $0202             ; MATH ; Conversion Value               ; 2 bytes
+MATH_CONVERT_MOD    = $0204             ; MATH ; Conversion Modulus             ; 2 bytes
+MATH_CONVERT_OUT    = $0206             ; MATH ; Conversion Output              ; 7 bytes (6 for hex)
+    ; Integer
 MATH_INT_INPUT_1    = $0210             ; MATH ; Math Input 1                   ; 2 bytes
 MATH_INT_INPUT_2    = $0212             ; MATH ; Math Input 2                   ; 2 bytes
 MATH_INT_OUTPUT     = $0214             ; MATH ; Math Output                    ; 2 bytes
 MATH_INT_MISC       = $0216             ; MATH ; Math Misc                      ; 2 bytes
-MATH_FLAG           = $0217             ; MATH ; Flag                           ; 2 bytes
   ; 03 Page
     ; Fib
 FIB_LIMIT           = $0300             ; MATH ; Fibonacci Counter Limit        ; 1 byte
