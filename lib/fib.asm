@@ -19,7 +19,7 @@ FIB_display:
   sta MATH_CONVERT_VAL
   lda MATH_INT_INPUT_1 + 1
   sta MATH_CONVERT_VAL + 1
-  jsr MATH_hex_to_decstring
+  jsr MATH_int_to_string
   jsr LCD_display_math_convert_out
   ; print '+'
   lda #'+'
@@ -29,7 +29,7 @@ FIB_display:
   sta MATH_CONVERT_VAL
   lda MATH_INT_INPUT_2 + 1
   sta MATH_CONVERT_VAL + 1
-  jsr MATH_hex_to_decstring
+  jsr MATH_int_to_string
   jsr LCD_display_math_convert_out
   ; print '='
   lda #'='
@@ -42,7 +42,7 @@ FIB_display:
   sta MATH_CONVERT_VAL
   lda MATH_INT_OUTPUT + 1
   sta MATH_CONVERT_VAL + 1
-  jsr MATH_hex_to_decstring
+  jsr MATH_int_to_string
   jsr LCD_display_math_convert_out
   ; wait one second
   lda #1
