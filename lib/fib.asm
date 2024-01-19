@@ -3,8 +3,8 @@
   ; But I would like to keep it as a personal thing
 
 FIB_init:
-  jsr MATH_clear_inputs
-  jsr MATH_clear_output
+  jsr MATH_clear_int_inputs
+  jsr MATH_clear_int_output
   lda #1
   sta MATH_INT_OUTPUT
   lda #22

@@ -1,34 +1,100 @@
 ; Tests of libraries to make sure they stay functional as modifications are made
 
 TEST_suite:
-  jsr TEST_add_pos
+  jsr TEST_eq_int
   jsr TEST_wait_and_clear
 
-  jsr TEST_add_neg
+  jsr TEST_neq_int
   jsr TEST_wait_and_clear
 
-  jsr TEST_sub_pos
+  jsr TEST_gt_int
   jsr TEST_wait_and_clear
 
-  jsr TEST_sub_neg
+  jsr TEST_add_int_pos
   jsr TEST_wait_and_clear
 
-  jsr TEST_mult
+  jsr TEST_add_int_neg
   jsr TEST_wait_and_clear
 
-  jsr TEST_div
+  jsr TEST_sub_int_pos
   jsr TEST_wait_and_clear
 
-  jsr TEST_hexstring
+  jsr TEST_sub_int_neg
+  jsr TEST_wait_and_clear
+
+  jsr TEST_mult_int
+  jsr TEST_wait_and_clear
+
+  jsr TEST_div_int
+  jsr TEST_wait_and_clear
+
+  jsr TEST_hex_to_string
   jsr TEST_wait_and_clear
 
   jmp TEST_suite
 
-add_pos_message: .asciiz "50+50=100"
-TEST_add_pos:
-  lda #<add_pos_message
+eq_int_message:  .asciiz "50==50=1"
+TEST_eq_int:
+  lda #<eq_int_message
   sta LCD_STRING_PTR
-  lda #>add_pos_message
+  lda #>eq_int_message
+  sta LCD_STRING_PTR + 1
+  jsr LCD_print_string                  
+
+  jsr TEST_prep
+  
+  lda #50
+  sta MATH_INT_INPUT_1
+  sta MATH_INT_INPUT_2
+  jsr MATH_eq_int
+
+  jsr TEST_print_math_int_output
+  ; return
+  rts
+
+neq_int_message:  .asciiz "50!=50=0"
+TEST_neq_int:
+  lda #<neq_int_message
+  sta LCD_STRING_PTR
+  lda #>neq_int_message
+  sta LCD_STRING_PTR + 1
+  jsr LCD_print_string                  
+
+  jsr TEST_prep
+  
+  lda #50
+  sta MATH_INT_INPUT_1
+  sta MATH_INT_INPUT_2
+  jsr MATH_neq_int
+
+  jsr TEST_print_math_int_output
+  ; return
+  rts
+
+gt_int_message:  .asciiz "50>50=0"
+TEST_gt_int:
+  lda #<gt_int_message
+  sta LCD_STRING_PTR
+  lda #>gt_int_message
+  sta LCD_STRING_PTR + 1
+  jsr LCD_print_string                  
+
+  jsr TEST_prep
+  
+  lda #50
+  sta MATH_INT_INPUT_1
+  sta MATH_INT_INPUT_2
+  jsr MATH_gt_int
+
+  jsr TEST_print_math_int_output
+  ; return
+  rts
+
+add_int_pos_message: .asciiz "50+50=100"
+TEST_add_int_pos:
+  lda #<add_int_pos_message
+  sta LCD_STRING_PTR
+  lda #>add_int_pos_message
   sta LCD_STRING_PTR + 1
   jsr LCD_print_string                  
 
@@ -39,15 +105,15 @@ TEST_add_pos:
   sta MATH_INT_INPUT_2
   jsr MATH_add_int
 
-  jsr TEST_print_MATH_INT_OUTPUT
+  jsr TEST_print_math_int_output
   ; return
   rts
 
-add_neg_message: .asciiz "-50+-50=-100"
-TEST_add_neg:
-  lda #<add_neg_message
+add_int_neg_message: .asciiz "-50+-50=-100"
+TEST_add_int_neg:
+  lda #<add_int_neg_message
   sta LCD_STRING_PTR
-  lda #>add_neg_message
+  lda #>add_int_neg_message
   sta LCD_STRING_PTR + 1
   jsr LCD_print_string                  
 
@@ -61,15 +127,15 @@ TEST_add_neg:
   sta MATH_INT_INPUT_2 + 1
   jsr MATH_add_int
 
-  jsr TEST_print_MATH_INT_OUTPUT
+  jsr TEST_print_math_int_output
   ; return
   rts
 
-sub_pos_message: .asciiz "100-50=50"
-TEST_sub_pos:
-  lda #<sub_pos_message
+sub_int_pos_message: .asciiz "100-50=50"
+TEST_sub_int_pos:
+  lda #<sub_int_pos_message
   sta LCD_STRING_PTR
-  lda #>sub_pos_message
+  lda #>sub_int_pos_message
   sta LCD_STRING_PTR + 1
   jsr LCD_print_string                  
 
@@ -81,15 +147,15 @@ TEST_sub_pos:
   sta MATH_INT_INPUT_2
   jsr MATH_sub_int
 
-  jsr TEST_print_MATH_INT_OUTPUT
+  jsr TEST_print_math_int_output
   ; return
   rts
 
-sub_neg_message: .asciiz "50-100=-50"
-TEST_sub_neg:
-  lda #<sub_neg_message
+sub_int_neg_message: .asciiz "50-100=-50"
+TEST_sub_int_neg:
+  lda #<sub_int_neg_message
   sta LCD_STRING_PTR
-  lda #>sub_neg_message
+  lda #>sub_int_neg_message
   sta LCD_STRING_PTR + 1
   jsr LCD_print_string                  
 
@@ -101,15 +167,15 @@ TEST_sub_neg:
   sta MATH_INT_INPUT_2
   jsr MATH_sub_int
 
-  jsr TEST_print_MATH_INT_OUTPUT
+  jsr TEST_print_math_int_output
   ; return
   rts
 
-mlt_message: .asciiz "5x-10=-50"
-TEST_mult: 
-  lda #<mlt_message
+mlt_int_message: .asciiz "5x-10=-50"
+TEST_mult_int: 
+  lda #<mlt_int_message
   sta LCD_STRING_PTR
-  lda #>mlt_message
+  lda #>mlt_int_message
   sta LCD_STRING_PTR + 1
   jsr LCD_print_string                
 
@@ -123,15 +189,15 @@ TEST_mult:
   sta MATH_INT_INPUT_2 + 1
   jsr MATH_mlt_int
   
-  jsr TEST_print_MATH_INT_OUTPUT
+  jsr TEST_print_math_int_output
   ; return
   rts
 
-div_message: .asciiz "170/13=13r1"
-TEST_div: 
-  lda #<div_message
+div_int_message: .asciiz "170/13=13r1"
+TEST_div_int: 
+  lda #<div_int_message
   sta LCD_STRING_PTR
-  lda #>div_message
+  lda #>div_int_message
   sta LCD_STRING_PTR + 1
   jsr LCD_print_string               
 
@@ -143,7 +209,7 @@ TEST_div:
   sta MATH_INT_INPUT_2
   jsr MATH_div_int
 
-  jsr TEST_print_MATH_INT_OUTPUT
+  jsr TEST_print_math_int_output
 
   lda #'r'
   jsr LCD_print_char
@@ -158,11 +224,11 @@ TEST_div:
   ; return
   rts
 
-hexstring_message: .asciiz "= $FAF0"
-TEST_hexstring:
-  lda #<hexstring_message
+hex_to_string_message: .asciiz "= $FAF0"
+TEST_hex_to_string:
+  lda #<hex_to_string_message
   sta LCD_STRING_PTR
-  lda #>hexstring_message
+  lda #>hex_to_string_message
   sta LCD_STRING_PTR + 1
   jsr LCD_print_string   
 
@@ -178,7 +244,7 @@ TEST_hexstring:
   ; return
   rts
 
-TEST_print_MATH_INT_OUTPUT:
+TEST_print_math_int_output:
   lda MATH_INT_OUTPUT
   sta MATH_CONVERT_VAL
   lda MATH_INT_OUTPUT + 1
@@ -190,7 +256,7 @@ TEST_print_MATH_INT_OUTPUT:
   rts
 
 TEST_prep:
-  jsr MATH_clear_inputs
+  jsr MATH_clear_int_inputs
   lda #$40
   jsr LCD_goto_address
   ; return

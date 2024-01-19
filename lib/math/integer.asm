@@ -1,6 +1,7 @@
 ; MATH: Integers
 
-MATH_clear_inputs:
+;;; Helpers ;;;
+MATH_clear_int_inputs:
   lda #0
   sta MATH_INT_INPUT_1
   sta MATH_INT_INPUT_1 + 1
@@ -9,21 +10,21 @@ MATH_clear_inputs:
   ; return
   rts
 
-MATH_clear_output:
+MATH_clear_int_output:
   lda #0
   sta MATH_INT_OUTPUT
   sta MATH_INT_OUTPUT + 1
   ; return
   rts
 
-
-MATH_clear_misc:
+MATH_clear_int_misc:
   lda #0
   sta MATH_INT_MISC
   sta MATH_INT_MISC + 1
   ; return
   rts
 
+;;; Basic Math ;;;
 MATH_add_int: ; Input1 + Input2 = Output
   ; clear carry flag for addition
   clc
@@ -54,8 +55,8 @@ MATH_sub_int: ; Input1 - Input2 = Output
 
 ; https://codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product
 MATH_mlt_int: ; Input1 x Input2 = Output, uses X register
-  jsr MATH_clear_output 
-  jsr MATH_clear_misc 
+  jsr MATH_clear_int_output 
+  jsr MATH_clear_int_misc 
   ldx	#16		; set binary count to 16 
 shift_r:
   lsr	MATH_INT_INPUT_1 + 1	; divide MATH_INT_INPUT_1 by 2 
@@ -82,8 +83,8 @@ rotate_r:
 
 ; https://codebase64.org/doku.php?id=base:16bit_division_16-bit_result
 MATH_div_int:
-  jsr MATH_clear_output 
-  jsr MATH_clear_misc 
+  jsr MATH_clear_int_output 
+  jsr MATH_clear_int_misc 
 	ldx #16	        ;repeat for each bit: ...
 @loop:
 	asl MATH_INT_INPUT_1	;dividend lb & hb*2, msb -> Carry
@@ -111,3 +112,53 @@ MATH_div_int:
   sta MATH_INT_OUTPUT + 1
   ; return
 	rts
+
+;;; Comparisons ;;;
+MATH_eq_int:
+  ldx #0
+  stx MATH_INT_OUTPUT + 1
+  lda MATH_INT_INPUT_1
+  cmp MATH_INT_INPUT_2
+  bne @done
+  lda MATH_INT_INPUT_1 + 1
+  cmp MATH_INT_INPUT_2 + 1
+  bne @done
+  ldx #1
+@done:
+  stx MATH_INT_OUTPUT
+  ; return
+  rts
+
+MATH_gt_int:
+  ldx #0
+  stx MATH_INT_OUTPUT + 1
+
+  lda MATH_INT_INPUT_1 + 1
+  cmp MATH_INT_INPUT_2 + 1
+  bcc @done
+  beq @next
+  ldx #1
+  jmp @done
+@next:
+  lda MATH_INT_INPUT_1
+  cmp MATH_INT_INPUT_2
+  bcc @done
+  beq @done
+  ldx #1
+@done:
+  stx MATH_INT_OUTPUT
+  ; return
+  rts
+
+MATH_neq_int:
+  jsr MATH_eq_int
+  jsr MATH_invert_comparison
+  ; return
+  rts
+
+MATH_invert_comparison:
+  lda MATH_INT_OUTPUT
+  eor #%00000001
+  sta MATH_INT_OUTPUT
+  ; return
+  rts  
