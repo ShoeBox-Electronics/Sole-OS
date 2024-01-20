@@ -1,5 +1,13 @@
 ; LCD:  LCD Screen: HD44780 (https://www.sparkfun.com/datasheets/LCD/HD44780.pdf)
 
+.macro print addr
+  lda #<addr
+  sta LCD_STRING_PTR
+  lda #>addr
+  sta LCD_STRING_PTR + 1
+  jsr LCD_print_string   
+.endmacro
+
 ; VIA/LCD bitcodes
 E  = %10000000  ; Enable pin 
 RW = %01000000  ; Read/Write pin
@@ -72,14 +80,6 @@ LCD_print_char:
   sta VIA_PORTA
   ; return
   rts
-
-.macro print addr
-  lda #<addr
-  sta LCD_STRING_PTR
-  lda #>addr
-  sta LCD_STRING_PTR + 1
-  jsr LCD_print_string   
-.endmacro
 
 LCD_print_string:         ; Print a null-terminated string from memory to the LCD
   ; Store the string memory address in LCD_STRING_PTR before running

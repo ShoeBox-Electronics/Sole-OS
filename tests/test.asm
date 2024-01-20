@@ -2,6 +2,11 @@
 
   .include "tests/math/math.asm"
 
+.macro run_test subroutine
+  jsr subroutine
+  jsr TEST_wait_and_clear
+.endmacro
+
 TEST_suite:
   jsr TEST_suite_math
 

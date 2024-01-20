@@ -1,10 +1,5 @@
 ; TEST - MATH - Integer
 
-.macro run_test subroutine
-  jsr subroutine
-  jsr TEST_wait_and_clear
-.endmacro
-
 ;;; Test Suites ;;;
 TEST_suite_math_int:
   jsr TEST_suite_math_int_comparisons
