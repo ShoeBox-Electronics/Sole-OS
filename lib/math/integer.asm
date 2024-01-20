@@ -167,14 +167,14 @@ MATH_gt_int: ; a > b, a: MATH_INT_INPUT_1, b: MATH_INT_INPUT_2
   ; return
   rts
 
-MATH_lte_int: ; a <= b
-  jsr MATH_gt_int
+MATH_gte_int:
+  jsr MATH_lt_int
   jsr MATH_invert_comparison
   ; return
   rts
 
-MATH_gte_int:
-  jsr MATH_lt_int
+MATH_lte_int:
+  jsr MATH_gt_int
   jsr MATH_invert_comparison
   ; return
   rts
