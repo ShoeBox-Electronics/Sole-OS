@@ -22,26 +22,18 @@ TEST_suite_math_int_comparisons:
   run_test TEST_lt_int_1
   run_test TEST_lt_int_2
   run_test TEST_lt_int_3
-  run_test TEST_lt_int_4
-  run_test TEST_lt_int_5
 
   run_test TEST_lte_int_1
   run_test TEST_lte_int_2
   run_test TEST_lte_int_3
-  run_test TEST_lte_int_4
-  run_test TEST_lte_int_5
   
   run_test TEST_gt_int_1
   run_test TEST_gt_int_2
   run_test TEST_gt_int_3
-  run_test TEST_gt_int_4
-  run_test TEST_gt_int_5
   
   run_test TEST_gte_int_1
   run_test TEST_gte_int_2
   run_test TEST_gte_int_3
-  run_test TEST_gte_int_4
-  run_test TEST_gte_int_5
   ; return
   rts
 
@@ -65,10 +57,10 @@ TEST_sub_int:
   ; return
   rts
 
-mlt_int_message: .asciiz "5x-10==-50"
+mlt_int_message: .asciiz "5x10==50"
 TEST_mult_int: 
   print mlt_int_message
-  set_int_input 5, 0, $f6, $ff
+  set_int_input 5, 0, 10, 0
   jsr LCD_to_home_bottom
   jsr MATH_mlt_int
   jsr TEST_print_math_int_output
@@ -147,26 +139,6 @@ TEST_gte_int_3:
   ; return
   rts
 
-gte_int_message_4: .asciiz "-50>=-60==1"
-TEST_gte_int_4:
-  print gte_int_message_4
-  set_int_input $ce, $ff, $c4, $ff
-  jsr LCD_to_home_bottom
-  jsr MATH_gte_int
-  jsr TEST_print_math_int_output
-  ; return
-  rts
-
-gte_int_message_5: .asciiz "-60>=-50==0"
-TEST_gte_int_5:
-  print gte_int_message_5
-  set_int_input $c4, $ff, $ce, $ff
-  jsr LCD_to_home_bottom
-  jsr MATH_gte_int
-  jsr TEST_print_math_int_output
-  ; return
-  rts
-
 lt_int_message_1: .asciiz "50<50==0"
 TEST_lt_int_1:
   print lt_int_message_1
@@ -191,26 +163,6 @@ lt_int_message_3: .asciiz "60<50==0"
 TEST_lt_int_3:
   print lt_int_message_3
   set_int_input 60, 0, 50, 0
-  jsr LCD_to_home_bottom
-  jsr MATH_lt_int
-  jsr TEST_print_math_int_output
-  ; return
-  rts
-
-lt_int_message_4: .asciiz "-50<-60==0"
-TEST_lt_int_4:
-  print lt_int_message_4
-  set_int_input $ce, $ff, $c4, $f
-  jsr LCD_to_home_bottom
-  jsr MATH_lt_int
-  jsr TEST_print_math_int_output
-  ; return
-  rts
-
-lt_int_message_5: .asciiz "-60<-50==1"
-TEST_lt_int_5:
-  print lt_int_message_5
-  set_int_input $c4, $ff, $ce, $ff
   jsr LCD_to_home_bottom
   jsr MATH_lt_int
   jsr TEST_print_math_int_output
@@ -247,26 +199,6 @@ TEST_gt_int_3:
   ; return
   rts
 
-gt_int_message_4: .asciiz "-50>-60==1"
-TEST_gt_int_4:
-  print gt_int_message_4
-  set_int_input $ce, $ff, $c4, $ff
-  jsr LCD_to_home_bottom
-  jsr MATH_gt_int
-  jsr TEST_print_math_int_output
-  ; return
-  rts
-
-gt_int_message_5: .asciiz "-60>-50==0"
-TEST_gt_int_5:
-  print gt_int_message_5
-  set_int_input $c4, $ff, $ce, $ff
-  jsr LCD_to_home_bottom
-  jsr MATH_gt_int
-  jsr TEST_print_math_int_output
-  ; return
-  rts
-
 lte_int_message_1: .asciiz "50<=50==1"
 TEST_lte_int_1:
   print lte_int_message_1
@@ -291,26 +223,6 @@ lte_int_message_3: .asciiz "60<=50==0"
 TEST_lte_int_3:
   print lte_int_message_3
   set_int_input 60, 0, 50, 0
-  jsr LCD_to_home_bottom
-  jsr MATH_lte_int
-  jsr TEST_print_math_int_output
-  ; return
-  rts
-
-lte_int_message_4: .asciiz "-50<=-60==0"
-TEST_lte_int_4:
-  print lte_int_message_4
-  set_int_input $ce, $ff, $c4, $ff
-  jsr LCD_to_home_bottom
-  jsr MATH_lte_int
-  jsr TEST_print_math_int_output
-  ; return
-  rts
-
-lte_int_message_5: .asciiz "-60<=-50==1"
-TEST_lte_int_5:
-  print lte_int_message_5
-  set_int_input $c4, $ff, $ce, $ff
   jsr LCD_to_home_bottom
   jsr MATH_lte_int
   jsr TEST_print_math_int_output

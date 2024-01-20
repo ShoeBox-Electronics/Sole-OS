@@ -176,6 +176,5 @@ LCD_display_splash_screen:
   jsr LCD_clear_display
   lda #5 
   jsr TIME_delay_ts
-
   ; return
   rts
