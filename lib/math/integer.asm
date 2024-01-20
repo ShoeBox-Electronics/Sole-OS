@@ -80,7 +80,7 @@ MATH_mlt_int: ; Input1 x Input2 = Output, uses X register
   jsr MATH_clear_int_output 
   jsr MATH_clear_int_misc 
   ldx	#16		; set binary count to 16 
-shift_r:
+@shift_r:
   lsr	MATH_INT_INPUT_1 + 1	; divide MATH_INT_INPUT_1 by 2 
   ror	MATH_INT_INPUT_1
   bcc	rotate_r 
@@ -91,7 +91,7 @@ shift_r:
   sta	MATH_INT_MISC
   lda	MATH_INT_MISC + 1 
 	adc	MATH_INT_INPUT_2 + 1
-rotate_r:
+@rotate_r:
   ror			; rotate partial product 
   sta	MATH_INT_MISC + 1 
   ror	MATH_INT_MISC
