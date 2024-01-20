@@ -32,7 +32,6 @@ MATH_hex_to_string: ; converts 2 bytes into a hex/ASCII string stored at MATH_CO
 @return:
   lda #0
   sta MATH_CONVERT_OUT,y ; null terminator for string
-  ; return
   rts
 
 hex_to_ascii: ; converts whatever's in the A register from hex to ASCII
@@ -43,7 +42,6 @@ hex_to_ascii: ; converts whatever's in the A register from hex to ASCII
 digit:
   adc #'0'
 ascii_done:
-  ; return
   rts
 
 ;;; Hex To Decstring Conversion ;;;
@@ -78,7 +76,6 @@ MATH_int_to_string: ; converts an integer into a dec/ASCII string stored at MATH
   lda #'-'
   jsr MATH_prepend_decstring
 @return:
-  ; return
   rts
 
 MATH_twos_complement_plus_one:
@@ -125,7 +122,6 @@ MATH_hexdec:
   rol MATH_CONVERT_VAL + 1
   lda MATH_CONVERT_MOD
   clc
-  ; return
   rts
 
 ; Add the caracter in the A register to the beginning of the null-terminated string `message`
@@ -144,5 +140,4 @@ MATH_prepend_decstring:
 
   pla
   sta MATH_CONVERT_OUT,y                 ; Pull the null off the stack and add to the end of the string
-  ; return
   rts

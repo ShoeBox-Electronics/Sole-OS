@@ -15,5 +15,4 @@ TEST_wait_and_clear:
   lda #2
   jsr TIME_delay_s
   jsr LCD_clear_display
-  ; return
   rts

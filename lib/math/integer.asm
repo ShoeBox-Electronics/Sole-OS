@@ -29,21 +29,18 @@ MATH_clear_int_inputs:
   sta MATH_INT_INPUT_1 + 1
   sta MATH_INT_INPUT_2
   sta MATH_INT_INPUT_2 + 1
-  ; return
   rts
 
 MATH_clear_int_output:
   lda #0
   sta MATH_INT_OUTPUT
   sta MATH_INT_OUTPUT + 1
-  ; return
   rts
 
 MATH_clear_int_misc:
   lda #0
   sta MATH_INT_MISC
   sta MATH_INT_MISC + 1
-  ; return
   rts
 
 ;;; Basic Math ;;;
@@ -58,7 +55,6 @@ MATH_add_int: ; Input1 + Input2 = Output
   lda MATH_INT_INPUT_1 + 1
   adc MATH_INT_INPUT_2 + 1
   sta MATH_INT_OUTPUT + 1
-  ; return
   rts
 
 MATH_sub_int: ; Input1 - Input2 = Output
@@ -72,7 +68,6 @@ MATH_sub_int: ; Input1 - Input2 = Output
   lda MATH_INT_INPUT_1 + 1
   sbc MATH_INT_INPUT_2 + 1
   sta MATH_INT_OUTPUT + 1
-  ; return
   rts 
 
 ; https://codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product
@@ -100,7 +95,6 @@ MATH_mlt_int: ; Input1 x Input2 = Output, uses X register
   dex
   bne	shift_r 
 
-  ; return
   rts
 
 ; https://codebase64.org/doku.php?id=base:16bit_division_16-bit_result
@@ -151,7 +145,6 @@ MATH_eq_int: ; a == b
   lda #0
 @return:
   sta MATH_INT_OUTPUT
-  ; return
   rts
 
 MATH_lt_int: ; a < b, a: MATH_INT_INPUT_1, b: MATH_INT_INPUT_2
@@ -167,7 +160,6 @@ MATH_lt_int: ; a < b, a: MATH_INT_INPUT_1, b: MATH_INT_INPUT_2
   sta MATH_INT_OUTPUT
   lda #0
   sta MATH_INT_OUTPUT + 1
-  ; return
   rts
 
 MATH_gt_int: ; a > b, a: MATH_INT_INPUT_1, b: MATH_INT_INPUT_2
@@ -186,30 +178,25 @@ MATH_gt_int: ; a > b, a: MATH_INT_INPUT_1, b: MATH_INT_INPUT_2
   lda #1
 @return:
   sta MATH_INT_OUTPUT
-  ; return
   rts
 
 MATH_gte_int:
   jsr MATH_lt_int
   jsr MATH_invert_comparison
-  ; return
   rts
 
 MATH_lte_int:
   jsr MATH_gt_int
   jsr MATH_invert_comparison
-  ; return
   rts
 
 MATH_neq_int:
   jsr MATH_eq_int
   jsr MATH_invert_comparison
-  ; return
   rts
 
 MATH_invert_comparison:
   lda MATH_INT_OUTPUT
   eor #%00000001
   sta MATH_INT_OUTPUT
-  ; return
   rts  

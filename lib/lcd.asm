@@ -32,7 +32,6 @@ LCD_init:
   lda #%00000110 ; Increment and shift cursor, don't shift display
   jsr LCD_send_instruction
   jsr LCD_clear_display
-  ; return
   rts
 
 LCD_wait_until_free: ; Make sure the LCD is ready to take a new command
@@ -52,7 +51,6 @@ LCD_busy: ; wait until the LCD can take another command
   lda #%11111111    ; Port B is back to output
   sta VIA_DDRB
   pla
-  ; return
   rts
 
 LCD_send_instruction:
@@ -65,7 +63,6 @@ LCD_send_instruction:
   sta VIA_PORTA
   lda #0            ; Clear RS/RW/E bits
   sta VIA_PORTA
-  ; return
   rts
 
 LCD_print_char:
@@ -78,7 +75,6 @@ LCD_print_char:
   sta VIA_PORTA
   lda #RS           ; Clear E bits
   sta VIA_PORTA
-  ; return
   rts
 
 LCD_print_string:         ; Print a null-terminated string from memory to the LCD
@@ -91,7 +87,6 @@ LCD_print_string:         ; Print a null-terminated string from memory to the LC
   iny
   jmp @loop
 @done:
-  ; return
   rts
 
 LCD_display_math_convert_out:
@@ -102,45 +97,38 @@ LCD_display_math_convert_out:
   sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
   ; print the string at the string pointer
   jsr LCD_print_string
-  ; return
   rts
 
 LCD_goto_address:
   ; Store destination address in the A register before running
   ora #%10000000    ; OR the "goto address" command with the address we want to go to
   jsr LCD_send_instruction
-  ; return
   rts
 
 LCD_to_home:
   lda #0
   jsr LCD_goto_address
-  ; return
   rts
 
 LCD_to_home_bottom:
   lda #$40
   jsr LCD_goto_address
-  ; return
   rts
 
 LCD_cursor_left:
   lda #%00010000
   jsr LCD_send_instruction
-  ; return
   rts
 
 LCD_cursor_right:
   lda #%00010100
   jsr LCD_send_instruction
-  ; return
   rts
 
 LCD_backspace:
   jsr LCD_cursor_left
   lda #' '
   jsr LCD_print_char
-  ; return
   rts
 
 LCD_clear_display:
@@ -148,7 +136,6 @@ LCD_clear_display:
   jsr LCD_send_instruction
   lda #0
   jsr LCD_goto_address
-  ; return
   rts
 
 LCD_display_splash_screen:
@@ -176,5 +163,4 @@ LCD_display_splash_screen:
   jsr LCD_clear_display
   lda #5 
   jsr TIME_delay_ts
-  ; return
   rts

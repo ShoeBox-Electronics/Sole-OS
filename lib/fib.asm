@@ -9,7 +9,6 @@ FIB_init:
   sta MATH_INT_OUTPUT
   lda #22
   sta FIB_LIMIT
-  ; return
   rts
 
 FIB_display:
@@ -47,7 +46,6 @@ FIB_display:
   ; wait one second
   lda #1
   jsr TIME_delay_s
-  ; return
   rts
 
 FIB_shift_and_add:
@@ -63,7 +61,6 @@ FIB_shift_and_add:
   sta MATH_INT_INPUT_2 + 1
   ; do a+b and store it in output
   jsr MATH_add_int
-  ; return
   rts
 
 FIB_progress:
@@ -71,7 +68,6 @@ FIB_progress:
   jsr FIB_display
   ; print out results and increment fib counter
   dec FIB_LIMIT
-  ; return
   rts
 
 FIB_demo:

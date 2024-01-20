@@ -3,7 +3,6 @@
 ;;; Test Suites ;;;
 TEST_suite_math_convert:
   run_test TEST_hex_to_string
-  ; return
   rts
 
 ;;; Convert ;;;
@@ -19,5 +18,4 @@ TEST_hex_to_string:
 
   jsr LCD_to_home_bottom
   jsr LCD_display_math_convert_out
-  ; return
   rts

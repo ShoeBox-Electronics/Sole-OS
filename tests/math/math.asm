@@ -6,7 +6,6 @@
 TEST_suite_math:
   jsr TEST_suite_math_int
   jsr TEST_suite_math_convert
-  ; return
   rts
 
 TEST_print_math_int_output:
@@ -17,5 +16,4 @@ TEST_print_math_int_output:
   jsr MATH_int_to_string
 
   jsr LCD_display_math_convert_out
-  ; return
   rts
