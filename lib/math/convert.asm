@@ -24,12 +24,12 @@ MATH_hex_to_string: ; converts 2 bytes into a hex/ASCII string stored at MATH_CO
   sta MATH_CONVERT_OUT,y 
   iny
   txa
-  beq @done
+  beq @return
 
   dex
   jmp @loop
 
-@done:
+@return:
   lda #0
   sta MATH_CONVERT_OUT,y ; null terminator for string
   ; return
@@ -72,12 +72,12 @@ MATH_int_to_string: ; converts an integer into a dec/ASCII string stored at MATH
   bne @loop         ; branch if value not zero
   
   lda MATH_FLAG ; negative status
-  beq @done
+  beq @return
 
   ; if it was negative, we need this negative sign too
   lda #'-'
   jsr MATH_prepend_decstring
-@done:
+@return:
   ; return
   rts
 
