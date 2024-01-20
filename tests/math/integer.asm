@@ -1,7 +1,7 @@
 ; TEST - MATH - Integer
 
 ;;; Test Suites ;;;
-TEST_suite_math_int:
+TEST_suite_math_int_all:
   jsr TEST_suite_math_int_comparisons
   jsr TEST_suite_math_int_basic
   rts

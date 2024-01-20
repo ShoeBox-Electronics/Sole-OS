@@ -7,7 +7,7 @@
   
   .include "tests/math/math.asm"
 
-TEST_suite:
+TEST_suite_all:
   jsr TEST_suite_math
   jmp TEST_suite
 
