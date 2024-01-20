@@ -160,10 +160,10 @@ MATH_lt_int: ; a < b, a: MATH_INT_INPUT_1, b: MATH_INT_INPUT_2
   bmi @less_than
 @not_less_than:
   lda #0
-  jmp @done
+  jmp @return
 @less_than:
   lda #1
-@done:
+@return:
   sta MATH_INT_OUTPUT
   lda #0
   sta MATH_INT_OUTPUT + 1
