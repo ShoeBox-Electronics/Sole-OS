@@ -115,47 +115,64 @@ MATH_div_int:
 
 ;;; Comparisons ;;; (VERY ROUGH AND UNTESTED)
 MATH_eq_int: ; a == b
-  ldx #0
-  stx MATH_INT_OUTPUT + 1
-
+  jsr MATH_clear_int_output
   lda MATH_INT_INPUT_1
   cmp MATH_INT_INPUT_2
-  bne @done
+  bne @not_equal
   lda MATH_INT_INPUT_1 + 1
   cmp MATH_INT_INPUT_2 + 1
-  bne @done
-  ldx #1
-@done:
-  stx MATH_INT_OUTPUT
+  bne @not_equal
+; @equal:
+  lda #1
+  jmp @return
+@not_equal:
+  lda #0
+@return:
+  sta MATH_INT_OUTPUT
   ; return
   rts
 
-MATH_lt_int: ; a < b
-  jsr MATH_clear_int_output
-  ldx #1
-  ; Check if the signs are different
-  lda MATH_INT_INPUT_1 + 1
-  eor MATH_INT_INPUT_2 + 1
-  bmi @different_signs
-  lda MATH_INT_INPUT_1 + 1
-  cmp MATH_INT_INPUT_2 + 1
-  bcc @done
-  lda MATH_INT_INPUT_1
-  cmp MATH_INT_INPUT_2
-  bcc @done
-  ldx #0
+MATH_lt_int: ; a < b, a: MATH_INT_INPUT_1, b: MATH_INT_INPUT_2
+  jsr MATH_sub_int
+  lda MATH_INT_OUTPUT + 1
+  bmi @less_than
+@not_less_than:
+  lda #0
   jmp @done
-@different_signs: ; If the signs are different, the negative one is smaller
-  lda MATH_INT_INPUT_1 + 1
-  bmi @done ; If we're the negative one, we're the smaller one
-  ldx #0 ; otherwise, flip it
+@less_than:
+  lda #1
 @done:
-  stx MATH_INT_OUTPUT
+  sta MATH_INT_OUTPUT
+  lda #0
+  sta MATH_INT_OUTPUT + 1
+  ; return
+  rts
+
+MATH_gt_int: ; a < b, a: MATH_INT_INPUT_1, b: MATH_INT_INPUT_2
+  jsr MATH_sub_int
+  lda MATH_INT_OUTPUT + 1
+  beq @not_greater_than
+  bpl @greater_than
+@not_greater_than:
+  lda #0
+  jmp @done
+@greater_than:
+  lda #1
+@done:
+  sta MATH_INT_OUTPUT
+  lda #0
+  sta MATH_INT_OUTPUT + 1
   ; return
   rts
 
 MATH_neq_int: ; a != b
   jsr MATH_eq_int
+  jsr MATH_invert_comparison
+  ; return
+  rts
+
+MATH_gte_int:
+  jsr MATH_lt_int
   jsr MATH_invert_comparison
   ; return
   rts
