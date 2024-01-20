@@ -112,6 +112,18 @@ LCD_goto_address:
   ; return
   rts
 
+LCD_to_home:
+  lda #0
+  jsr LCD_goto_address
+  ; return
+  rts
+
+LCD_to_home_bottom:
+  lda #$40
+  jsr LCD_goto_address
+  ; return
+  rts
+
 LCD_cursor_left:
   lda #%00010000
   jsr LCD_send_instruction

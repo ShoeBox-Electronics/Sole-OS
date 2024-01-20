@@ -19,10 +19,3 @@ TEST_print_math_int_output:
   jsr LCD_display_math_convert_out
   ; return
   rts
-
-TEST_math_prep:
-  jsr MATH_clear_int_inputs
-  lda #$40
-  jsr LCD_goto_address
-  ; return
-  rts

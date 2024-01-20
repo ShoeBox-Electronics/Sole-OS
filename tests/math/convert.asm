@@ -21,8 +21,9 @@ TEST_hex_to_string:
   lda #$fa
   sta MATH_CONVERT_VAL + 1
   jsr MATH_hex_to_string
-
-  jsr TEST_math_prep
+  
+  lda #$40
+  jsr LCD_goto_address
 
   jsr LCD_display_math_convert_out
   ; return
