@@ -1,6 +1,7 @@
 ; MATH: Integers (2 byte signed)
 
 .macro set_int_input l1, h1, l2, h2
+.ifnblank l2
   lda #l1
   sta MATH_INT_INPUT_1
   lda #l2
@@ -9,6 +10,16 @@
   sta MATH_INT_INPUT_1 + 1
   lda #h2
   sta MATH_INT_INPUT_2 + 1
+.endif
+.ifblank l2
+  lda #l1
+  sta MATH_INT_INPUT_1
+  lda #h1
+  sta MATH_INT_INPUT_2
+  lda #0
+  sta MATH_INT_INPUT_1 + 1
+  sta MATH_INT_INPUT_2 + 1
+.endif
 .endmacro
 
 ;;; Helpers ;;;
