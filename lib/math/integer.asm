@@ -148,31 +148,39 @@ MATH_lt_int: ; a < b, a: MATH_INT_INPUT_1, b: MATH_INT_INPUT_2
   ; return
   rts
 
-MATH_gt_int: ; a < b, a: MATH_INT_INPUT_1, b: MATH_INT_INPUT_2
-  jsr MATH_sub_int
-  lda MATH_INT_OUTPUT + 1
+MATH_gt_int: ; a > b, a: MATH_INT_INPUT_1, b: MATH_INT_INPUT_2
+  jsr MATH_gte_int
+  lda MATH_INT_OUTPUT
   beq @not_greater_than
-  bpl @greater_than
+@greater_than_maybe_equal:
+  jsr MATH_eq_int
+  lda MATH_INT_OUTPUT
+  bne @not_greater_than
+  jmp @greater_than
 @not_greater_than:
   lda #0
-  jmp @done
+  jmp @return
 @greater_than:
   lda #1
-@done:
+@return:
   sta MATH_INT_OUTPUT
-  lda #0
-  sta MATH_INT_OUTPUT + 1
   ; return
   rts
 
-MATH_neq_int: ; a != b
-  jsr MATH_eq_int
+MATH_lte_int: ; a <= b
+  jsr MATH_gt_int
   jsr MATH_invert_comparison
   ; return
   rts
 
 MATH_gte_int:
   jsr MATH_lt_int
+  jsr MATH_invert_comparison
+  ; return
+  rts
+
+MATH_neq_int:
+  jsr MATH_eq_int
   jsr MATH_invert_comparison
   ; return
   rts
