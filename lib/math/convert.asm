@@ -78,6 +78,7 @@ MATH_int_to_string: ; converts an integer into a dec/ASCII string stored at MATH
 @return:
   rts
 
+; TODO: Duplicate of math_opp_int
 MATH_twos_complement_plus_one:
   clc
   lda MATH_CONVERT_VAL

@@ -8,8 +8,8 @@
   .include "tests/math/math.asm"
 
 TEST_suite_all:
-  jsr TEST_suite_math
-  jmp TEST_suite
+  jsr TEST_suite_math_all
+  jmp TEST_suite_all
 
 TEST_wait_and_clear:
   lda #2

@@ -1,23 +1,20 @@
 ; MATH: Integers (2 byte signed)
 
 .macro set_int_input l1, h1, l2, h2
-.ifnblank l2
+.ifnblank l1
   lda #l1
   sta MATH_INT_INPUT_1
+.endif
+.ifnblank l2
   lda #l2
   sta MATH_INT_INPUT_2
+.endif 
+.ifnblank h1
   lda #h1
   sta MATH_INT_INPUT_1 + 1
-  lda #h2
-  sta MATH_INT_INPUT_2 + 1
 .endif
-.ifblank l2
-  lda #l1
-  sta MATH_INT_INPUT_1
-  lda #h1
-  sta MATH_INT_INPUT_2
-  lda #0
-  sta MATH_INT_INPUT_1 + 1
+.ifnblank h2
+  lda #h2
   sta MATH_INT_INPUT_2 + 1
 .endif
 .endmacro
@@ -43,7 +40,26 @@ MATH_clear_int_misc:
   sta MATH_INT_MISC + 1
   rts
 
+MATH_int_move_out_in:
+  lda MATH_INT_OUTPUT
+  sta MATH_INT_INPUT_1
+  lda MATH_INT_OUTPUT + 1
+  sta MATH_INT_INPUT_1 + 1
+  rts
+
 ;;; Basic Math ;;;
+MATH_opp_int: ; -Input1 = Output
+  clc
+  lda MATH_INT_INPUT_1
+  eor #$ff
+  adc #1
+  sta MATH_INT_OUTPUT
+  lda MATH_INT_INPUT_1 + 1
+  eor #$ff
+  adc #0
+  sta MATH_INT_OUTPUT + 1
+  rts
+
 MATH_add_int: ; Input1 + Input2 = Output
   ; clear carry flag for addition
   clc
@@ -78,7 +94,7 @@ MATH_mlt_int: ; Input1 x Input2 = Output, uses X register
 @shift_r:
   lsr	MATH_INT_INPUT_1 + 1	; divide MATH_INT_INPUT_1 by 2 
   ror	MATH_INT_INPUT_1
-  bcc	rotate_r 
+  bcc	@rotate_r 
 
   lda	MATH_INT_MISC	; get upper half of product and add multiplicand
   clc
@@ -93,7 +109,7 @@ MATH_mlt_int: ; Input1 x Input2 = Output, uses X register
   ror	MATH_INT_OUTPUT + 1 
   ror	MATH_INT_OUTPUT 
   dex
-  bne	shift_r 
+  bne	@shift_r 
 
   rts
 
