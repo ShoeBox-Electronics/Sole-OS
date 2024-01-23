@@ -145,6 +145,14 @@ MATH_div_int:
   ; return
 	rts
 
+MATH_mod_int:
+  jsr MATH_div_int
+  lda MATH_INT_MISC
+  sta MATH_INT_OUTPUT
+  lda MATH_INT_MISC + 1
+  sta MATH_INT_OUTPUT + 1
+  rts
+
 ;;; Comparisons ;;; (VERY ROUGH AND UNTESTED)
 MATH_eq_int: ; a == b
   jsr MATH_clear_int_output

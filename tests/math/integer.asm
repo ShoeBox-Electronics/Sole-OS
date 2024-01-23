@@ -12,6 +12,7 @@ TEST_suite_math_int_basic:
   run_test TEST_sub_int
   run_test TEST_mult_int
   run_test TEST_div_int
+  run_test TEST_mod_int
   rts
 
 TEST_suite_math_int_comparisons:
@@ -89,6 +90,15 @@ TEST_div_int:
   jsr MATH_int_to_string
 
   jsr LCD_display_math_convert_out
+  rts
+
+div_mod_message: .asciiz "170%13==1"
+TEST_mod_int: 
+  print div_mod_message
+  set_int_input 170, 0, 13, 0
+  jsr LCD_to_home_bottom
+  jsr MATH_mod_int
+  jsr TEST_print_math_int_output
   rts
 
 ;;; Comparisons ;;;
