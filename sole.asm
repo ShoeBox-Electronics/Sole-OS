@@ -5,7 +5,7 @@
   .include "lib/lcd.asm"                ; Lib for working with the HD44780 LCD
   .include "lib/math/math.asm"          ; Lib for math
   .include "lib/time.asm"               ; Lib for time delays
-  .include "lib/fib.asm"                ; Lib for Fibonacci numbers
+  .include "demo/fib.asm"                ; Lib for Fibonacci numbers
 
   .include "tests/test.asm"             ; Lib for testing other functions
 

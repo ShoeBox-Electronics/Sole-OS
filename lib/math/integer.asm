@@ -245,6 +245,7 @@ MATH_invert_comparison:
   sta MATH_INT_OUTPUT
   rts  
 
+; TODO: reduce the number of checks from ~O(n) to ~O(sqrt(n)) (requires sqrt)
 MATH_is_prime:
   ; check weird cases
   sec

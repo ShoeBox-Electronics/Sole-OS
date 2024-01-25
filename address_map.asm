@@ -25,7 +25,7 @@ MATH_FXD_INPUT_1    = $0230             ; MATH ; Math Fixed Input 1             
 MATH_FXD_INPUT_2    = $0234             ; MATH ; Math Fixed Input 2             ; 4 bytes
 MATH_FXD_OUTPUT     = $0238             ; MATH ; Math Fixed Output              ; 4 bytes
 MATH_FXD_MISC       = $023c             ; MATH ; Math Fixed Misc                ; 4 bytes
-  ; 03 Page
+  ; 03 Page (Demos)
     ; Fib
 FIB_LIMIT           = $0300             ; MATH ; Fibonacci Counter Limit        ; 1 byte
   ; 04 Page
