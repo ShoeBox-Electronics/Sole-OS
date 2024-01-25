@@ -25,8 +25,8 @@ TEST_suite_math_int_basic:
   rts
 
 TEST_suite_math_int_primes:
-  test_for_prime $25, $01
-  test_for_prime $db, $fe ; -293
+  test_for_prime $25, $01 ; 293, prime
+  test_for_prime $db, $fe ; -293, prime
   
   test_for_prime 0, 0
   test_for_prime 1, 0
@@ -61,9 +61,6 @@ TEST_suite_math_int_comparisons:
   run_test TEST_gte_int_2
   run_test TEST_gte_int_3
   rts
-
-;;; Primes ;;;
-
 
 ;;; Basic Math ;;;
 opp_int_message:     .asciiz "-50 = -50"
