@@ -14,12 +14,12 @@ MATH_hex_to_string: ; converts 2 bytes into a hex/ASCII string stored at MATH_CO
   lsr
   lsr
   and #$0f ; mask the nibble
-  jsr hex_to_ascii  
+  jsr MATH_hex_to_ascii  
   sta MATH_CONVERT_OUT,y  
   iny
   lda MATH_CONVERT_VAL,x  
   and #$0f ; mask the nibble
-  jsr hex_to_ascii 
+  jsr MATH_hex_to_ascii 
   sta MATH_CONVERT_OUT,y 
   iny
   txa
@@ -31,7 +31,7 @@ MATH_hex_to_string: ; converts 2 bytes into a hex/ASCII string stored at MATH_CO
   sta MATH_CONVERT_OUT,y ; null terminator for string
   rts
 
-hex_to_ascii: ; converts whatever's in the A register from hex to ASCII
+MATH_hex_to_ascii: ; converts whatever's in the A register from hex to ASCII
   cmp #10
   bcc @digit
   adc #'A' - 11
@@ -54,11 +54,10 @@ MATH_int_to_string: ; converts an integer into a dec/ASCII string stored at MATH
   ; flag that it was negative
   lda #1
   sta MATH_FLAG ; negative status
-  lda MATH_CONVERT_VAL
   jsr MATH_twos_complement_plus_one
 @loop:
   jsr MATH_dec_to_ascii
-  jsr MATH_prepend_decstring
+  jsr MATH_prepend_string
   ; if value != 0, then continue dividing
   lda MATH_CONVERT_VAL
   ora MATH_CONVERT_VAL + 1
@@ -67,11 +66,11 @@ MATH_int_to_string: ; converts an integer into a dec/ASCII string stored at MATH
   beq @return
   ; if it was negative, we need this negative sign too
   lda #'-'
-  jsr MATH_prepend_decstring
+  jsr MATH_prepend_string
 @return:
   rts
 
-; TODO: Duplicate of math_opp_int
+; TODO: Duplicate of MATH_opp_int
 MATH_twos_complement_plus_one:
   clc
   lda MATH_CONVERT_VAL
@@ -82,7 +81,6 @@ MATH_twos_complement_plus_one:
   eor #$ff
   adc #0
   sta MATH_CONVERT_VAL + 1
-  ; return 
   rts
 
 MATH_dec_to_ascii:
@@ -118,7 +116,7 @@ MATH_dec_to_ascii:
   rts
 
 ; Add the caracter in the A register to the beginning of the null-terminated string `message`
-MATH_prepend_decstring:
+MATH_prepend_string:
   pha                                   ; Push first character onto the stack
   ldy #0
 @loop:
@@ -133,4 +131,3 @@ MATH_prepend_decstring:
   pla
   sta MATH_CONVERT_OUT,y                 ; Pull the null off the stack and add to the end of the string
   rts
-  
