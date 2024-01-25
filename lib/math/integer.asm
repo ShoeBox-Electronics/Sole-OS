@@ -248,29 +248,35 @@ MATH_invert_comparison:
 ; TODO: reduce the number of checks from ~O(n) to ~O(sqrt(n)) (requires sqrt)
 MATH_is_prime:
   ; check weird cases
+  lda MATH_INT_INPUT_1 + 1
+  bne @init
   sec
   lda MATH_INT_INPUT_1
   cmp #1
   beq @not_prime ; 1 is not prime
   cmp #2
   beq @prime ; 2 is prime
+@init:
   lda #2 ; start checking with 2
   sta MATH_INT_INPUT_2
   lda #0
   sta MATH_INT_INPUT_2 + 1
   ; check if negative and invert if so
-  lda MATH_INT_INPUT_1
-  and #%1000000
-  beq @loop
+  lda MATH_INT_INPUT_1 + 1
+  bpl @loop
   jsr MATH_opp_int
   jsr MATH_int_move_out_in
 @loop:
   ; check if there's a remainder when dividing by x
   jsr MATH_mod_int
   lda MATH_INT_OUTPUT
-  beq @not_prime
+  bne @continue
+  lda MATH_INT_OUTPUT + 1
+  bne @continue
+  jmp @not_prime
   ; increment our divisor and compare it to our number to check
   ;  if zero, we're done checking and it's prime
+@continue:
   inc MATH_INT_INPUT_2
   bne @check_if_done
   inc MATH_INT_INPUT_2 + 1
@@ -288,4 +294,6 @@ MATH_is_prime:
   lda #0
 @return:
   sta MATH_INT_OUTPUT
+  lda #0
+  sta MATH_INT_OUTPUT + 1
   rts
