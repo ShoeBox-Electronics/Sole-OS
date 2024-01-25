@@ -17,5 +17,5 @@ TEST_hex_to_string:
   jsr MATH_hex_to_string
 
   jsr LCD_to_home_bottom
-  jsr LCD_display_math_convert_out
+  print MATH_CONVERT_OUT
   rts

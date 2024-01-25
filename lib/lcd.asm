@@ -97,17 +97,6 @@ LCD_print_string:         ; Print a null-terminated string from memory to the LC
   jmp @loop
 @done:
   rts
-
-LCD_display_math_convert_out:
-  ; store output location into string pointer
-  lda #<MATH_CONVERT_OUT    ; #< Means low byte of the address of a label.  
-  sta LCD_STRING_PTR       ; Save to pointer  
-  lda #>MATH_CONVERT_OUT    ; #> Means high byte of the address of a label.  
-  sta LCD_STRING_PTR + 1   ; Save to pointer + 1  
-  ; print the string at the string pointer
-  jsr LCD_print_string
-  rts
-
 LCD_goto_address:
   ; Store destination address in the A register before running
   ora #%10000000    ; OR the "goto address" command with the address we want to go to

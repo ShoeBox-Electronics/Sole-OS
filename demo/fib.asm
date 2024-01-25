@@ -14,22 +14,12 @@ FIB_init:
 FIB_display:
   jsr LCD_clear_display
   ; print INPUT_1
-  lda MATH_INT_INPUT_1
-  sta MATH_CONVERT_VAL
-  lda MATH_INT_INPUT_1 + 1
-  sta MATH_CONVERT_VAL + 1
-  jsr MATH_int_to_string
-  jsr LCD_display_math_convert_out
+  print_int MATH_INT_INPUT_1
   ; print '+'
   lda #'+'
   jsr LCD_print_char
   ; print INPUT_2
-  lda MATH_INT_INPUT_2
-  sta MATH_CONVERT_VAL
-  lda MATH_INT_INPUT_2 + 1
-  sta MATH_CONVERT_VAL + 1
-  jsr MATH_int_to_string
-  jsr LCD_display_math_convert_out
+  print_int MATH_INT_INPUT_2
   ; print '='
   lda #'='
   jsr LCD_print_char
@@ -37,12 +27,7 @@ FIB_display:
   lda #$41
   jsr LCD_goto_address
   ; print OUTPUT
-  lda MATH_INT_OUTPUT
-  sta MATH_CONVERT_VAL
-  lda MATH_INT_OUTPUT + 1
-  sta MATH_CONVERT_VAL + 1
-  jsr MATH_int_to_string
-  jsr LCD_display_math_convert_out
+  print_int MATH_INT_OUTPUT
   ; wait one second
   lda #1
   jsr TIME_delay_s
