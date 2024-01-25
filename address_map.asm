@@ -12,14 +12,19 @@ LCD_STRING_PTR      = $00               ; LCD  ; Location of a string to print  
     ; Misc
 MATH_FLAG           = $0200             ; MATH ; Flag                           ; 2 bytes
     ; Convert
-MATH_CONVERT_VAL    = $0202             ; MATH ; Conversion Value               ; 2 bytes
-MATH_CONVERT_MOD    = $0204             ; MATH ; Conversion Modulus             ; 2 bytes
-MATH_CONVERT_OUT    = $0206             ; MATH ; Conversion Output              ; 7 bytes (6 for hex)
+MATH_CONVERT_VAL    = $0202             ; MATH ; Conversion Value               ; 4 bytes
+MATH_CONVERT_MOD    = $0206             ; MATH ; Conversion Modulus             ; 4 bytes
+MATH_CONVERT_OUT    = $020a             ; MATH ; Conversion Output              ; 7 bytes
     ; Integer
-MATH_INT_INPUT_1    = $0210             ; MATH ; Math Input 1                   ; 2 bytes
-MATH_INT_INPUT_2    = $0212             ; MATH ; Math Input 2                   ; 2 bytes
-MATH_INT_OUTPUT     = $0214             ; MATH ; Math Output                    ; 2 bytes
-MATH_INT_MISC       = $0216             ; MATH ; Math Misc                      ; 2 bytes
+MATH_INT_INPUT_1    = $0220             ; MATH ; Math Int Input 1               ; 2 bytes
+MATH_INT_INPUT_2    = $0222             ; MATH ; Math Int Input 2               ; 2 bytes
+MATH_INT_OUTPUT     = $0224             ; MATH ; Math Int Output                ; 2 bytes
+MATH_INT_MISC       = $0226             ; MATH ; Math Int Misc                  ; 2 bytes
+    ; Fixed
+MATH_FXD_INPUT_1    = $0230             ; MATH ; Math Fixed Input 1             ; 4 bytes
+MATH_FXD_INPUT_2    = $0234             ; MATH ; Math Fixed Input 2             ; 4 bytes
+MATH_FXD_OUTPUT     = $0238             ; MATH ; Math Fixed Output              ; 4 bytes
+MATH_FXD_MISC       = $023c             ; MATH ; Math Fixed Misc                ; 4 bytes
   ; 03 Page
     ; Fib
 FIB_LIMIT           = $0300             ; MATH ; Fibonacci Counter Limit        ; 1 byte
