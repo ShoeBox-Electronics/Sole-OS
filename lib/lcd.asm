@@ -8,6 +8,15 @@
   jsr LCD_print_string   
 .endmacro
 
+.macro print_int int
+  lda int
+  sta MATH_CONVERT_VAL
+  lda int + 1
+  sta MATH_CONVERT_VAL + 1
+  jsr MATH_int_to_string
+  print MATH_CONVERT_OUT  
+.endmacro
+
 ; VIA/LCD bitcodes
 E  = %10000000  ; Enable pin 
 RW = %01000000  ; Read/Write pin
@@ -134,8 +143,7 @@ LCD_backspace:
 LCD_clear_display:
   lda #%00000001    ; Clear display
   jsr LCD_send_instruction
-  lda #0
-  jsr LCD_goto_address
+  jsr LCD_to_home
   rts
 
 LCD_display_splash_screen:

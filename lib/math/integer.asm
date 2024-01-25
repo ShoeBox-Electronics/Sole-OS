@@ -88,6 +88,11 @@ MATH_sub_int: ; Input1 - Input2 = Output
 
 ; https://codebase64.org/doku.php?id=base:16bit_multiplication_32-bit_product
 MATH_mlt_int: ; Input1 x Input2 = Output, uses X register
+  lda MATH_INT_INPUT_1
+  pha
+  lda MATH_INT_INPUT_1 + 1
+  pha
+
   jsr MATH_clear_int_output 
   jsr MATH_clear_int_misc 
   ldx	#16		; set binary count to 16 
@@ -109,12 +114,22 @@ MATH_mlt_int: ; Input1 x Input2 = Output, uses X register
   ror	MATH_INT_OUTPUT + 1 
   ror	MATH_INT_OUTPUT 
   dex
-  bne	@shift_r 
+  bne	@shift_r
+
+  pla
+  sta MATH_INT_INPUT_1 + 1
+  pla
+  sta MATH_INT_INPUT_1
 
   rts
 
 ; https://codebase64.org/doku.php?id=base:16bit_division_16-bit_result
 MATH_div_int:
+  lda MATH_INT_INPUT_1
+  pha
+  lda MATH_INT_INPUT_1 + 1
+  pha
+
   jsr MATH_clear_int_output 
   jsr MATH_clear_int_misc 
 	ldx #16	                               ; repeat for each bit: ...
@@ -142,7 +157,12 @@ MATH_div_int:
   sta MATH_INT_OUTPUT
   lda MATH_INT_INPUT_1 + 1
   sta MATH_INT_OUTPUT + 1
-  ; return
+  
+  pla
+  sta MATH_INT_INPUT_1 + 1
+  pla
+  sta MATH_INT_INPUT_1
+
 	rts
 
 MATH_mod_int:
