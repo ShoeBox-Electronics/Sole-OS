@@ -244,3 +244,47 @@ MATH_invert_comparison:
   eor #%00000001
   sta MATH_INT_OUTPUT
   rts  
+
+MATH_is_prime:
+  ; check weird cases
+  sec
+  lda MATH_INT_INPUT_1
+  cmp #1
+  beq @not_prime ; 1 is not prime
+  cmp #2
+  beq @prime ; 2 is prime
+  lda #2 ; start checking with 2
+  sta MATH_INT_INPUT_2
+  lda #0
+  sta MATH_INT_INPUT_2 + 1
+  ; check if negative and invert if so
+  lda MATH_INT_INPUT_1
+  and #%1000000
+  beq @loop
+  jsr MATH_opp_int
+  jsr MATH_int_move_out_in
+@loop:
+  ; check if there's a remainder when dividing by x
+  jsr MATH_mod_int
+  lda MATH_INT_OUTPUT
+  beq @not_prime
+  ; increment our divisor and compare it to our number to check
+  ;  if zero, we're done checking and it's prime
+  inc MATH_INT_INPUT_2
+  bne @check_if_done
+  inc MATH_INT_INPUT_2 + 1
+@check_if_done:
+  lda MATH_INT_INPUT_2
+  cmp MATH_INT_INPUT_1
+  bne @loop
+  lda MATH_INT_INPUT_2 + 1
+  cmp MATH_INT_INPUT_1 + 1
+  bne @loop
+@prime:
+  lda #1
+  jmp @return
+@not_prime:
+  lda #0
+@return:
+  sta MATH_INT_OUTPUT
+  rts

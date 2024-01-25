@@ -12,7 +12,7 @@ TEST_suite_all:
   jmp TEST_suite_all
 
 TEST_wait_and_clear:
-  lda #2
+  lda #1
   jsr TIME_delay_s
   jsr LCD_clear_display
   rts

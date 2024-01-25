@@ -1,7 +1,16 @@
 ; TEST - MATH - Integer
+.macro test_for_prime numL, numH
+  set_int_input numL, numH, 0, 0
+  print_int MATH_INT_INPUT_1
+  jsr LCD_to_home_bottom
+  jsr MATH_is_prime
+  print_int MATH_INT_OUTPUT
+  jsr TEST_wait_and_clear
+.endmacro
 
 ;;; Test Suites ;;;
 TEST_suite_math_int_all:
+  jsr TEST_suite_math_int_primes
   jsr TEST_suite_math_int_basic
   jsr TEST_suite_math_int_comparisons
   rts
@@ -13,6 +22,23 @@ TEST_suite_math_int_basic:
   run_test TEST_mult_int
   run_test TEST_div_int
   run_test TEST_mod_int
+  rts
+
+TEST_suite_math_int_primes:
+  test_for_prime $25, $01
+  test_for_prime $db, $fe ; -293
+  
+  test_for_prime 0, 0
+  test_for_prime 1, 0
+  test_for_prime 2, 0
+  test_for_prime 3, 0
+  test_for_prime 4, 0
+  test_for_prime 5, 0
+  test_for_prime 6, 0
+  test_for_prime 7, 0
+  test_for_prime 8, 0
+  test_for_prime 9, 0
+  test_for_prime 10, 0
   rts
 
 TEST_suite_math_int_comparisons:
@@ -35,6 +61,9 @@ TEST_suite_math_int_comparisons:
   run_test TEST_gte_int_2
   run_test TEST_gte_int_3
   rts
+
+;;; Primes ;;;
+
 
 ;;; Basic Math ;;;
 opp_int_message:     .asciiz "-50 = -50"

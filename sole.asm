@@ -11,10 +11,9 @@
 
 reset:
   jsr LCD_init
-  ; jsr TEST_suite_all ; when left uncommented, nothing but the test suite will run
+  jsr TEST_suite_all ; when left uncommented, nothing but the test suite will run
   ; jsr LCD_display_splash_screen
   ; jsr FIB_demo
-  .include "demo/prime.asm"             ; prime demo
 nmi:
   ; return
   rti
