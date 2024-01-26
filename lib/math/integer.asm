@@ -92,7 +92,6 @@ MATH_mlt_int: ; Input1 x Input2 = Output, uses X register
   pha
   lda MATH_INT_INPUT_1 + 1
   pha
-
   jsr MATH_clear_int_output 
   jsr MATH_clear_int_misc 
   ldx	#16		; set binary count to 16 
@@ -100,7 +99,6 @@ MATH_mlt_int: ; Input1 x Input2 = Output, uses X register
   lsr	MATH_INT_INPUT_1 + 1	; divide MATH_INT_INPUT_1 by 2 
   ror	MATH_INT_INPUT_1
   bcc	@rotate_r 
-
   lda	MATH_INT_MISC	; get upper half of product and add multiplicand
   clc
   adc	MATH_INT_INPUT_2
@@ -115,12 +113,10 @@ MATH_mlt_int: ; Input1 x Input2 = Output, uses X register
   ror	MATH_INT_OUTPUT 
   dex
   bne	@shift_r
-
   pla
   sta MATH_INT_INPUT_1 + 1
   pla
   sta MATH_INT_INPUT_1
-
   rts
 
 ; https://codebase64.org/doku.php?id=base:16bit_division_16-bit_result
@@ -129,7 +125,6 @@ MATH_div_int:
   pha
   lda MATH_INT_INPUT_1 + 1
   pha
-
   jsr MATH_clear_int_output 
   jsr MATH_clear_int_misc 
 	ldx #16	                               ; repeat for each bit: ...
@@ -145,24 +140,20 @@ MATH_div_int:
 	lda MATH_INT_MISC + 1
 	sbc MATH_INT_INPUT_2 + 1
 	bcc @continue	                          ; if carry=0 then divisor didn't fit in yet
-
 	sta MATH_INT_MISC + 1	                  ; else save substraction result as new remainder,
 	sty MATH_INT_MISC	
 	inc MATH_INT_INPUT_1	                  ; and INCrement result cause divisor fit in 1 times
 @continue:
 	dex
 	bne @loop	
-
   lda MATH_INT_INPUT_1
   sta MATH_INT_OUTPUT
   lda MATH_INT_INPUT_1 + 1
   sta MATH_INT_OUTPUT + 1
-  
   pla
   sta MATH_INT_INPUT_1 + 1
   pla
   sta MATH_INT_INPUT_1
-
 	rts
 
 MATH_mod_int:
