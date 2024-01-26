@@ -97,6 +97,7 @@ LCD_print_string:         ; Print a null-terminated string from memory to the LC
   jmp @loop
 @done:
   rts
+
 LCD_goto_address:
   ; Store destination address in the A register before running
   ora #%10000000    ; OR the "goto address" command with the address we want to go to
@@ -136,24 +137,9 @@ LCD_clear_display:
   rts
 
 LCD_display_splash_screen:
-  ; Load message_1 into the LCD_STRING_PTR
-  lda #<SPLASH_1          ; #< Means low byte of the address of a label.  
-  sta LCD_STRING_PTR      ; Save to pointer  
-  lda #>SPLASH_1          ; #> Means high byte of the address of a label.  
-  sta LCD_STRING_PTR + 1  ; Save to pointer + 1  
-  jsr LCD_print_string    ; Go print the string
-
-  ; Go to second line of LCD display
-  lda #$40                
-  jsr LCD_goto_address
-
-  ; Load message_2 into the LCD_STRING_PTR
-  lda #<SPLASH_2             ; #< Means low byte of the address of a label.  
-  sta LCD_STRING_PTR         ; Save to pointer  
-  lda #>SPLASH_2             ; #> Means high byte of the address of a label.  
-  sta LCD_STRING_PTR + 1     ; Save to pointer + 1  
-  jsr LCD_print_string       ; Go print the string
-
+  print SPLASH_1
+  jsr LCD_to_home_bottom
+  print SPLASH_2
   ; Pause for 3s, clear display, and wait half a second
   lda #3
   jsr TIME_delay_s
