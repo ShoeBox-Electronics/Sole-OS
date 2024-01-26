@@ -158,10 +158,10 @@ MATH_div_int:
 
 MATH_mod_int:
   jsr MATH_div_int
-  lda MATH_INT_MISC
-  sta MATH_INT_OUTPUT
   lda MATH_INT_MISC + 1
   sta MATH_INT_OUTPUT + 1
+  lda MATH_INT_MISC
+  sta MATH_INT_OUTPUT
   rts
 
 MATH_sqrt_int:
@@ -289,7 +289,6 @@ MATH_is_prime:
 @loop:
   ; check if there's a remainder when dividing by x
   jsr MATH_mod_int
-  lda MATH_INT_OUTPUT
   bne @continue
   lda MATH_INT_OUTPUT + 1
   bne @continue
