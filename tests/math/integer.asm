@@ -25,7 +25,7 @@ TEST_suite_math_int_basic:
   rts
 
 TEST_suite_math_int_primes:
-  test_for_prime $ed, $7f ; 32749, prime
+  test_for_prime $ed, $7f ; 32749, prime (longest test, takes ~34.5s)
 
   test_for_prime $25, $01 ; 293, prime
   test_for_prime $db, $fe ; -293, prime
