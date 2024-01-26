@@ -1,6 +1,11 @@
 ; TEST - MATH - Integer
 .macro test_for_prime numL, numH
+.ifnblank numH
   set_int_input numL, numH, 0, 0
+.endif
+.ifblank numH
+  set_int_input numL, 0, 0, 0
+.endif
   print_int MATH_INT_INPUT_1
   jsr LCD_to_home_bottom
   jsr MATH_is_prime
@@ -30,17 +35,17 @@ TEST_suite_math_int_primes:
   test_for_prime $25, $01 ; 293, prime
   test_for_prime $db, $fe ; -293, prime
   
-  test_for_prime 0, 0
-  test_for_prime 1, 0
-  test_for_prime 2, 0
-  test_for_prime 3, 0
-  test_for_prime 4, 0
-  test_for_prime 5, 0
-  test_for_prime 6, 0
-  test_for_prime 7, 0
-  test_for_prime 8, 0
-  test_for_prime 9, 0
-  test_for_prime 10, 0
+  test_for_prime 0
+  test_for_prime 1
+  test_for_prime 2
+  test_for_prime 3
+  test_for_prime 4
+  test_for_prime 5
+  test_for_prime 6
+  test_for_prime 7
+  test_for_prime 8
+  test_for_prime 9
+  test_for_prime 10
   rts
 
 TEST_suite_math_int_comparisons:
