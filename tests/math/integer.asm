@@ -15,12 +15,13 @@
 
 ;;; Test Suites ;;;
 TEST_suite_math_int_all:
-  jsr TEST_suite_math_int_primes
   jsr TEST_suite_math_int_basic
+  jsr TEST_suite_math_int_primes
   jsr TEST_suite_math_int_comparisons
   rts
 
 TEST_suite_math_int_basic:
+  run_test TEST_sqrt_int
   run_test TEST_opp_int
   run_test TEST_add_int
   run_test TEST_sub_int
@@ -70,7 +71,16 @@ TEST_suite_math_int_comparisons:
   rts
 
 ;;; Basic Math ;;;
-opp_int_message:     .asciiz "-50 = -50"
+sqrt_int_message:     .asciiz "sqrt(25)==5"
+TEST_sqrt_int:
+  print sqrt_int_message          
+  set_int_input 25, 0, 0, 0
+  jsr LCD_to_home_bottom
+  jsr MATH_sqrt_int
+  print_int MATH_INT_OUTPUT
+  rts
+
+opp_int_message:     .asciiz "-(50)=-50"
 TEST_opp_int:
   print opp_int_message          
   set_int_input 50, 0, 50, 0
@@ -112,16 +122,14 @@ TEST_div_int:
   jsr LCD_to_home_bottom
   jsr MATH_div_int
   print_int MATH_INT_OUTPUT
-
   lda #'r'
   jsr LCD_print_char
-
   print_int MATH_INT_MISC
   rts
 
-div_mod_message: .asciiz "170%13==1"
+mod_int_message: .asciiz "170%13==1"
 TEST_mod_int: 
-  print div_mod_message
+  print mod_int_message
   set_int_input 170, 0, 13, 0
   jsr LCD_to_home_bottom
   jsr MATH_mod_int

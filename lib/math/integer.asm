@@ -164,6 +164,35 @@ MATH_mod_int:
   sta MATH_INT_OUTPUT + 1
   rts
 
+MATH_sqrt_int:
+  lda #0
+  sta MATH_INT_OUTPUT
+  sta MATH_INT_OUTPUT + 1
+  sta MATH_INT_MISC
+  sta MATH_INT_MISC + 1
+  ldx #8
+@loop:
+  sec
+  lda MATH_INT_INPUT_1 + 1
+  sbc #$40
+  tay
+  lda MATH_INT_MISC
+  sbc MATH_INT_OUTPUT
+  bcc @continue
+  sty MATH_INT_INPUT_1 + 1
+  sta MATH_INT_MISC
+@continue:
+  rol MATH_INT_OUTPUT
+  asl MATH_INT_INPUT_1
+  rol MATH_INT_INPUT_1 + 1
+  rol MATH_INT_MISC
+  asl MATH_INT_INPUT_1
+  rol MATH_INT_INPUT_1 + 1
+  rol MATH_INT_MISC
+  dex
+  bne @loop
+  rts
+
 ;;; Comparisons ;;; (VERY ROUGH AND UNTESTED)
 MATH_eq_int: ; a == b
   jsr MATH_clear_int_output
