@@ -31,11 +31,9 @@ LCD_init:
   sta VIA_DDRB
   lda #%11100000 ; Set top 3 pins on port A to output (for LCD signals)
   sta VIA_DDRA
-
   ; LCD true init
   lda #%00111000 ; Set 8-bit mode, 2-line display, 5x8 font
   jsr LCD_send_instruction
-
   lda #%00001110 ; Display on, cursor on, blink off
   jsr LCD_send_instruction
   lda #%00000110 ; Increment and shift cursor, don't shift display
@@ -47,14 +45,14 @@ LCD_wait_until_free: ; Make sure the LCD is ready to take a new command
   pha
   lda #%00000000    ; Port B is input
   sta VIA_DDRB
-LCD_busy: ; wait until the LCD can take another command
+@loop: ; wait until the LCD can take another command
   lda #RW
   sta VIA_PORTA
   lda #(RW | E)
   sta VIA_PORTA
   lda VIA_PORTB
   and #%10000000
-  bne LCD_busy      ; Checking the busy flag from the LCD
+  bne @loop      ; Checking the busy flag from the LCD
   lda #RW
   sta VIA_PORTA
   lda #%11111111    ; Port B is back to output
