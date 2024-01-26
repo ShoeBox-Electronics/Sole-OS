@@ -5,42 +5,43 @@ TIME_init:
 
 TIME_delay_s:       ; Delay for 1s times the value in the A register (max 255s, 4.25m)
   sta TIME_S_COUNT
-delay_s_loop:       ; Delay for 1s
+@loop:       ; Delay for 1s
   lda #10
   jsr TIME_delay_ts
   lda TIME_S_COUNT
-  beq delay_s_end
+  beq @end
   dec TIME_S_COUNT
-  jmp delay_s_loop
-delay_s_end:
+  jmp @loop
+@end:
   rts
 
 TIME_delay_ts:      ; Delay for 0.1s times the value in the A register (max 25.5s)
   sta TIME_TS_COUNT
-delay_ts_loop:      ; Delay for 0.1s
+@loop:      ; Delay for 0.1s
   lda #100
   jsr TIME_delay_ms
   lda TIME_TS_COUNT
-  beq delay_ts_end
+  beq @end
   dec TIME_TS_COUNT
-  jmp delay_ts_loop
-delay_ts_end:
+  jmp @loop
+@end:
   rts
 
 TIME_delay_ms:      ; Delay for 1ms times the value in the A register (max 255ms)
   sta TIME_MS_COUNT ; Load the ms to wait
-delay_ms_loop:      
-  lda #$e8
+@loop:      
+  lda #$e8 ; 1000 (lb)
   sta VIA_T1CL
-  lda #$03
+  lda #$03 ; 1000 (hb)
   sta VIA_T1CH      ; Load the clocks to wait (this line starts the clock)
   lda TIME_MS_COUNT
-  beq delay_ms_end  ; Jump to the end if the remaining ms is zero
+  beq @end  ; Jump to the end if the remaining ms is zero
   dec TIME_MS_COUNT
-wait_for_flag:      ; Wait until the VIA tells us we waited the right number of cycles
+@delay:      ; Wait until the VIA tells us we waited the right number of cycles
   bit VIA_IFR
-  bvc wait_for_flag
+  bvc @delay
   lda VIA_T1CL
-  jmp delay_ms_loop
-delay_ms_end:
+  jmp @loop
+@end:
   rts
+  
