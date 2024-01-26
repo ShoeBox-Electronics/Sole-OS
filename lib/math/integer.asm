@@ -164,6 +164,7 @@ MATH_mod_int:
   sta MATH_INT_OUTPUT
   rts
 
+; http://6502org.wikidot.com/software-math-sqrt
 MATH_sqrt_int:
   lda #0
   sta MATH_INT_OUTPUT
