@@ -15,8 +15,8 @@
 
 ;;; Test Suites ;;;
 TEST_suite_math_int_all:
-  jsr TEST_suite_math_int_basic
   jsr TEST_suite_math_int_primes
+  jsr TEST_suite_math_int_basic
   jsr TEST_suite_math_int_comparisons
   rts
 

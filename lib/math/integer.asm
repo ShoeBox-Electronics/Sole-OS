@@ -302,7 +302,7 @@ MATH_is_prime:
   inc MATH_INT_INPUT_2 + 1
 @check_if_done:
   ; in1 is the number we're checking, in2 is the current divisor
-  jsr MATH_eq_int
+  jsr MATH_lte_int
   beq @loop
 @prime:
   lda #1
