@@ -281,12 +281,9 @@ MATH_is_prime:
   bne @check_if_done
   inc MATH_INT_INPUT_2 + 1
 @check_if_done:
-  lda MATH_INT_INPUT_2
-  cmp MATH_INT_INPUT_1
-  bne @loop
-  lda MATH_INT_INPUT_2 + 1
-  cmp MATH_INT_INPUT_1 + 1
-  bne @loop
+  ; in1 is the number we're checking, in2 is the current divisor
+  jsr MATH_eq_int
+  beq @loop
 @prime:
   lda #1
   jmp @return
