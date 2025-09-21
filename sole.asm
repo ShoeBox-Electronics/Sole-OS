@@ -1,28 +1,20 @@
   .setcpu "65C02"
   .segment "SOLE"
-  .include "address_map.asm"
-  .include "lib/lcd.asm"
-  .include "lib/math.asm"
-  .include "lib/time.asm"
-  .include "lib/fib.asm"
+  
+  .include "address_map.asm"            ; Addresses for devices and memory variables
+  .include "lib/lcd.asm"                ; Lib for working with the HD44780 LCD
+  .include "lib/math/math.asm"          ; Lib for math
+  .include "lib/time.asm"               ; Lib for time delays
+  .include "demo/fib.asm"               ; Lib for Fibonacci numbers
+
+  .include "tests/test.asm"             ; Lib for testing other functions
 
 reset:
-  ; Init Stack
-  ldx #$ff
-  txs
-  ; Main
   jsr LCD_init
-  jsr LCD_display_splash_screen
-
-loop:
-  jsr FIB_init
-display_loop:
-  ; calculate next fibs
-  jsr FIB_progress
-  lda FIB_LIMIT
-  beq loop
-  jmp display_loop
-
+  jsr TIME_init
+  jsr TEST_suite_all ; when left uncommented, nothing but the test suite will run
+  ; jsr LCD_display_splash_screen
+  ; jsr FIB_demo
 nmi:
   ; return
   rti
