@@ -27,3 +27,4 @@ Below is a complete list of all available make commands.
 |`make dump`|View a hexdump of the binary file's contents.|
 |`make clean`|Delete all binary and object files.|
 |`make install`|Install dependencies (see "Requirements" section).|
+|`make simulate`|Simulate 6502 runtime.|
